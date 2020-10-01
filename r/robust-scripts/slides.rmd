@@ -1,3 +1,5 @@
+class: center, middle
+
 ## How to make an R script robust
 
 ---
