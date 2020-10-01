@@ -1,1 +1,149 @@
+class: center, middle
+
 ## Managing data in R
+
+
+---
+
+## Loading spreadsheets
+
+```{r}
+read.csv
+library(readxl)
+```
+
+---
+
+## Saving spreadsheets
+
+---
+
+## STATA and SPSS
+
+---
+
+## RData files
+
+---
+
+## RDS files
+
+---
+
+## Large files
+
+```{r}
+library(gdsfmt)
+```
+
+```{r}
+library(MatrixEQTL}
+
+snps1 = SlicedData$new()
+```
+
+```{r}
+library(readr)
+read_csv() ## read_tsv()
+```
+
+
+---
+
+## Manipulate observations
+
+Filter
+
+```{r}
+data.jan <- data[data$month == "January",]
+data.jan <- data[which(data$month == "January"),]
+
+data.win <- data[which(data$month %in% c("December","January","February","March")),]
+```
+
+Reorder
+
+```{r}
+idx <- order(data$last, data$first, decreasing=T)
+data.ord <- data[idx,]
+```
+
+---
+
+## Manipulate variables
+
+Select
+
+```{r}
+data.sel <- data[,c("month","rate")]
+```
+
+Rename
+
+```{r}
+colnames(data)[colnames(data) == "p.value.1"] <- "p.value"
+## not like this
+colnames(data)[3] <- "p.value"
+```
+
+Create
+
+```{r}
+data$high <- data$rate > 0.05
+```
+
+---
+
+## Modify data values
+
+```{r}
+idx <- which(data$rate < 0)
+data$rate[idx] <- NA
+
+data$rate[data$rate < 0] <- NA
+```
+
+---
+
+## Query
+
+Summarize
+
+```{r}
+aggregate(data$rate, list(month=data$month), max)
+```
+
+
+Unique
+
+```{r}
+unique(data$year)
+unique(data[,c("month","year")])
+```
+
+---
+
+## Merging datasets
+
+```{r}
+merge()
+```
+
+
+```{r}
+match()
+```
+
+```{r}
+cbind()
+```
+
+```{r}
+rbind()
+```
+
+---
+
+## Putting it all together
+
+
