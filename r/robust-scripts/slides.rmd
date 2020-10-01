@@ -1,10 +1,12 @@
 ## How to make an R script robust
 
-### Robust? 
+---
+## Robust? 
 
 “robustness is the ability of a computer system to cope with errors during execution and cope with erroneous input.” https://en.wikipedia.org/wiki/Robustness_(computer_science) 
 
-### Challenges 
+---
+## Challenges 
 
 * R versions 
 * Package versions 
@@ -13,9 +15,12 @@
 * Extensions (‘scalability’) 
 * Code Reuse 
 
-### Solutions 
+---
 
-* Comments 
+## Solutions 
+
+---
+## Solution: Comments 
 ```r
 ## this isn't code!
 ```
@@ -34,8 +39,13 @@ add <- function(x, y) {
   x + y
 }
 ```
-* Consistent coding style (https://jef.works/R-style-guide/) 
-* Assertions 
+---
+
+## Solution: Consistent coding style (https://jef.works/R-style-guide/) 
+
+---
+
+## Solution: Assertions 
 ```{r}
 if (!is.numeric(x))
   stop("'x' is not numeric")
@@ -44,7 +54,10 @@ if (!is.numeric(x))
 ```{r}
 stopifnot(is.numeric(x))
 ```
-* Exceptions  
+
+---
+
+## Solution: Exceptions  
 
 ```{r}
 divide <- function(x,y) {
@@ -71,10 +84,16 @@ tryCatch(cat("3/0 is", divide(3,0), "\n"),
 ```
 
 
+---
+## Minimal dependencies 
+---
+## Reuse code 
+---
+## Modular development (functions, packages, localised dependencies) 
+---
+## Testing (predefined and unit) 
+https://towardsdatascience.com/unit-testing-in-r-68ab9cc8d211 
 
-* Minimal dependencies 
-* Reuse code 
-* Modular development (functions, packages, localised dependencies) 
-* Testing (predefined and unit) https://towardsdatascience.com/unit-testing-in-r-68ab9cc8d211 
-
+---
+## Presentation info
 https://gnab.github.io/remark/remarkise
