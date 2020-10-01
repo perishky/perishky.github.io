@@ -12,27 +12,27 @@ class: center, middle
 
 ## Challenges 
 
--- 
+--
 
 * R versions 
 
--- 
+--
 
 * Package versions 
 
--- 
+--
 
 * Operating systems 
 
--- 
+--
 
 * Changing requirements 
 
--- 
+--
 
 * Extensions (‘scalability’) 
 
--- 
+--
 
 * Code Reuse 
 
