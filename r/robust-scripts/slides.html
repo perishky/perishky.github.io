@@ -19,12 +19,136 @@
   <body>
     <textarea id="source">
 
-class: center, middle
-      
-# Title 
-      
-    ...
-    
+## How to make an R script robust
+
+---
+
+## Robust? 
+
+“robustness is the ability of a computer system to cope with errors during execution and cope with erroneous input.” https://en.wikipedia.org/wiki/Robustness_(computer_science) 
+
+---
+
+## Challenges 
+
+-- 
+
+* R versions 
+
+-- 
+
+* Package versions 
+
+-- 
+
+* Operating systems 
+
+-- 
+
+* Changing requirements 
+
+-- 
+
+* Extensions (‘scalability’) 
+
+-- 
+
+* Code Reuse 
+
+---
+
+## Solutions 
+
+---
+
+## Solution: Comments 
+
+```r
+## this isn't code!
+```
+
+https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html
+```r
+#' Add together two numbers
+#'
+#' @param x A number
+#' @param y A number
+#' @return The sum of \code{x} and \code{y}
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+add <- function(x, y) {
+  x + y
+}
+```
+
+---
+
+## Solution: Consistent coding style (https://jef.works/R-style-guide/) 
+
+---
+
+## Solution: Assertions 
+
+```{r}
+if (!is.numeric(x))
+  stop("'x' is not numeric")
+```
+
+```{r}
+stopifnot(is.numeric(x))
+```
+
+---
+
+## Solution: Exceptions  
+
+```{r}
+divide <- function(x,y) {
+  try(y/x)
+}
+```
+
+```{r}
+divide <- function(x,y) {
+  stopifnot(is.numeric(x) && is.numeric(y) && abs(y) > 1e-6)
+  x/y
+}
+cat("3/2 is", divide(3,2), "\n")
+cat("3/0 is", divide(3,0), "\n")
+try(cat("3/0 is", divide(3,0), "\n"))
+```
+
+```{r}
+tryCatch(cat("3/0 is", divide(3,0), "\n"), 
+         error=function(e) {
+           cat("Something went wrong.\n")
+           print(e)
+         })
+```
+
+
+---
+
+## Minimal dependencies 
+
+---
+## Reuse code 
+
+---
+
+## Modular development (functions, packages, localised dependencies) 
+
+---
+
+## Testing (predefined and unit) 
+https://towardsdatascience.com/unit-testing-in-r-68ab9cc8d211 
+
+---
+
+## Presentation info
+https://gnab.github.io/remark/remarkise
+https://github.com/gnab/remark
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
