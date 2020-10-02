@@ -1,9 +1,0 @@
-#!/bin/bash
-
-## https://github.com/gnab/remark
-
-INPUT=$1
-TEMPLATE=$2
-
-awk '/##MARKDOWN##/{ system ( "cat $INPUT" ) } \
-!/##MARKDOWN##/ { print; }' $TEMPLATE
