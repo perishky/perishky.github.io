@@ -2,6 +2,15 @@ class: center, middle
 
 ## How to make an R script robust
 
+
+|![puppy](dog.jpg "dog")
+|![skull](skull.jpg "skull")
+|![syrup](syrup.jpg "syrup")|
+:---:|:---:|:---:
+|"tailored for large puppies with a robust physique"
+|"human male Asian robust skull displays extreme male traits"
+|"strong, deep maple flavoured syrup is a firm favourite"|
+
 ---
 
 ## Robust? 
