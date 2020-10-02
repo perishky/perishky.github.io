@@ -85,28 +85,18 @@ class: center, middle
 --
 
 * Versions of R packages 
-&lt;br&gt; 
-(also suddenly disappearing packages in new versions of R)
+
 --
 
 * Operating systems 
-&lt;br&gt; 
-e.g. parallel computing in Windows is different from linux
 
 --
 
 * Changing requirements 
-&lt;br&gt; e.g. new slightly different versions of the data
-
---
-
-* Extensions (‘scalability’) 
-&lt;br&gt; e.g. datasets suddenly 10x larger
 
 --
 
 * Code Reuse 
-&lt;br&gt; Retrofitting a colleague's script for your analysis.
 
 ---
 
@@ -117,7 +107,8 @@ e.g. parallel computing in Windows is different from linux
 ## Solution: Comments 
 
 ```r
-## this isn't code!
+## something more than just "really long analysis"
+x <- really.long.analysis(x,y) ## 3 hours with 16 cores
 ```
 
 https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html
@@ -186,6 +177,11 @@ tryCatch(cat("3/0 is", divide(3,0), "\n"),
 ## Minimal dependencies 
 
 ---
+
+## Minimize use of 'global variables'
+
+---
+
 ## Reuse code 
 
 ---
