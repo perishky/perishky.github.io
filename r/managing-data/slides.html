@@ -23,8 +23,6 @@ class: center, middle
 
 ## Managing data in R
 
-Example from alspac data with data related to prenatal smoking.
-
 ---
 
 ## Loading spreadsheets
@@ -42,6 +40,11 @@ library(readxl)
 
 ## STATA and SPSS
 
+foreign
+
+readstata13::read.dta13 loses information when reading in .dta files because it ignores all the comments on the variables. This is a pain with alspac data because it means you have no idea what the variables correspond to because each of the column names aren't descriptions of the variables, e.g. the column "fm4ms100" is actually height measured at the FOM4 time point...
+
+haven::read_dta
 ---
 
 ## RData files
@@ -163,6 +166,58 @@ cbind()
 ```{r}
 rbind()
 ```
+
+---
+
+## Typical operations in molecular epidemiology
+
+Convert a continuous variable to binary
+Transform a categorical variable (factors and levels)
+Combine multiple variables into a single variable
+Analyse a genomic dataset with a phenotype dataset
+Transform a matrix by summarizing features
+
+
+
+## b670 = number of cigs per day first trimester
+## b671 = number of cigs per day second trimester
+## binary variable with 1=sustained, 0=no smoking, NA=otherwise
+mother.sustained.smoking <- with(alspac.table, {
+    sustained <- sign(b670 > 0) + sign(b671 > 0)
+    sustained[which(sustained == 1)] <- NA 
+    sustained > 0
+})
+## c482 = number of cigs per day third trimester
+## change definition to all 3 trimesters
+
+## mz024a birth month
+## mz024b birth year
+season.idx <- floor((11-(13-alspac.table$birth.month)%%12)/3) + 1
+alspac.table$birth.season <- c("Feb-Apr", "May-Jul", "Aug-Oct", "Nov-Jan")[season.idx]
+## change definition to winter/not winter
+
+## dat = probes x samples (multiple probes per gene)
+## probes = describe probes (id, symbol)
+probes <- data.frame(symbol=sample(c("a","b","c","d"), size=100, replace=T), id=sample(paste0("p",1:100),size=100, replace=F),stringsAsFactors=F)
+dat <- matrix(rnorm(100*50), ncol=50, nrow=100)
+rownames(dat) <- paste0("p",1:100)
+## there are multiple probes per gene, we want the average for each sample
+stopifnot(all(rownames(dat) %in% probes$id))
+probes <- probes[match(rownames(dat), probes$id),]
+
+## option 1
+genes <- unique(probes$symbol)
+dat.avg <- sapply(genes, function(gene) {
+  apply(dat[probes$symbol == gene,],2,mean,na.rm=T)
+})
+dat.avg <- t(dat.avg)
+## option 2
+design <- model.matrix(~0+symbol, probes)/ncol(dat)
+dat.avg2 <- t(design) %*% dat
+quantile(dat.avg-dat.avg2[paste0("symbol", rownames(dat.avg)),])
+## calculate the max
+
+
 
 ---
 
