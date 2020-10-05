@@ -12,7 +12,9 @@
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
+        color: #C00000;
       }
+      h1 { color: #21677E; }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 
       .ii {
@@ -32,8 +34,17 @@
       }
       .logo {
       	position: absolute;
-      	left: 50%;
-      	bottom: -5%;
+      	right: 0%;
+      	bottom: 0%;
+      	width: 100%;
+      	height: 32pt;
+      	background-color: #8A7967;
+      	vertical-align: middle;
+      }
+      .mrcieu {
+      	color: #000000;
+      	text-align: right;
+      	font: bold medium Arial, sans-serif;
       }
     </style>
   </head>
@@ -43,19 +54,18 @@
 count: false
 class: left, bottom
 
-## How to make an R script robust
+# How to make an R script robust
 &nbsp;
 ### Matthew Suderman
 #### Lecturer in Epigenetic Epidemiology
-#### Integrative Epidemiology Unit
 
 &lt;img src="IEU-logo-colour.png" width="50%"&gt;
 ---
 layout: true
 
-.logo[
-&lt;img src="IEU-logo-colour.png" width="75%"&gt;
-]
+.logo[.mrcieu[
+MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
+]]
 
 ---
 
@@ -81,7 +91,7 @@ layout: true
 
 ---
 
-## Robust? 
+## Robust scripts
 
 “robustness is the ability of a computer system to cope with errors during execution and cope with erroneous input.” https://en.wikipedia.org/wiki/Robustness_(computer_science) 
 

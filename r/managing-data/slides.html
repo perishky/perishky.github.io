@@ -12,16 +12,84 @@
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
+        color: #C00000;
       }
+      h1 { color: #21677E; }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      .ii {
+        float: left;
+        width: 49%;
+      }
+      .iii {
+        float: left;
+        width: 33%;
+      }
+      .right {
+        display: block;
+        position: absolute;
+        right: 0%;
+        top: 15%;
+        float: right;
+      }
+      .logo {
+        position: absolute;
+        right: 0%;
+        bottom: 0%;
+        width: 100%;
+        height: 32pt;
+        background-color: #8A7967;
+        vertical-align: middle;
+      }
+      .mrcieu {
+        color: #000000;
+        text-align: right;
+        font: bold medium Arial, sans-serif;
+      }
     </style>
   </head>
   <body>
     <textarea id="source">
 
-class: center, middle
+count: false
+class: left, bottom
 
-## Managing data in R
+# How to manage data
+&nbsp;
+### Matthew Suderman
+#### Lecturer in Epigenetic Epidemiology
+
+&lt;img src="IEU-logo-colour.png" width="50%"&gt;
+---
+layout: true
+
+.logo[.mrcieu[
+MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
+]]
+
+---
+
+## Typical operations in molecular epidemiology
+
+* Load a massive file into memory and run some simple tests
+* Convert a continuous variable to binary
+* Transform a categorical variable (factors and levels)
+* Combine multiple variables into a single variable
+* Analyse a genomic dataset with a phenotype dataset
+* Calculate variable summaries by 'group' 
+* Transform a matrix by summarizing features
+
+--- 
+
+## Basic steps
+
+* Loading 
+* Saving
+* Querying 
+* Modifying 
+* Merging 
+
+previously: read.csv, write.csv, read.table, write.table
 
 ---
 
@@ -119,7 +187,7 @@ data$high <- data$rate > 0.05
 
 ---
 
-## Modify data values
+## Modify variables
 
 ```{r}
 idx <- which(data$rate < 0)
@@ -135,7 +203,7 @@ data$rate[data$rate < 0] <- NA
 Summarize
 
 ```{r}
-aggregate(data$rate, list(month=data$month), max)
+aggregate(data$rate, by=list(country=month=data$month), FUN=max)
 ```
 
 
@@ -206,18 +274,26 @@ stopifnot(all(rownames(dat) %in% probes$id))
 probes <- probes[match(rownames(dat), probes$id),]
 
 ## option 1
-genes <- unique(probes$symbol)
+genes <- sort(unique(probes$symbol))
 dat.avg <- sapply(genes, function(gene) {
   apply(dat[probes$symbol == gene,],2,mean,na.rm=T)
 })
 dat.avg <- t(dat.avg)
 ## option 2
-design <- model.matrix(~0+symbol, probes)/ncol(dat)
-dat.avg2 <- t(design) %*% dat
-quantile(dat.avg-dat.avg2[paste0("symbol", rownames(dat.avg)),])
-## calculate the max
+library(matrixStats)
+dat.avg2 <- sapply(genes, function(gene) {
+  colMeans(dat[probes$symbol == gene,], na.rm=T)
+})
+dat.avg2 <- t(dat.avg2)
+quantile(dat.avg-dat.avg2)
+## option 3
+dat.avg3 <- by(dat, as.factor(probes$symbol), colMeans)
+dat.avg3 <- do.call(rbind, dat.avg3)
+dat.avg3 <- sapply(dat.avg3, identity)
+quantile(dat.avg-dat.avg3)
 
-
+https://dplyr.tidyverse.org/
+dplyr
 
 ---
 
@@ -235,7 +311,9 @@ library(alspac)
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        slideNumberFormat: ""
+      });
     </script>
   </body>
 </html>      
