@@ -1,0 +1,84 @@
+# How to make an R script robust
+
+## Comments
+
+Commenting in R is very simple. 
+```{r}
+x <- 3 # everything after the '#' symbol is not executed
+```
+
+The big question is *what to comment*.
+
+
+
+
+```r
+## something more than just "really long analysis"
+x <- really.long.analysis(x,y) ## 3 hours with 16 cores
+```
+
+https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html
+```r
+#' Add together two numbers
+#'
+#' @param x A number
+#' @param y A number
+#' @return The sum of \code{x} and \code{y}
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+add <- function(x, y) {
+  x + y
+}
+```
+
+## Consistent coding style
+
+(https://jef.works/R-style-guide/)
+
+## Assertions
+
+```{r}
+if (!is.numeric(x))
+  stop("'x' is not numeric")
+```
+
+```{r}
+stopifnot(is.numeric(x))
+```
+
+## Modular development
+(functions, packages, localised dependencies) 
+## Minimal dependencies
+## Code reuse
+## Testing
+(predefined and unit) 
+https://towardsdatascience.com/unit-testing-in-r-68ab9cc8d211 
+
+## Exceptions
+```{r}
+divide <- function(x,y) {
+  try(y/x)
+}
+```
+
+```{r}
+divide <- function(x,y) {
+  stopifnot(is.numeric(x) && is.numeric(y) && abs(y) > 1e-6)
+  x/y
+}
+cat("3/2 is", divide(3,2), "\n")
+cat("3/0 is", divide(3,0), "\n")
+try(cat("3/0 is", divide(3,0), "\n"))
+```
+
+```{r}
+tryCatch(cat("3/0 is", divide(3,0), "\n"), 
+         error=function(e) {
+           cat("Something went wrong.\n")
+           print(e)
+         })
+```
+
+
+## Debugging
