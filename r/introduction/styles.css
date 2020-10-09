@@ -13,11 +13,15 @@ h1 { color: #21677E; }
 
 .ii {
   float: left;
-  width: 49%;
+  width: 45%;
 }
 .iii {
   float: left;
   width: 33%;
+}
+.gap {
+ float: left;
+ width: 10%;
 }
 .right {
 	display: block;

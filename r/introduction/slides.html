@@ -30,31 +30,27 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 
 ---
 
-## Outline (or *what you're in for*)
+## Things you can do with R
 
-1. Getting started (15%)
+| Description | R mechanism |
+:--|:--
+| Remember data | Variables |
+| Calculate | Maths functions |
+| Store and manipulate sequences of values | Vectors and lists |
+| Calculate with vectors | Vector operations |
+| Generate data | Vector-generating functions |
+| Store and manipulate matrices | Matrices |
+| Calculate with matrices | Matrix functions |
+| Store and manipulate datasets | Data frames |
+| Handle missing data | NA |
+| Save and load data | Files | 
+| Statistical analyses | Statistics functions |
+| Visualise data | Plots |
+| Create and apply recipes | Functions |
+| Repeatedly apply recipes | Loops and apply functions |
+| Make decisions | if...else statements |
+| Share | Packages |
 
-    *what, why, downloading, opening, using, rstudio, help, errors*
---
-2. R basics (60%)
-
-    *variables, vectors, matrices, data frames, lists, functions, logic, data types*
---
-3. Files (3%)
-
-    *finding files, reading files, saving files, file types*
---
-4. Statistics (12%)
-
-    *basic functions, summaries, correlation, regression*
---
-5. Plots (5%)
-
-    *scatterplot, histogram, boxplot, saving plots*
---
-6. Packages (5%)
-
-    *installing, loading, help, swirl*
 ---
 
 class: left, middle
@@ -66,7 +62,7 @@ what, why, downloading, opening, using, rstudio, help, errors
 
 ---
 
-## What is R?
+## Getting started: What is R?
 
 * R is a statistical programming language (based on S)
 * R is open source - researchers develop packages to 
@@ -87,7 +83,9 @@ Dirk Eddelbuettel
 
 ---
 
-## Why use R?
+## Getting started: Why use R?
+
+... rather than S, STATA, SPSS, etc
 
 * R is free!
 
@@ -99,7 +97,7 @@ Dirk Eddelbuettel
 
 ---
 
-## Downloading R
+## Getting started: Downloading R
 
 * Visit https://www.r-project.org and click "Download R"
 
@@ -115,7 +113,7 @@ Dirk Eddelbuettel
 
 ---
 
-## Opening R
+## Getting started: Opening R
 
 * Click "Start" | "All Programs" | "R" | "R x64 3.6.0"
 
@@ -125,7 +123,7 @@ Dirk Eddelbuettel
 
 ---
 
-## R window
+## Getting started: R window
 
 .ii[
 &lt;img src="img/r-window.png" width="200%"&gt;
@@ -146,7 +144,7 @@ Dirk Eddelbuettel
 
 ---
 
-## R menu
+## Getting started: R menu
 
 .ii[
 &lt;img src="img/r-menu.png" width="75%"&gt;
@@ -168,7 +166,7 @@ which are displayed during an R session
 
 ---
 
-## RStudio
+## Getting started: RStudio
 
 * RStudio makes R easier to use
 * It includes a code editor, debugging & visualization tools
@@ -178,7 +176,7 @@ which are displayed during an R session
 
 ---
 
-## RStudio script window
+## Getting started: RStudio script window
 
 &lt;img src="img/rstudio-window.png" width="100%"&gt;
 
@@ -187,7 +185,7 @@ In the script window, you can **save a script** (disk image), **run** selected c
 
 ---
 
-## Getting help
+## Getting started: Help!
 
 * Use the command `help(topic)` or `?topic`
 * In R this will open a web browser
@@ -198,7 +196,7 @@ In the script window, you can **save a script** (disk image), **run** selected c
 
 ---
 
-## `help(mean)`
+## Getting started: `help(mean)`
  
 --
 
@@ -272,7 +270,7 @@ Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) The New S Language. Wadsw
 
 ---
 
-## Error messages
+## Getting started: Error messages
 
 Suppose you type the following but variable 'a' has not been created.
 ```{r}
@@ -297,7 +295,7 @@ R provides informative error messages
 
 ---
 
-## Help on the R website (www.r-project.org)
+## Getting started: www.r-project.org
 
 
 .right[&lt;img src="img/r-project.png" width="60%"&gt;]
@@ -310,7 +308,7 @@ Note:
 
 ---
 
-## Forums
+## Getting started: Forums
 
 * Mailing list archive and forum http://r.789695.n4.nabble.com
 
@@ -322,56 +320,105 @@ Note:
 
 class: left, middle
 
-## R basics
+## Things you can do with R
 &lt;hr&gt;
 
-variables, vectors, combining, matrices, data frames, lists, 
-functions, logic, data types
+*remember, calculate, store, generate, analyse, visualise, save, repeat, apply, decide, share*
 
 ---
 
-## R basics: variables
+## Remember data
 
 A **variable** is a storage location for data with a name.
 
+.ii[
+Store data ... 
 ```{r}
-> a <- 3
-> b <- 4
+> x <- 3
+> y <- 4.2
+> name <- "abcdef"
+> skip <- TRUE
 ```
---
-```{r}
-> a/b
-```
---
-```{r}
-[1] 0.75
-```
---
+
+Recall data ...
 ```{r}
 > x
+[1] 3
+> name 
+[1] "abcdef"
+> nchar(name)
+[1] 6
+> z
+Error: object 'z' not found
 ```
---
+]
+
+.gap[&nbsp;]
+
+.ii[
+Query data type ...
 ```{r}
-Error: object 'x' not found
+> is.numeric(x)
+[1] TRUE
+
+> is.logical(name)
+[1] FALSE
 ```
---
+
+Change data type ...
 ```{r}
-> a <- "abc def"
+> as.character(x)
+[1] "3"
+
+> as.numeric("3.14")
+[1] 3.14
+
+> as.logical("abc")
+[1] NA
+
+> as.logical(x)
+[1] TRUE
+
+> as.logical(0)
+[1] FALSE
 ```
---
-```{r}
-> class(a)
-```
---
-```{r}
-[1] "character"
-```
+
+]
 
 ---
 
-## R basics: vectors
+## Calculate 
 
-A **vector** is a sequence of elements.
+```{r}
+> x + y + 0.8
+[1] 8
+```
+--
+```{r}
+> 4*x/2
+[1] 6
+```
+--
+```{r}
+> log10(100)
+[1] 100
+> 2^x 
+[1] 8
+> sin(pi/2)
+[1] 1
+> ln(exp(1))
+[1] 1
+> sqrt(x^2)
+[1] 3
+```
+
+
+---
+
+
+## Store and manipulate sequences of values
+
+A **vector** is a sequence of variables of the same type.
 
 ```{r}
 > x <- c(11,12,13,14,15,16,17,18,19,20)
@@ -383,19 +430,11 @@ A **vector** is a sequence of elements.
 ```
 --
 ```{r}
-> x[3]
+> x[3] ## show the third
 ```
 --
 ```{r}
 [1] 13
-```
---
-```{r}
-> x[-2]
-```
---
-```{r}
-[1] 11 13 14 15 16 17 18 19 20
 ```
 --
 ```{r}
@@ -407,7 +446,9 @@ A **vector** is a sequence of elements.
 ```
 ---
 
-## R basics: sub-vectors
+## Store and manipulate sequences of values 
+
+Vectors can be subset and combined.
 
 ```{r}
 > x[c(1, 5, 7)]
@@ -432,14 +473,98 @@ A **vector** is a sequence of elements.
 ```{r}
 [1] 14 15 16 17 18 19 20
 ```
+--
+```{r}
+y <- c("Dog", "Cat")
+z <- c(x[1:3], y)
+z
+```
+--
+```{r}
+[1] "11" "12" "13" "Dog" "Cat"
+```
 
 ---
 
-## R basics: `seq()`
+## Calculate with vectors
 
 ```{r}
-> x<-seq(0, 100, by=5)
-> x
+> x+1
+```
+--
+```{r}
+[1] 12 13 14 15 16 17 18 19 20 21
+```
+--
+```{r}
+> 3*x
+```
+--
+```{r}
+[1] 33 36 39 42 45 48 51 54 57 60
+```
+--
+```{r}
+> x/2
+```
+--
+```{r}
+[1] 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10
+```
+--
+```{r}
+> log10(x)
+```
+--
+```{r}
+[1] 1.041393 1.079181 1.113943 1.146128 1.176091 1.204120 1.230449 1.255273
+[9] 1.278754 1.301030
+```
+
+---
+
+## Calculate with vectors (continued)
+
+```{r}
+> y <- x + 1
+> x + y
+```
+--
+```{r}
+[1] 23 25 27 29 31 33 35 37 39 41
+```
+--
+```{r}
+> x-y
+```
+--
+```{r}
+[1] -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+```
+--
+```{r}
+> x*y
+```
+--
+```{r}
+[1] 132 156 182 210 240 272 306 342 380 420
+```
+--
+```{r}
+> x/(y-1)
+```
+--
+```{r}
+[1] 1 1 1 1 1 1 1 1 1 1
+```
+
+---
+
+## Generate data: `seq()`
+
+```{r}
+> a <- seq(0, 100, by=5)
+> a
 ```
 --
 ```{r}
@@ -448,7 +573,7 @@ A **vector** is a sequence of elements.
 ```
 --
 ```{r}
-> length(x)
+> length(a)
 ```
 --
 ```{r}
@@ -456,8 +581,8 @@ A **vector** is a sequence of elements.
 ```
 --
 ```{r}
-> x<-seq(0, 100, length=5)
-> x
+> a <- seq(0, 100, length=5)
+> a
 ```
 --
 ```{r}
@@ -465,11 +590,11 @@ A **vector** is a sequence of elements.
 ```
 ---
 
-## R basics: `rep()`
+## Generate data: `rep()`
 
 ```{r}
-> x<-c(1, 1, 1, 1, 1)
-> x
+> b <- c(1, 1, 1, 1, 1)
+> b
 ```
 --
 ```{r}
@@ -477,8 +602,8 @@ A **vector** is a sequence of elements.
 ```
 --
 ```{r}
-> x<-rep(1, 5)
-> x
+> b <- rep(1, 5)
+> b
 ```
 --
 ```{r}
@@ -495,118 +620,13 @@ A **vector** is a sequence of elements.
 
 ---
 
-## R basics: vector maths
-
-```{r}
-> x <- 1:5
-```
---
-```{r}
-> x+1
-```
---
-```{r}
-[1] 2 3 4 5 6
-```
---
-```{r}
-> 3*x
-```
---
-```{r}
-[1] 3 6 9 12 15
-```
---
-```{r}
-> x/2
-```
---
-```{r}
-[1] 0.5 1.0 1.5 2.0 2.5
-```
-
----
-
-## R basics: more vector maths
-
-```{r}
-> y <- 5:9
-> x+y
-```
---
-```{r}
-[1]  6  8 10 12 14
-```
---
-```{r}
-> x-y
-```
---
-```{r}
-[1] -4 -4 -4 -4 -4
-```
---
-```{r}
-> x*y
-```
---
-```{r}
-[1]  5 12 21 32 45
-```
---
-```{r}
-> x/y
-```
---
-```{r}
-[1] 0.2000000 0.3333333 0.4285714 0.5000000 0.5555556
-```
-
----
-
-## R basics: combining data
-
-```{r}
-> x <- rep(1,5)
-> y <- c("A","B","A","B","C")
-> z <- c(x, y)
-> z
-```
---
-```{r}
-[1] "1" "1" "1" "1" "1" "A" "B" "A" "B" "C"
-```
---
-```{r}
-> cbind(x, y)
-```
---
-```{r}
-       x   y
-[1,] "1" "A"
-[2,] "1" "B"
-[3,] "1" "A"
-[4,] "1" "B"
-[5,] "1" "C"
-```
---
-```{r}
-> rbind(x, y)
-```
---
-```{r}
-[,1] [,2] [,3] [,4] [,5]
-x "1" "1" "1" "1" "1"
-y "A" "B" "A" "B" "C"
-```
-
----
-
-## R basics: matrices
+## Store and manipulate matrices
 
 A **matrix** is a set of elements laid out in rows and columns.
 
 ```{r}
+> x <- rep(1, 5)
+> y <- c("A","B","A","B","C")
 > z <- matrix(c(x, y), nrow=5)
 > z
 ```
@@ -627,7 +647,12 @@ A **matrix** is a set of elements laid out in rows and columns.
 ```{r}
 [1] 5 2
 ```
---
+
+---
+
+## Store and manipulate matrices (continued)
+
+
 ```{r}
 > t(z) ## transpose
 ```
@@ -637,10 +662,36 @@ A **matrix** is a set of elements laid out in rows and columns.
 [1,] "1" "1" "1" "1" "1"
 [2,] "A" "B" "A" "B" "C"
 ```
+--
+```{r}
+> cbind(0:4, z)
+```
+--
+```{r}
+[1,] "0" "1" "A"
+[2,] "1" "1" "B"
+[3,] "2" "1" "A"
+[4,] "3" "1" "B"
+[5,] "4" "1" "C"
+```
+--
+```{r}
+> rbind(c("0","X"), z)
+```
+--
+```{r}
+[1,] "0" "X"
+[2,] "1" "A"
+[3,] "1" "B"
+[4,] "1" "A"
+[5,] "1" "B"
+[6,] "1" "C"
+```
 
 ---
 
-## R basics: indexing matrices
+
+## Store and maniplute matrices (continued)
 
 ```{r}
 > z[,1]
@@ -676,46 +727,37 @@ A **matrix** is a set of elements laid out in rows and columns.
 
 ---
 
-## R basics: data frames
-
-A **data frame** is a table consisting of vectors of a given length. 
+## Calculate with matrices
 
 ```{r}
-> d <- data.frame(a=x, b=y)
-> d[2,]
+> m <- rbind(c(1,2,3),
+             c(3,2,1),
+             c(5,6,4))
+> m
+[1,]  1  2  3
+[2,]  3  2  1
+[3,]  5  6  4
 ```
 --
 ```{r}
-  a b
-2 1 B
+> m + 1
+[1,]  2  3  4
+[2,]  4  3  2
+[3,]  6  7  5
 ```
 --
 ```{r}
-> d$a
+> m %*% solve(m) ## multiple m by its inverse
+
+     [,1]          [,2]         [,3]
+[1,]    1 -2.220446e-16 2.220446e-16
+[2,]    0  1.000000e+00 2.220446e-16
+[3,]    0  0.000000e+00 1.000000e+00
 ```
---
-```{r}
-[1] 1 1 1 1 1
-```
---
-```{r}
-> class(d$a)
-```
---
-```{r}
-[1] "numeric" 
-```
---
-```{r}
-> class(d$b)
-```
---
-```{r}
-[1] "character"
-```
+
 ---
 
-## R basics: lists
+## Store and maniplate datasets: lists
 
 A **list** is like a vector, but it can contain
 elements of different types.
@@ -744,230 +786,69 @@ names(r)
 ```
 
 ---
-## R basics: functions
 
-**Functions** are commands like `help`, `cor`, `median` that use inputs and R commands to generate outputs.
+## Store and maniplate datasets: data frames
 
---
-
-Users can write their own functions, e.g. a function for multiplication:
+A **data frame** is like a matrix but the columns can be different types.
+You could think of it as a list of vectors each of the same length.
 
 ```{r}
-multiply <- function(a, b) {
-    res <- a*b
-    return(res)
-}
+> x <- rep(1, 5)
+> y <- c("A","B","A","B","C")
+> d <- data.frame(a=x, b=y)
 ```
 --
 ```{r}
-> multiply(2,3)
-[1] 6
+> d[2,]
+  a b
+2 1 B
+```
+--
+```{r}
+> d$a
+[1] 1 1 1 1 1
+```
+--
+```{r}
+> class(d$a)
+[1] "numeric" 
+```
+--
+```{r}
+> class(d$b)
+[1] "character"
 ```
 
 ---
 
-## R basics: logical operators
-
-.ii[
-|Description|Operator|
---:|--
-| Is equal to | `==` |
-| Is not equal to | `!=` |
-| Is less than | `<` |
-| Is less than or equal to | `<=` |
-| Is greater than | `>` |
-| Is greater than or equal to | `>=` |
-| And | `&` |
-| Or | <code>&#10072;</code> |
-| Not| `!` |
-
-
-]
-.ii[
-```{r}
-> x <- 11:15
-
-> x[3] == 13
-[1] TRUE
-
-> x[3] != 12
-[1] FALSE
-
-> x[3] < x[4]
-[1] TRUE
-
-> x[1] <= x[2] & !x[2] > x[3]
-[1] TRUE
-
-> x[1] < x[2] | x[2] > x[3]
-[1] TRUE
-
-> x > 12
-[1] TRUE FALSE FALSE FALSE FALSE
-
-> all(x > 10)
-[1] TRUE
-```
-]
----
-
-## R basics: conditional statements
+## Handle missing data
 
 ```{r}
-if (score > 85) {
-  grade <- "A"
-} else {
-  grade <- "F"
-}
+> y <- c("A","B","A","B","C")
+> y[2] <- 2
+> y[3] <- NA
+> y
+[1] "A" "2" NA "A" "B" "C"
 ```
 --
 ```{r}
-grade <- ifelse(score > 85, "A", "F")
+> is.na(y)
+[1] FALSE FALSE TRUE FALSE FALSE FALSE
 ```
 --
 ```{r}
-if (score > 85) {
-  grade <- "A"
-} else if (score > 75)
-  grade <- "B"
-} else {
-  grade <- "F"
-}
+> is.na(y[3])
+[1] TRUE
 ```
 --
 ```{r}
-grade <- ifelse(score > 85, "A", ifelse(score > 75, "B", "F"))
+> na.omit(y)
+[1] "A" "2" "A" "B" "C"
 ```
 
 ---
 
-## R basics: looping 
-
-```{r}
-s <- 0
-for (i in c(1,2,3,4,5)) {
-  s <- s + i
-}
-print(s)
-```
---
-```{r}
-[1] 15
-```
---
-```{r}
-s <- c()
-for (i in 1:5) {
-  s <- c(s, i*i)
-}
-print(s)
-```
---
-```{r}
-[1] 1 4 9 16 25
-```
---
-```{r}
-sq <- function(i) {
-  return(i*i)
-}
-s <- sapply(1:5, sq) ## same as s <- c(sq(1), sq(2), sq(3), sq(4), sq(5))
-```
-
----
-
-## R basics: data type functions
-
-.ii[
-|Description |Function |
-:--|:--
-|Is missing? | `is.na(x)` |
-|Is not missing?|`!is.na(x)`|
-|Is numeric? | `is.numeric(x)` |
-|Is character string? | `is.character(x)`|
-|Make numeric | `as.numeric(x)` |
-|Make character string | `as.character(x)` |
-]
-.ii[
-```{r}
-> x <- 1:5
-
-> x[3] <- NA
-> x
-[1] 1 2 NA 4 5
-
-> is.na(x[2])
-[1] FALSE
-
-> is.na(x[3])
-[1] TRUE
-
-> is.numeric(x[1])
-[1] TRUE
-
-> as.character(x[1])
-[1] "1"
-```
-]
----
-
-## R basics: functions for matrices
-
-.ii[
-| Description | Function |
-:--|:--
-|matrix transpose |`t(m)`|
-|matrix inverse | `solve(m)`|
-|matrix multiplication | `a %*% b`|
-|row names |`rownames(m)`|
-|column names| `colnames(m)`|
-|matrix dimensions | `dim(m)`|
-]
-
-.ii[
-```{r}
-> m <- cbind(c1=c(1,3,5), 
-             c2=c(2,2,6), 
-             c3=c(3,1,4))
-> m
-     c1 c2 c3
-[1,]  1  2  3
-[2,]  3  2  1
-[3,]  5  6  4
-
-> t(m)
-   [,1] [,2] [,3]
-c1    1    3    5
-c2    2    2    6
-c3    3    1    4
-
-> m %*% solve(m)
-     [,1]          [,2]         [,3]
-[1,]    1 -2.220446e-16 2.220446e-16
-[2,]    0  1.000000e+00 2.220446e-16
-[3,]    0  0.000000e+00 1.000000e+00
-
-> colnames(m)
-[1] "c1" "c2" "c3"
-
-> rownames(m)
-NULL
-```
-]
-
-
----
-
-class: left, middle
-
-## Files
-&lt;hr&gt;
-
-finding files, reading files, saving files, file types
-
----
-
-## Files: working directory
+## Save and load data: working directory
 
 To open files, you will need to tell R where the files are. 
 To do this, it helps to know where R will start looking.
@@ -990,7 +871,7 @@ The working directory can also be
 chosen using the Session menu in RStudio.
 
 ---
-## Files: reading data - csv
+## Save and load data: reading csv files
 
 `read.csv` will read csv files and save them as data frames.
 
@@ -1022,13 +903,14 @@ chosen using the Session menu in RStudio.
 ```
 ---
 
-## Files: saving data - csv
+## Save and load data: writing csv files
 
 `write.csv` saves a data frame as a csv file.
 
 ```{r}
-> dat$sex[5] <- "F" ## make correction
-> write.csv(dat, "bmi-corrected.csv", row.names=F, quote=F)
+> dat.corrected <- dat
+> dat.corrected$sex[5] <- "F" ## make correction
+> write.csv(dat.corrected, "bmi-corrected.csv", row.names=F, quote=F)
 ```
 
 `write.table` is similar but allows the user to change the column separator 
@@ -1037,17 +919,10 @@ character.
 ```{r}
 > write.table(dat, "bmi-corrected.csv", row.names=F, quote=F, sep=",")
 ```
----
 
-class: left, middle
-
-## Statistical analysis
-&lt;hr&gt;
-
-basic functions, summaries, correlation, regression
 
 ---
-## Statistics: basic summaries
+## Statistical analyses: basic summaries
 
 ```{r}
 > mean(dat$bmi)                 ## mean
@@ -1082,7 +957,7 @@ F  M
 ```
 
 ---
-## Statistics: `summary()`
+## Statistical analyses: dataset summaries
 
 The `summary` function can be used to summarize single variables
 
@@ -1107,7 +982,7 @@ or entire datasets.
 
 ---
 
-## Statistics: evaluating associations
+## Statistical analyses: evaluating associations
 
 
 There is a fairly strong association between BMI and age.
@@ -1143,7 +1018,7 @@ to
 `(41, 17.6770 + 0.3118*41)=(41, 30.4608)`.
 ---
 
-## Statistics: summarizing regression model fits
+## Statistical analyses: summarizing regression model fits
 
 ```{r}
 > summary(fit)
@@ -1169,7 +1044,7 @@ F-statistic: 8.688 on 1 and 18 DF,  p-value: 0.008612
 
 ---
 
-## Statistics: fitting multiple variable models
+## Statistical analyses: fitting multiple variable models
 
 ```{r}
 > fit <- lm(bmi ~ age + sex + diet, data=dat)
@@ -1202,7 +1077,7 @@ F-statistic: 4.413 on 3 and 16 DF,  p-value: 0.01921
 
 ---
 
-## Statistics: retrieving model fit elements
+## Statistical analyses: retrieving model fit elements
 
 ```{r}
 > coef(fit)
@@ -1237,19 +1112,9 @@ diet         1.0671192  0.5532367 1.9288657 0.0716810178
 [1] 0.3502004
 ```
 
-
 ---
 
-class: left, middle
-
-## Plots
-&lt;hr&gt;
-
-scatterplot, histogram, boxplot, saving plots
-
----
-
-## Plots: scatterplot 
+## Visualise: scatterplot 
 
 ```{r}
 plot(dat$age, dat$bmi, 
@@ -1265,7 +1130,7 @@ plot(dat$age, dat$bmi,
 
 ---
 
-## Plots: scatterplot with regression line
+## Visualise: scatterplot with regression line
 
 ```{r}
 plot(dat$age, dat$bmi, 
@@ -1282,7 +1147,7 @@ abline(fit, col="red", lwd=3)
 
 ---
 
-## Plots: histogram
+## Visualise: histogram
 
 ```{r}
 hist(dat$bmi, main="BMI")
@@ -1293,7 +1158,7 @@ hist(dat$bmi, main="BMI")
 ]
 ---
 
-## Plots: boxplot
+## Visualise: boxplot
 
 ```{r}
 boxplot(bmi ~ diet, data=dat)
@@ -1305,14 +1170,14 @@ boxplot(bmi ~ diet, data=dat)
 
 ---
 
-## Plots: saving
+## Visualise: saving
 
 .center[
 &lt;img src="img/saving.png" width="100%" &gt;
 ]
 ---
 
-## Plots: saving *like a real coder*
+## Visualise: saving *like a total maniac*
 
 ```{r}
 > png(filename="boxplot.png", width=10, height=10, units="cm", res=500)
@@ -1320,41 +1185,185 @@ boxplot(bmi ~ diet, data=dat)
 > dev.off()
 ```
 
----
-
-class: left, middle
-
-## Packages
-&lt;hr&gt;
-
-installing, loading, help, swirl
 
 ---
-## Packages: loading
 
-An **R package** is acollection of functions and/or data sets
-created for use by other R users.
+## Create and apply recipes
+
+**Functions** consist of a sequence of commands applied to a set of variables 
+that return some output.
+
+R provides many functions such as `help`, `cor`, `median`.
 
 --
 
-To use the functions or data in a package, it must first be loaded.
+Users can create their own functions for repetitive tasks, 
+e.g. a function for the distance of a point from 0.
 
 ```{r}
+euclidean.norm <- function(x) {
+  res <- sqrt(sum(x^2))
+  return(res)
+}
+```
+--
+```{r}
+> euclidean.norm(c(3,4))
+[1] 5
+
+> euclidean.norm(c(2,3,6))
+[1] 7
+
+> euclidean.norm(c(1,4,8))
+[1] 9
+```
+
+
+---
+
+## Apply recipes repeatedly
+
+```{r}
+sq <- function(i) {
+  return(i*i)
+}
+s <- sapply(1:5, sq) ## same as s <- c(sq(1), sq(2), sq(3), sq(4), sq(5))
+s
+[1] 1 4 9 16 25
+```
+--
+```{r}
+s <- c()
+for (i in 1:5) {
+  s <- c(s, i*i)
+}
+print(s)
+```
+--
+```{r}
+[1] 1 4 9 16 25
+```
+--
+```{r}
+s <- 0
+for (i in c(1,2,3,4,5)) {
+  s <- s + i
+}
+print(s)
+```
+--
+```{r}
+[1] 15
+```
+
+---
+
+## Make decisions: asking questions
+
+```{r}
+> x <- 11:15
+```
+--
+```{r}
+> x[3] == 13                    ## 13 equals 13
+[1] TRUE
+```
+--
+```{r}
+> x[3] != 12                    ## 13 not equal to 12
+```
+--
+```{r}
+> x[3] < x[4]                   ## 13 less than 14
+```
+--
+```{r}
+> x[1] <= x[2] & !x[2] > x[3]   ## 11 <= 12 and 12 not greater than 13
+```
+--
+```{r}
+> x[1] < x[2] | x[2] > x[3]     ## 11 < 12 or 12 > 13
+```
+--
+```{r}
+> x > 12                        
+[1] TRUE FALSE FALSE FALSE FALSE
+```
+--
+```{r}
+> all(x < 12)                   ## each value in x < 12
+[1] TRUE
+```
+
+---
+
+## Make decisions: conditional statements
+
+```{r}
+if (score > 85) {
+  grade <- "A"
+} else {
+  grade <- "F"
+}
+```
+--
+```{r}
+grade <- ifelse(score > 85, "A", "F")
+```
+--
+```{r}
+if (score > 85) {
+  grade <- "A"
+} else if (score > 75)
+  grade <- "B"
+} else {
+  grade <- "F"
+}
+```
+--
+```{r}
+grade <- ifelse(score > 85, "A", ifelse(score > 75, "B", "F"))
+```
+
+
+
+
+---
+## Share: loading packages
+
+An **R package** is acollection of functions and/or data sets
+created for use by other R users. 
+A package can be loaded using `library`.
+```{r}
 > library(Hmisc)
-
-Loading required package: lattice
-Loading required package: survival
-Loading required package: Formula
-Loading required package: ggplot2
-
 Attaching package: ‘Hmisc’
-
-The following objects are masked from ‘package:base’:
-
-      format.pval, round.POSIXt, trunc.POSIXt, units
 ```
 
 --
+
+After loading, functions and data provided by the package can be used.
+
+```{r}
+> describe(c(1,1,2,1,3,5,1,3,5,2,3,4))
+       n  missing distinct     Info 
+      12        0        5    0.944 
+    Mean      Gmd 
+   2.583    1.742 
+
+lowest : 1 2 3 4 5, highest: 1 2 3 4 5
+                                  
+Value          1     2     3     4
+Frequency      4     2     3     1
+Proportion 0.333 0.167 0.250 0.083
+                
+Value          5
+Frequency      2
+Proportion 0.167
+```
+
+---
+
+## Share: installing packages
 
 If the package has not been installed, you'll see an error message 
 like this.
@@ -1364,9 +1373,9 @@ like this.
 Error in library(Hmisc) : there is no package called ‘Hmisc’
 ```
 
----
+--
 
-## Packages: installing
+The package can be installed using `install.packages`.
 
 ```{r}
 > install.packages("Hmisc")
@@ -1382,12 +1391,6 @@ downloaded 328 KB
 
 ...
 
-trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.0/Hmisc_4.4-1.zip'
-Content type 'application/zip' length 3164452 bytes (3.0 MB)
-downloaded 3.0 MB
-
-package ‘png’ successfully unpacked and MD5 sums checked
-...
 package ‘Hmisc’ successfully unpacked and MD5 sums checked
 
 The downloaded binary packages are in
@@ -1396,7 +1399,7 @@ The downloaded binary packages are in
 
 ---
 
-## Packages: help
+## Share: package help
 
 .center[
 .ii[
@@ -1413,7 +1416,7 @@ https://cran.r-project.org/web/packages/Hmisc/
 ]
 ]
 ---
-## Packages: swirl
+## Share: learn R with "swirl"
 
 swirl (http://swirlstats.com/students.html)
 allows you to learn R within R itself.
@@ -1425,6 +1428,19 @@ allows you to learn R within R itself.
 > library(swirl)
 | Hi! Type swirl() when you are ready to begin.
 ```
+
+---
+
+## Share: creating packages for others
+
+If you have a set of R functions and/or a dataset 
+that you think others might like to use, 
+create a package and put them in it!
+
+Here is a good place to get started:
+
+https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-RStudio
+
 
 ---
 
