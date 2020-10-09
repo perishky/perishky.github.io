@@ -8,17 +8,24 @@ x <- 3 # everything after the '#' symbol is not executed
 ```
 
 The big question is *what to comment*.
+These might seem obvious, but you'd be surprised how
+often they are omitted.
 
-
-
+1. Introduce a script
+2. Describe script/function inputs
+3. Describe script/function outputs
+4. Summarize complex bits of code
+5. Give an idea how long the script should take.
 
 ```r
-## something more than just "really long analysis"
 x <- really.long.analysis(x,y) ## 3 hours with 16 cores
 ```
 
-https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html
-```r
+Roxygen2
+(https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html)
+provides a syntax supporting more structured
+comments for functions. For example:
+```{r}
 #' Add together two numbers
 #'
 #' @param x A number
@@ -31,26 +38,129 @@ add <- function(x, y) {
   x + y
 }
 ```
+These comments can be used to automatically generate documentation
+for R packages. 
+
 
 ## Consistent coding style
 
-(https://jef.works/R-style-guide/)
+* Naming files and variables
+
+    For obvious reasons, 'complexModel' is better than 'temp123'.
+
+* Indenting
+
+    ```{r}
+    if (do.additional.step)
+    print("Running additional steps.")
+    object <- additional.computation(object)
+    
+
+    if (do.additional.step) {
+       print("Running additional steps.")
+       object <- additional.computation(object)
+    }
+    ```
+
+* Line length
+
+    ```{r}
+    dat.avg <- sapply(by(dat, as.factor(probes$symbol), colMeans), identity)
+
+    symbols <- as.factor(probes$symbol)
+    dat.list <- by(dat, symbols, colMeans)
+    dat.avg <- sapply(dat.list, identity)
+    ```
+
+* Script/function length
+
+    My general rule is that the entire script or function
+	should fit on one screen.  If this is not possible, then
+	I break it up into functions. The functions allow me to be
+	strict about saying what the inputs/outputs are. 
+
+More details about style can be found
+online: https://jef.works/R-style-guide/
 
 ## Assertions
 
+It is useful to test assumptions about user input
+and the values of variables throughout the script
+to ensure that you are working with expected/possible values.
+
+For example: 
 ```{r}
 if (!is.numeric(x))
   stop("'x' is not numeric")
+if (x < 50)
+  stop("'x' is too small")
 ```
 
+R provides a shorthand for this
+using the `stopifnot()` function.
+```{r}
+stopifnot(is.numeric(x) && x >= 50)
+```
+
+Although it requires additional lines of code,
+the following would be more informative to the
+user:
 ```{r}
 stopifnot(is.numeric(x))
+stopifnot(x >= 50)
 ```
 
+Adding assertions has 3 benefits:
+
+1. They catch errors before they generate crash the script and
+    generate mysterious outputs.
+2. They force the script writer to think more concretely
+    about the values the variables could take.
+3. They document the script.
+
 ## Modular development
-(functions, packages, localised dependencies) 
-## Minimal dependencies
+
+Split up code as much as possible into independent
+functions and packages.
+
+The following works fine if there are no missing values
+in any of the symptom variables.
+```{r}
+potential.case <- has.symptomA | has.symptomB | has.symptomC
+```
+However, if any are set to `NA`, then `potential.cases` will be `NA`.
+Here is a possible solution:
+```{r}
+if (any(is.na(has.symptomA))) has.symptomA[is.na(has.symptomA)] <- F
+if (any(is.na(has.symptomB))) has.symptomB[is.na(has.symptomB)] <- F
+if (any(is.na(has.symptomC))) has.symptomC[is.na(has.symptomA)] <- F
+potential.case <- has.symptomA | has.symptomB | has.symptomC
+```
+This solution is prone to typing errors. Did you notice that
+`symptomA` accidentally slipped into the code fixing `symptomC`?
+A function would work better:
+```{r}
+na2false <- function(x) {
+    if (any(is.na(x))) x[is.na(x)] <- F
+    x
+}
+potential.case <- na2false(has.symptomA) | na2false(has.symptomB) | na2false(has.symptomC)
+```
+With this solution, the script writer can think only about removing NAs
+when creating the function and then only about symptoms and cases when
+identifying potential cases.
+
+Many scripts are unecessarily complex because they mix
+input and output (e.g. plotting) processing with analysis.
+As a result, the script is difficult to debug because
+the purpose of each line is less clear than if the three
+parts had been seperated into different scripts or functions.
+
 ## Code reuse
+
+
+
+
 ## Testing
 (predefined and unit) 
 https://towardsdatascience.com/unit-testing-in-r-68ab9cc8d211 
@@ -81,4 +191,16 @@ tryCatch(cat("3/0 is", divide(3,0), "\n"),
 ```
 
 
+
+
 ## Debugging
+
+```{r}
+if (x < 50)
+    print("x is very small, how did this happen?!")
+```
+
+```{r}
+if (x < 50)
+    browser() 
+```
