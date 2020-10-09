@@ -3,39 +3,7 @@
   <head>
     <title>Title</title>
     <meta charset="utf-8">
-    <style>
-      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-      body { font-family: 'Droid Serif'; }
-      h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: normal;
-      }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-
-      .ii {
-        float: left;
-        width: 49%;
-      }
-      .iii {
-        float: left;
-        width: 33%;
-      }
-      .right {
-      	display: block;
-      	position: absolute;
-      	right: 0%;
-      	top: 15%;
-      	float: right;
-      }
-      .logo {
-      	position: absolute;
-      	left: 50%;
-      	bottom: -5%;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <textarea id="source">
@@ -43,19 +11,18 @@
 count: false
 class: left, bottom
 
-## How to make an R script robust
+# How to make an R script robust
 &nbsp;
 ### Matthew Suderman
 #### Lecturer in Epigenetic Epidemiology
-#### Integrative Epidemiology Unit
 
 &lt;img src="IEU-logo-colour.png" width="50%"&gt;
 ---
 layout: true
 
-.logo[
-&lt;img src="IEU-logo-colour.png" width="75%"&gt;
-]
+.logo[.mrcieu[
+MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
+]]
 
 ---
 
@@ -81,7 +48,7 @@ layout: true
 
 ---
 
-## Robust? 
+## Robust scripts
 
 “robustness is the ability of a computer system to cope with errors during execution and cope with erroneous input.” https://en.wikipedia.org/wiki/Robustness_(computer_science) 
 
@@ -177,15 +144,8 @@ https://gnab.github.io/remark/remarkise
 https://github.com/gnab/remark
 
     </textarea>
-    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
-    </script>
-    <script>
-      var slideshow = remark.create(
-      	{
-		 slideNumberFormat: ""
-		});
-
-    </script>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script src="slideshow.js"></script>
   </body>
 </html>      
  
