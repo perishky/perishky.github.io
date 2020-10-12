@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <textarea id="source">
+
+count: false
+class: left, bottom
+
+# Journal club 
+## October 12, 2020
+&nbsp;
+
+&lt;img src="IEU-logo-colour.png" width="50%"&gt;
+---
+layout: true
+
+.logo[.mrcieu[
+MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
+]]
+
+---
+
+## Mitochondrial DNA copy number outcomes may be mediated by DNA methylation
+
+> Castellani CA, Longchamps RJ, Sumpter JA, et al. 
+> **Mitochondrial DNA copy number can influence mortality and cardiovascular disease via methylation of nuclear DNA CpGs.** 
+> Genome Med. 2020;12(1):84. 
+
+--
+
+### Background
+
+* mtDNA-CN is tissue-specific
+
+--
+
+* lower CN is bad! 
+
+    *(altered cell morphology,
+    lower respiratory activity,
+    CVD,
+    chronic kidney disease,
+    diabetes,
+    liver disease,
+    fraitly,
+    all-cause mortality)*
+--
+
+* lower CN associated with cancer progression via DNA hypermethylation 
+    and changes in gene expression
+
+---
+layout: true
+
+## Mitochondrial DNA copy number, continued
+
+.logo[.mrcieu[
+MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
+]]
+---
+
+### Result 1: mtDNA-CN associated with DNA methylation
+
+* DNA methylation (n=2507, ARIC study)
+
+* Associated with 34 CpG sites
+
+&lt;img src="manhattan.jpg" &gt;
+
+--
+
+* Enrichments: cell signaling and the “neuroactive ligand-receptor interaction” pathway
+
+* 7 of 34 associations replicated (n=2528)
+
+---
+
+### Result 2: *TFAM* knockout generates similar DNA methylation changes
+
+* *TFAM* is a well-known regulator of mtDNA replication
+
+* Knockout in HEK293T cells by CRISPR-Cas9
+
+--
+
+* 5-fold reduction in expression and 18-fold reduction in mtDNA CN
+
+* Same pathway (*neuroactive ligand-receptor interaction pathway*) enriched in both 
+    top differentially methylated CpG sites and differentially expressed genes
+
+* 3 of 7 replicated sites differentially methylated (p < 0.05)
+
+
+---
+
+### Result 3: DNAm changes do not influence mtDNA CN 
+
+* Standard Mendelian Randomization within discovery dataset (ARIC; n=2507)
+
+--
+
+* Null (all p > 0.1 for Bonferroni adjusted threshold p < 0.005)
+
+--
+
+* Power for individual CpG sites was low. *Could have used 2-sample MR?*
+
+
+---
+
+### Result 4: mtDNA CN-associated CpG sites associated with outcomes
+
+* Considered 6 of 7 replicated CpG site associations
+
+&lt;img src="outcomes-sites.png"&gt;
+&lt;img src="outcomes-part1.png"&gt;
+
+---
+
+&lt;img src="outcomes-sites.png"&gt;
+&lt;img src="outcomes-part2.png"&gt;
+
+'`*`' association after adjustment for multiple tests
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script src="slideshow.js"></script>
+  </body>
+</html>      
+ 
