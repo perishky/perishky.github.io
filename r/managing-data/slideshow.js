@@ -1,3 +1,4 @@
 var slideshow = remark.create({
- slideNumberFormat: ""
+	ratio: "16:9",
+	slideNumberFormat: ""
 });
