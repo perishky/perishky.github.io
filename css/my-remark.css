@@ -17,7 +17,7 @@ h1 { color: #21677E; }
 }
 .iii {
   float: left;
-  width: 33%;
+  width: 30%;
 }
 .gap {
  float: left;
@@ -26,8 +26,8 @@ h1 { color: #21677E; }
 .right {
 	display: block;
 	position: absolute;
-	right: 0%;
-	top: 15%;
+	right: 2%;
+	top: 0%;
 	float: right;
 }
 .logo {

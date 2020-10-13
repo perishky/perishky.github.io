@@ -178,7 +178,7 @@ which are displayed during an R session
 
 ## Getting started: RStudio script window
 
-&lt;img src="img/rstudio-window.png" width="100%"&gt;
+&lt;img src="img/rstudio-window.png" width="90%"&gt;
 
 In the script window, you can **save a script** (disk image), **run** selected commands ("Run") and **run** the entire script ("Script").
 
@@ -298,7 +298,10 @@ R provides informative error messages
 ## Getting started: www.r-project.org
 
 
-.right[&lt;img src="img/r-project.png" width="60%"&gt;]
+.right[
+## &nbsp;
+&lt;img src="img/r-project.png" width="50%"&gt;
+]
 
 Note:
 * R Project | Search
@@ -985,9 +988,9 @@ or entire datasets.
 ## Statistical analyses: evaluating associations
 
 
+.ii[
 There is a fairly strong association between BMI and age.
 
-.ii[
 ```{r}
 > cor(dat$bmi, dat$age)
 [1] 0.5705649
@@ -1005,17 +1008,18 @@ Coefficients:
     17.6770       0.3118  
 ```
 ]
+--
 .ii[
-.center[
-Plot of age vs BMI
 &lt;img src="img/bmi-and-age.png" width=90%&gt;
-]
-]
 
 The **regression line** in the plot runs from 
-`(29, 17.6770 + 0.3118*29)=(29, 26.7192)`
+`(29, 17.6770 + 0.3118&#42;29)=(29, 26.7192)`
 to 
-`(41, 17.6770 + 0.3118*41)=(41, 30.4608)`.
+`(41, 17.6770 + 0.3118&#42;41)=(41, 30.4608)`.
+]
+
+
+
 ---
 
 ## Statistical analyses: summarizing regression model fits
@@ -1125,6 +1129,7 @@ plot(dat$age, dat$bmi,
 --
 
 .right[
+## &nbsp;
 &lt;img src="img/scatterplot.png" width="75%"&gt;
 ]
 
@@ -1142,6 +1147,7 @@ abline(fit, col="red", lwd=3)
 ```
 
 .right[
+## &nbsp;
 &lt;img src="img/scatterplot-regression-line.png" width="75%"&gt;
 ]
 
@@ -1154,6 +1160,7 @@ hist(dat$bmi, main="BMI")
 ```
 
 .right[
+## &nbsp;
 &lt;img src="img/histogram.png" width="75%"&gt;
 ]
 ---
@@ -1165,6 +1172,7 @@ boxplot(bmi ~ diet, data=dat)
 ```
 
 .right[
+## &nbsp;
 &lt;img src="img/boxplot.png" width="75%"&gt;
 ]
 
