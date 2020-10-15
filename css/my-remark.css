@@ -9,8 +9,22 @@ h1, h2, h3 {
   color: #C00000;
 }
 h1 { color: #21677E; }
+th { text-align: left; }
+
+.border { 
+	border: 1px solid black;
+	border-collapse: collapse; 
+}
+.striped tr:nth-child(even) {background-color: #e2e2e2;}
+
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 
+.box{
+  margin-left: 20%;
+  margin-right: 20%;
+  background-color: #f3dea6;
+  padding: 20px;
+}
 .ii {
   float: left;
   width: 45%;

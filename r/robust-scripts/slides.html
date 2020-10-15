@@ -85,63 +85,277 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 
 ---
 
-## Solutions 
+## Solution: comments
 
+.ii[
+Commenting in R is very simple. 
+```{r}
+x <- 3 # all text after the 
+       # hash symbol is not code
+```
 
-* Comments
-* Consistent coding style
-* Assertions
-* Modular development 
-* Code reuse
-* Testing
-* Exceptions
-* Debugging
+Deciding *what* to comment is more tricky.
 
----
-
-## Solution: Comments 
-
-
----
-
-## Solution: Consistent coding style 
-
----
-
-## Solution: Assertions 
-
-
----
-
-## Solution: Exceptions  
-
-
-
----
-
-## Minimize use of 'global variables'
-
----
-
-## Reuse code 
-
----
-
-## Modular development 
+[Roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) provides a useful framework for documenting functions
+that could be applied to scripts as well.
+]
+--
+.ii[
+```{r}
+#' My very cool scatterplot
+#'
+#' @param x x-coordinates of points 
+#'          (numeric vector)
+#' @param y y-coordinates of points 
+#'          (numeric vector)
+#' @param line whether to plot the regression 
+#'             line (logical) (Default: T)
+#' @return Linear model fit for y~x.
+#' @examples
+#' x <- c(1,2,3,3)
+#' y <- c(2,2,4,5)
+#' fit <- myscatterplot(x,y,line=F)
+#'
+myscatterplot <- function(x,y,line=T) {
+  plot(x,y,pch=19)
+  fit <- lm(y~x)
+  if (line)
+    abline(fit, col="red", lty="dashed")
+  return(fit)
+}
+```
+]
 
 ---
 
-## Testing 
+## Solution: keeping it short
+
+* Break up long lines
+
+    ```{r}
+    dat.avg <- sapply(by(dat, as.factor(probes$symbol), colMeans), identity)
+    ```
+--
+
+    vs
+    ```{r}
+    symbols <- as.factor(probes$symbol)
+    dat.list <- by(dat, symbols, colMeans)
+    dat.avg <- sapply(dat.list, identity)
+    ```
+--
+
+* Make functions/scripts short
+
+--
+
+.box[
+  A useful **rule**: the entire script or function
+  should fit on one screen.  
+
+  Break up long bits of code into functions.
+]
+---
+
+## Solution: assertions
+
+.ii[
+It is useful to test assumptions about user input
+and the values of variables throughout the script.
+
+```{r}
+## ... lots of code
+
+if (!is.numeric(x))
+  stop("'x' is not numeric")
+if (x < 50)
+  stop("'x' is too small")
+
+## ... lots of code
+```
+
+R provides a shorthand for this
+using the `stopifnot()` function.
+```{r}
+stopifnot(is.numeric(x) && x >= 50)
+```
+]
+
+--
+.gap[&nbsp;]
+.ii[
+Assertions have 3 benefits:
+
+1. They **catch** errors before they generate mysterious outputs.
+
+2. They force the script writer to **think** more concretely
+    about the values the variables could take.
+
+3. They **document** the script.
+]
 
 ---
 
-## Debugging
+## Solution: modular development
+
+Split up code as much as possible into 
+functions and possibly even packages.
+
+--
+
+.ii[
+The following code simulates 
+some data and generates two plots. 
+
+```{r}
+## simulation 1
+x1 <- rnorm(100)
+y1 <- x1 + rnorm(length(x1))
+plot(x1, y1, pch=19)
+abline(lm(y1~x1), 
+       col="red", 
+       lty="dashed")
+##
+## simulation 2
+x2 <- rnorm(100)
+y2 <- x1 + x2 + rnorm(length(x1))
+plot(x2, y2, pch=19)
+abline(lm(y2~x2), 
+       col="red", 
+       lty="dashed")
+```
+]
+
+--
+
+.ii[
+The following version is easier to **read**, **modify** and **reuse**. 
+
+```{r}
+## data simulation
+x1 <- rnorm(100)
+y1 <- x1 + rnorm(length(x1))
+x2 <- rnorm(100)
+y2 <- x1 + x2 + rnorm(length(x1))
+
+## scatterplots 
+myscatter <- function(x,y) {
+  plot(x1, y1, pch=19)
+  fit <- lm(y~x)
+  abline(fit, 
+         col="red", lty="dashed")
+  return(fit)
+}
+myscatter(x1,y1)
+myscatter(x2,y2)
+```
+
+]
 
 ---
 
-## Presentation info
-https://gnab.github.io/remark/remarkise
-https://github.com/gnab/remark
+## Solution: exceptions
+
+.ii[
+The following script will stop when attempting to calculate `r`
+just before printing the message at the end.
+```{r}
+x <- c(1,2,3)
+y <- NA 
+
+## ... lots of code 
+
+r <- cor(x,y)
+cat("The correlation is", r, "\n")
+```
+]
+
+--
+
+.gap[&nbsp;]
+.ii[
+The following script uses the `tryCatch` function 
+to "catch" the error and set `r` to `NaN` ("Not A Number").
+As a result, this script will run all the way to the end.
+```{r}
+x <- c(1,2,3)
+y <- NA 
+
+## ... lots of code 
+
+r <- tryCatch(cor(x,y), 
+              error=function(e) NaN) 
+cat("The correlation is", r, "\n")
+```
+]
+
+---
+
+## Solution: debugging
+
+*Debugging* is identifying errors in the code and fixing them.
+
+If your script or R command has been stopped by an error, 
+the simplest thing to do is to type `trackeback()`. 
+```{r}
+traceback()
+```
+--
+
+.box[
+Traceback tells you the specific line of code **where** the error was generated. 
+
+This may be helpful if the error occured 
+when your script was running a function
+from an R package.
+]
+
+---
+
+## Solution: debugging, cont
+
+If this doesn't help, 
+you can insert print statements just before the error
+to check variable values.
+
+For example, 
+```{r}
+## ... lots of code 
+print("The value of x:")
+print(x)
+print("the value of y:")
+print(y)
+## the script stops here 
+## ... lots of code
+```
+
+---
+
+## Solution: debugging, cont
+
+A more advanced alternative is to use the `browser` function.
+```{r}
+## ... lots of code 
+browser()
+## the script stops here 
+## ... lots of code
+```
+
+--
+
+.box[
+When a script reaches a call to `browser()`, it: 
+
+1. pauses the script
+
+2. allows you to run R commands to look at the values of variables
+
+3. allows you to run the rest of the script, pausing at each line
+]
+
+
+
+
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

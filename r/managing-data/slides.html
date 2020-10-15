@@ -26,241 +26,361 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 
 ---
 
-## Typical operations in molecular epidemiology
+## Typical tasks in (molecular) epidemiology
 
-* Load a massive file into memory and run some simple tests
-* Convert a continuous variable to binary
-* Transform a categorical variable (factors and levels)
-* Combine multiple variables into a single variable
-* Analyse a genomic dataset with a phenotype dataset
-* Calculate variable summaries by 'group' 
-* Transform a matrix by summarizing features
+* **Load** a massive file into memory and run some simple tests
 
---- 
+--
 
-## Basic steps
+* Normalize/clean a dataset and **save** the result to a file
 
-* Loading 
-* Saving
-* Querying 
-* Modifying 
-* Merging 
+--
 
-previously: read.csv, write.csv, read.table, write.table
+* **Transform** a variable 
 
----
+--
 
-## Loading spreadsheets
+    e.g. convert a continuous variable to binary
 
-```{r}
-read.csv
-library(readxl)
-```
+    e.g. combine categories in categorical variable
 
----
 
-## Saving spreadsheets
+--
 
----
+* Analyse **multiple** datasets on the same individuals
 
-## STATA and SPSS
+--
 
-foreign
+    e.g. Test associations between 30K genes and a phenotype 
+    while adjusting for potential confounders.
 
-readstata13::read.dta13 loses information when reading in .dta files because it ignores all the comments on the variables. This is a pain with alspac data because it means you have no idea what the variables correspond to because each of the column names aren't descriptions of the variables, e.g. the column "fm4ms100" is actually height measured at the FOM4 time point...
 
-haven::read_dta
----
+--
 
-## RData files
+* **Summarize** a variable by group
 
----
+--
 
-## RDS files
-
----
-
-## Large files
-
-```{r}
-library(gdsfmt)
-```
-
-```{r}
-library(MatrixEQTL}
-
-snps1 = SlicedData$new()
-```
-
-```{r}
-library(readr)
-read_csv() ## read_tsv()
-```
+    e.g. Given data for 100,000 individuals, calculate mean 
+    income by county.
 
 
 ---
 
-## Manipulate observations
+## Load a massive file into memory 
 
-Filter
+Loading large spreadsheets using `read.csv/read.table` can take a long time.  
+
+--
+
+Here is one way to speed it up.
+
+Step 1. Peek at the first few rows to determine the data class of each column:
 
 ```{r}
-data.jan <- data[data$month == "January",]
-data.jan <- data[which(data$month == "January"),]
-
-data.win <- data[which(data$month %in% c("December","January","February","March")),]
+dat <- read.table("big-massive-file.txt", 
+                  nrows=3, header=T, sep=" ")
+dat
+##   CHR    POS            SNP
+## 1   1 721290 rs12565286:G:C
+## 2   1 723891  rs2977670:G:C
+## 3   1 752566  rs3094315:G:A
 ```
 
-Reorder
+--
+
+Step 2. Use `fread()` from the `data.table` library to load the file:
 
 ```{r}
-idx <- order(data$last, data$first, decreasing=T)
-data.ord <- data[idx,]
-```
-
----
-
-## Manipulate variables
-
-Select
-
-```{r}
-data.sel <- data[,c("month","rate")]
-```
-
-Rename
-
-```{r}
-colnames(data)[colnames(data) == "p.value.1"] <- "p.value"
-## not like this
-colnames(data)[3] <- "p.value"
-```
-
-Create
-
-```{r}
-data$high <- data$rate > 0.05
+library(data.table)
+classes <- c(chr="character", pos="integer", snp="character")
+dat <- fread("big-massive-file.txt", 
+             header=T, sep=" ", 
+             colClasses=classes)
 ```
 
 ---
 
-## Modify variables
+## Load a massive file, cont
+
+Some spreadsheets are just too large to load, 
+e.g. files larger than 1/2 Gb. 
+
+--
+
+One solution is to load parts of the table *as you need them*.
 
 ```{r}
-idx <- which(data$rate < 0)
-data$rate[idx] <- NA
+library(ff)
+dat <- read.table.ffdf("big-massive-file.txt", header=T, sep=" ")
+```
 
-data$rate[data$rate < 0] <- NA
+You can now access `dat` just like a data frame.
+
+```{r}
+dat[1:3,]   ## retrieve the first three rows
+dat$CHR     ## retreive the column named "CHR"
+```
+However, you might notice that retrievals are *much* slower than a
+normal data frame.
+
+---
+
+## Load a massive file, cont
+
+R can handle many other file formats.  
+
+The following functions all read the file and return a data frame:
+
+.striped[
+| file format | R package | function(s) |
+:--|:--|:--
+| STATA (.dat) | foreign | `read.dta()` |
+|              | readstata13 | `read.dta13()` | 
+|              | haven   | `read_dta()` | 
+| SPSS (.sav)  | foreign | `read.spss()` |
+|              | haven   | `read_spss()` |
+| Excel        | readxl  | `read_xls()` and `read_xlsx()` |
+]
+
+--
+
+**Note**
+
+* This is not a complete list. See the `foreign` and `haven` 
+    packages for other formats.
+
+* `read.dta13()` is specifically for STATA v13 files.
+
+* `read_dta()` loads variable comments, `read.dta13()` does not
+
+---
+
+## Save data to a file: csv
+
+The most common way in R to save a data frame is to use 
+`write.csv()` or `write.table()`. 
+```{r}
+write.csv(dat, row.names=F, quote=F)
+write.table(dat, row.names=F, quote=F, sep=",")
+```
+
+--
+
+The newer function `fwrite()` is 30-60 times faster
+but otherwise identical.
+```{r}
+library(data.table)
+fwrite(dat, row.names=F, quote=F, sep=",") 
 ```
 
 ---
 
-## Query
+## Save data to a file: RData and RDS
 
-Summarize
+If a dataset will only be used by R, then 
+it is most efficient to use the RData/RDS format.
 
+--
+
+.ii[
+### RData
+
+The `save()` function saves variables to to an `RData` file. 
 ```{r}
-aggregate(data$rate, by=list(country=month=data$month), FUN=max)
+save(dat, dat.norm, ret, file="datasets.rda")
 ```
 
-
-Unique
-
+The `load()` function loads these variables into R.
 ```{r}
-unique(data$year)
-unique(data[,c("month","year")])
+load("datasets.rda", verbose=T)
+## Loading objects: 
+##  dat 
+##  data.norm 
+##  ret
+```
+Variables with the same name are replaced!
+]
+
+--
+
+.gap[&nbsp;]
+
+.ii[
+### RDS
+
+`RDS` files each save only one object.
+```{r}
+saveRDS(dat, file="dataset.rds")
+```
+
+That single object can be loaded into R with any given variable name.
+```{r}
+mydat <- readRDS("dataset.rds")
+```
+]
+
+---
+
+## Transform a variable 
+
+Suppose we have a numerical variable `x`.
+
+We can convert it to 3 categories corresponding to 
+three ranges of values.
+```{r}
+x.3 <- rep('null', length(x))
+x.3[x < -0.5] <- 'neg'
+x.3[x > 0.5] <- 'pos'
+```
+
+--
+
+Factors are a more efficient way to store categorical variables
+in the computer as well as a way to give an ordering to the categories.
+```{r}
+x.3 <- factor(x.3, levels=c("neg", "null", "pos"), ordered=T)
+```
+
+--
+
+We could combine the 'null' and 'pos' categories and replace
+call the resulting category 'nonneg'. 
+```{r}
+x.2 <- as.character(x.3)
+x.2[x.3=="null" | x.3=="pos"] <- "nonneg"
+x.2 <- factor(x.2, levels=c("neg", "nonneg"), ordered=T)
 ```
 
 ---
 
-## Merging datasets
+## Align datasets
+
+For a population sample, 
+we have gene expression levels and 
+phenotype information. 
+
+* `gene.dat` is a matrix rows=genes and columns=samples
+* `pheno.dat` is a data frame with rows=samples and columns=variables
+
+
+.ii[
+```{r}
+> gene.dat[1:3,1:3]
+      s234 s199 s397
+NR3C1   83  130  171
+IGF2    87   99  126
+MYC    200  160   32
+```
+]
+.gap[&nbsp;]
+.ii[
+```{r}
+> pheno.dat[1:3,]
+    id sex age smoker bmi
+1 s199   M  23  FALSE  24
+2 s349   F  50  FALSE  23
+3 s456   F  19  FALSE  29
+```
+]
+
+
+
+
+--
+
+To test associations between gene expression and phenotypes, 
+we need to make sure that the samples are in the same order.
 
 ```{r}
-merge()
+idx <- match(pheno.dat$id, colnames(gene.dat))
+gene.dat <- gene.dat[,idx]
 ```
 
-
+Now we can test associations.
 ```{r}
-match()
-```
-
-```{r}
-cbind()
-```
-
-```{r}
-rbind()
+fit <- lm(gene.dat["MYC",] ~ ., data=pheno.dat)
 ```
 
 ---
 
-## Typical operations in molecular epidemiology
+## Summarize a variable by group
 
-Convert a continuous variable to binary
-Transform a categorical variable (factors and levels)
-Combine multiple variables into a single variable
-Analyse a genomic dataset with a phenotype dataset
-Transform a matrix by summarizing features
+Suppose we have data from an experiment in which guinea pigs were each
+given one of two supplements at one of 3 different doses.
+We want to know which supplement/dose maximizes tooth growth.
 
+```{r}
+> head(ToothGrowth)
+   len supp dose
+1  4.2   VC  0.5
+2 11.5   VC  0.5
+3  7.3   VC  0.5
+4  5.8   VC  0.5
+5  6.4   VC  0.5
+6 10.0   VC  0.5
+```
 
-
-## b670 = number of cigs per day first trimester
-## b671 = number of cigs per day second trimester
-## binary variable with 1=sustained, 0=no smoking, NA=otherwise
-mother.sustained.smoking <- with(alspac.table, {
-    sustained <- sign(b670 > 0) + sign(b671 > 0)
-    sustained[which(sustained == 1)] <- NA 
-    sustained > 0
-})
-## c482 = number of cigs per day third trimester
-## change definition to all 3 trimesters
-
-## mz024a birth month
-## mz024b birth year
-season.idx <- floor((11-(13-alspac.table$birth.month)%%12)/3) + 1
-alspac.table$birth.season <- c("Feb-Apr", "May-Jul", "Aug-Oct", "Nov-Jan")[season.idx]
-## change definition to winter/not winter
-
-## dat = probes x samples (multiple probes per gene)
-## probes = describe probes (id, symbol)
-probes <- data.frame(symbol=sample(c("a","b","c","d"), size=100, replace=T), id=sample(paste0("p",1:100),size=100, replace=F),stringsAsFactors=F)
-dat <- matrix(rnorm(100*50), ncol=50, nrow=100)
-rownames(dat) <- paste0("p",1:100)
-## there are multiple probes per gene, we want the average for each sample
-stopifnot(all(rownames(dat) %in% probes$id))
-probes <- probes[match(rownames(dat), probes$id),]
-
-## option 1
-genes <- sort(unique(probes$symbol))
-dat.avg <- sapply(genes, function(gene) {
-  apply(dat[probes$symbol == gene,],2,mean,na.rm=T)
-})
-dat.avg <- t(dat.avg)
-## option 2
-library(matrixStats)
-dat.avg2 <- sapply(genes, function(gene) {
-  colMeans(dat[probes$symbol == gene,], na.rm=T)
-})
-dat.avg2 <- t(dat.avg2)
-quantile(dat.avg-dat.avg2)
-## option 3
-dat.avg3 <- by(dat, as.factor(probes$symbol), colMeans)
-dat.avg3 <- do.call(rbind, dat.avg3)
-dat.avg3 <- sapply(dat.avg3, identity)
-quantile(dat.avg-dat.avg3)
-
-https://dplyr.tidyverse.org/
-dplyr
+We calculate the mean growth by supplement/dose using `aggregate()`.
+```{r}
+> with(ToothGrowth, aggregate(len, by=list(supp, dose), mean))
+  Group.1 Group.2     x
+1      OJ     0.5 13.23
+2      VC     0.5  7.98
+3      OJ     1.0 22.70
+4      VC     1.0 16.77
+5      OJ     2.0 26.06
+6      VC     2.0 26.14
+```
 
 ---
 
-## ALSPAC
+## Tidyverse (https://www.tidyverse.org/)
 
-```{r}
-library(devtools)
-install_github("explodecomputer/alspac")
-library(alspac)
-```
+.ii[
+&lt;img src="tidyverse.png" width="100%"&gt;
+]
+.gap[&nbsp;]
+.ii[
+"The tidyverse is an opinionated collection of R packages 
+designed for data science. 
+All packages share an underlying 
+design philosophy, grammar, and data structures."
+
+
+Some of the more popular packages are:
+
+* **dplyr** (https://dplyr.tidyverse.org/) is for manipulating data.
+
+* **ggplot2** (https://ggplot2.tidyverse.org/) is for creating plots.
+]
+
+---
+
+## ALSPAC R package
+
+The `alspac` R package provides 
+&lt;br&gt; a convenient interface in R 
+to the ALSPAC dataset.
+
+* **Installation**
+    ```{r}
+    library(devtools)
+    install_github("explodecomputer/alspac")
+    ```
+
+* **Example use**
+
+    ```{r}
+    library(alspac)
+    setDataDir("/path/to/R drive/data/")
+    vars <- findVars(c("kz021","c645a","b032",
+                       "b670","c804"))
+    results <- extractVars(vars)
+    ```
+    The requested data is in data frame `results`.
+
+.right[&lt;img src="co90s-logo-rgb.jpg" width="75%"&gt;]
 
 
 

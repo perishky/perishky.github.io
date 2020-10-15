@@ -32,11 +32,12 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## Things you can do with R
 
-| Description | R mechanism |
+.striped[
+| Description |  R tool |
 :--|:--
 | Remember data | Variables |
 | Calculate | Maths functions |
-| Store and manipulate sequences of values | Vectors and lists |
+| Store and manipulate sequences of values &nbsp;&nbsp;&nbsp;&nbsp;| Vectors and lists |
 | Calculate with vectors | Vector operations |
 | Generate data | Vector-generating functions |
 | Store and manipulate matrices | Matrices |
@@ -48,8 +49,9 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 | Visualise data | Plots |
 | Create and apply recipes | Functions |
 | Repeatedly apply recipes | Loops and apply functions |
-| Make decisions | if...else statements |
+| Make decisions | If/else statements |
 | Share | Packages |
+]
 
 ---
 
@@ -62,7 +64,7 @@ what, why, downloading, opening, using, rstudio, help, errors
 
 ---
 
-## Getting started: What is R?
+## Getting started: what
 
 * R is a statistical programming language (based on S)
 * R is open source - researchers develop packages to 
@@ -83,7 +85,7 @@ Dirk Eddelbuettel
 
 ---
 
-## Getting started: Why use R?
+## Getting started: why
 
 ... rather than S, STATA, SPSS, etc
 
@@ -97,7 +99,7 @@ Dirk Eddelbuettel
 
 ---
 
-## Getting started: Downloading R
+## Getting started: installing
 
 * Visit https://www.r-project.org and click "Download R"
 
@@ -113,7 +115,7 @@ Dirk Eddelbuettel
 
 ---
 
-## Getting started: Opening R
+## Getting started: opening
 
 * Click "Start" | "All Programs" | "R" | "R x64 3.6.0"
 
@@ -123,7 +125,7 @@ Dirk Eddelbuettel
 
 ---
 
-## Getting started: R window
+## Getting started: navigating
 
 .ii[
 &lt;img src="img/r-window.png" width="200%"&gt;
@@ -144,7 +146,7 @@ Dirk Eddelbuettel
 
 ---
 
-## Getting started: R menu
+## Getting started: menus
 
 .ii[
 &lt;img src="img/r-menu.png" width="75%"&gt;
@@ -185,7 +187,7 @@ In the script window, you can **save a script** (disk image), **run** selected c
 
 ---
 
-## Getting started: Help!
+## Getting started: help!
 
 * Use the command `help(topic)` or `?topic`
 * In R this will open a web browser
@@ -270,7 +272,7 @@ Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) The New S Language. Wadsw
 
 ---
 
-## Getting started: Error messages
+## Getting started: error messages
 
 Suppose you type the following but variable 'a' has not been created.
 ```{r}
@@ -300,6 +302,7 @@ R provides informative error messages
 
 .right[
 ## &nbsp;
+## &nbsp;
 &lt;img src="img/r-project.png" width="50%"&gt;
 ]
 
@@ -311,7 +314,7 @@ Note:
 
 ---
 
-## Getting started: Forums
+## Getting started: forums
 
 * Mailing list archive and forum http://r.789695.n4.nabble.com
 
@@ -449,7 +452,7 @@ A **vector** is a sequence of variables of the same type.
 ```
 ---
 
-## Store and manipulate sequences of values 
+## Store and manipulate sequences of values (continued)
 
 Vectors can be subset and combined.
 
@@ -824,6 +827,15 @@ You could think of it as a list of vectors each of the same length.
 
 ---
 
+class: center, middle
+
+## `stop("Time for a break")`  
+### We will resume after `Sys.sleep(10*60)`.
+
+&lt;img src="img/break.png" width="100%"&gt;
+
+---
+
 ## Handle missing data
 
 ```{r}
@@ -874,8 +886,31 @@ The working directory can also be
 chosen using the Session menu in RStudio.
 
 ---
+
 ## Save and load data: reading csv files
 
+.ii[
+Suppose I have a spreadsheet stored in CSV format.
+
+```{r}
+"id","age","sex","diet","bmi"
+1,32,"M",0,25.7957231474661
+2,35,"M",0,28.8952139451377
+3,41,"M",0,29.9258448186199
+4,29,"M",0,27.3383500990741
+5,33.5,"M",1,28.2469210985821
+6,33.2,"M",1,27.0473176810354
+7,32.9,"M",1,30.3031786852156
+8,32.6,"F",1,28.5621419729205
+9,32.3,"F",1,28.05344654591
+10,32,"F",1,28.8864676350323
+...
+```
+]
+
+--
+
+.ii[
 `read.csv` will read csv files and save them as data frames.
 
 ```{r}
@@ -883,18 +918,13 @@ chosen using the Session menu in RStudio.
 ```
 
 ```{r}
-> dat[1:10,]
+> dat[1:5,]
    id  age sex diet      bmi
 1   1 32.0   M    0 25.79572
 2   2 35.0   M    0 28.89521
 3   3 41.0   M    0 29.92584
 4   4 29.0   M    0 27.33835
 5   5 33.5   M    1 28.24692
-6   6 33.2   M    1 27.04732
-7   7 32.9   M    1 30.30318
-8   8 32.6   F    1 28.56214
-9   9 32.3   F    1 28.05345
-10 10 32.0   F    1 28.88647
 ```
 
 ```{r}
@@ -904,6 +934,9 @@ chosen using the Session menu in RStudio.
   id  age sex diet      bmi
 5  5 33.5   M    1 28.24692
 ```
+]
+
+
 ---
 
 ## Save and load data: writing csv files
@@ -917,11 +950,18 @@ chosen using the Session menu in RStudio.
 ```
 
 `write.table` is similar but allows the user to change the column separator 
-character.
+character.  Here we separate columns by a semicolon rather than a comma.
 
 ```{r}
-> write.table(dat, "bmi-corrected.csv", row.names=F, quote=F, sep=",")
+> write.table(dat, "bmi-corrected.csv", row.names=F, quote=F, sep=";")
 ```
+
+--
+
+.box[
+Note: There is similarly a function `read.table()` just like `read.csv()` 
+but more flexible.
+]
 
 
 ---
@@ -1130,6 +1170,7 @@ plot(dat$age, dat$bmi,
 
 .right[
 ## &nbsp;
+## &nbsp;
 &lt;img src="img/scatterplot.png" width="75%"&gt;
 ]
 
@@ -1142,11 +1183,13 @@ plot(dat$age, dat$bmi,
      main="age vs BMI", 
      xlab="age", 
      ylab="BMI")
-fit <- lm(bmi ~ age, data=dat)
+fit <- lm(bmi ~ age, 
+          data=dat)
 abline(fit, col="red", lwd=3)
 ```
 
 .right[
+## &nbsp;
 ## &nbsp;
 &lt;img src="img/scatterplot-regression-line.png" width="75%"&gt;
 ]
@@ -1160,6 +1203,7 @@ hist(dat$bmi, main="BMI")
 ```
 
 .right[
+## &nbsp;
 ## &nbsp;
 &lt;img src="img/histogram.png" width="75%"&gt;
 ]
@@ -1196,7 +1240,7 @@ boxplot(bmi ~ diet, data=dat)
 
 ---
 
-## Create and apply recipes
+## Recipes: create and apply
 
 **Functions** consist of a sequence of commands applied to a set of variables 
 that return some output.
@@ -1229,44 +1273,74 @@ euclidean.norm <- function(x) {
 
 ---
 
-## Apply recipes repeatedly
+## Recipes: repeat
+
+.iii[
+Given a vector `people`:
+```{r}
+> people <- c("bill", 
+              "jane", 
+              "bob", 
+              "felicia", 
+              "carl", 
+              "apple")
+> scores <- c(90, 80, 
+              60, 95, 
+              75, 99)
+```
+
+Suppose we want to make a list of people who obtained high scores.
+]
+
+--
+
+.iii[
+**Step 1.** Create a function for determining a high score.
+    
+```{r}
+is.high <- function(s) {
+  return(s > 90) 
+  ## or something 
+  ## really complicated
+  ## takes into account 
+  ## grade barriers 
+  ## and homework 
+  ## completed and 
+  ## the name of 
+  ## first pet.
+}
+```
+]
+
+--
+
+.iii[
+**Step 2.** Construct the list of people by applying `is.high()`. 
+
+Two equivalent ways:
+
+Option 1. For-loop
 
 ```{r}
-sq <- function(i) {
-  return(i*i)
+n <- length(people)
+high <- character()
+for (i in 1:n) {
+  if (is.high(scores[i]))
+    high <- c(high, people[i])
 }
-s <- sapply(1:5, sq) ## same as s <- c(sq(1), sq(2), sq(3), sq(4), sq(5))
-s
-[1] 1 4 9 16 25
 ```
---
+
+Option 2. `sapply()`
+
 ```{r}
-s <- c()
-for (i in 1:5) {
-  s <- c(s, i*i)
-}
-print(s)
+yes <- sapply(scores, is.high)
+high <- people[yes]
 ```
---
-```{r}
-[1] 1 4 9 16 25
-```
---
-```{r}
-s <- 0
-for (i in c(1,2,3,4,5)) {
-  s <- s + i
-}
-print(s)
-```
---
-```{r}
-[1] 15
-```
+]
 
 ---
 
-## Make decisions: asking questions
+## Decisions: ask questions
 
 ```{r}
 > x <- 11:15
@@ -1305,7 +1379,7 @@ print(s)
 
 ---
 
-## Make decisions: conditional statements
+## Decisions: alternatives
 
 ```{r}
 if (score > 85) {
@@ -1429,7 +1503,7 @@ https://cran.r-project.org/web/packages/Hmisc/
 swirl (http://swirlstats.com/students.html)
 allows you to learn R within R itself.
 
-&lt;img src="img/swirl.png" width="100%"&gt;
+&lt;img src="img/swirl.png" width="75%"&gt;
 
 ```{r}
 > install.packages("swirl")

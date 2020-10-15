@@ -1,3 +1,7 @@
+```{r echo=F}
+opts_chunk$set(eval=FALSE,warning=FALSE, echo=FALSE, message=FALSE, results="asis", fig.width=6, fig.height=6, dev="CairoPNG")    
+```
+
 # How to make an R script robust
 
 ## Comments
@@ -7,62 +11,42 @@ Commenting in R is very simple.
 x <- 3 # everything after the '#' symbol is not executed
 ```
 
-The big question is *what to comment*.
-These might seem obvious, but you'd be surprised how
-often they are omitted.
+The important question is *what* to comment and *how*. 
+Roxygen provides a useful framework for documenting functions
+(https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html).
+For example:
 
-1. Introduce a script
-2. Describe script/function inputs
-3. Describe script/function outputs
-4. Summarize complex bits of code
-5. Give an idea how long the script should take.
-
-```r
-x <- really.long.analysis(x,y) ## 3 hours with 16 cores
-```
-
-Roxygen2
-(https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html)
-provides a syntax supporting more structured
-comments for functions. For example:
 ```{r}
-#' Add together two numbers
+#' My very cool scatterplot
 #'
-#' @param x A number
-#' @param y A number
-#' @return The sum of \code{x} and \code{y}
+#' @param x x-coordinates of points (numeric vector)
+#' @param y y-coordinates of points (numeric vector)
+#' @param line whether to plot regression line (logical) (Default: T)
+#' @return Linear model fit for y~x.
 #' @examples
-#' add(1, 1)
-#' add(10, 1)
-add <- function(x, y) {
-  x + y
+#' x <- c(1,2,3,3)
+#' y <- c(2,2,4,5)
+#' fit <- myscatterplot(x,y,line=F)
+#'
+myscatterplot <- function(x,y,line=T) {
+  plot(x,y,pch=19)
+  fit <- lm(y~x)
+  if (line)
+    abline(fit, col="red", lty="dashed")
+  return(fit)
 }
 ```
-These comments can be used to automatically generate documentation
-for R packages. 
 
+Something similar to this is very useful to include 
+at the beginning of scripts:
 
-## Consistent coding style
+* Explaining what the script does.
+* Describing all inputs to the script such as files that are loaded.
+* Defining the expected output.
 
-* Naming files and variables
+## Keeping code short
 
-    For obvious reasons, 'complexModel' is better than 'temp123'.
-
-* Indenting
-
-    ```{r}
-    if (do.additional.step)
-    print("Running additional steps.")
-    object <- additional.computation(object)
-    
-
-    if (do.additional.step) {
-       print("Running additional steps.")
-       object <- additional.computation(object)
-    }
-    ```
-
-* Line length
+* Short lines
 
     ```{r}
     dat.avg <- sapply(by(dat, as.factor(probes$symbol), colMeans), identity)
@@ -72,15 +56,11 @@ for R packages.
     dat.avg <- sapply(dat.list, identity)
     ```
 
-* Script/function length
+* Short functions/scripts
 
-    My general rule is that the entire script or function
+  My general rule is that the entire script or function
 	should fit on one screen.  If this is not possible, then
-	I break it up into functions. The functions allow me to be
-	strict about saying what the inputs/outputs are. 
-
-More details about style can be found
-online: https://jef.works/R-style-guide/
+	I break it up into functions. 
 
 ## Assertions
 
@@ -104,7 +84,7 @@ stopifnot(is.numeric(x) && x >= 50)
 
 Although it requires additional lines of code,
 the following would be more informative to the
-user:
+user if one of these conditions fails:
 ```{r}
 stopifnot(is.numeric(x))
 stopifnot(x >= 50)
@@ -123,71 +103,77 @@ Adding assertions has 3 benefits:
 Split up code as much as possible into independent
 functions and packages.
 
-The following works fine if there are no missing values
-in any of the symptom variables.
+As an example, I have the following code that simulates 
+some random data and generates two plots. 
 ```{r}
-potential.case <- has.symptomA | has.symptomB | has.symptomC
+x1 <- rnorm(100)
+y1 <- x1 + rnorm(length(x1))
+plot(x1, y1, pch=19)
+abline(lm(y1~x1), col="red", lty="dashed")
+x2 <- rnorm(100)
+y2 <- x1 + x2 + rnorm(length(x1))
+plot(x2, y2, pch=19)
+abline(lm(y2~x2), col="red", lty="dashed")
 ```
-However, if any are set to `NA`, then `potential.cases` will be `NA`.
-Here is a possible solution:
+
+There are two problems with this script.  
+1. *It mixes computation and output.*  
+
+    This makes the code more complex
+    because the reader has to think about computation and output. 
+    
+2. *It generates two identical plots with different code.*
+
+    - If we later decide to change the plots, 
+    we need to remember to make the same changes to the code for both. 
+    - If we later want to generate similar plots in another script, 
+    we have carefully modify the code to fit the new script.
+
+The following code is easier to read, modify and reuse. 
 ```{r}
-if (any(is.na(has.symptomA))) has.symptomA[is.na(has.symptomA)] <- F
-if (any(is.na(has.symptomB))) has.symptomB[is.na(has.symptomB)] <- F
-if (any(is.na(has.symptomC))) has.symptomC[is.na(has.symptomA)] <- F
-potential.case <- has.symptomA | has.symptomB | has.symptomC
-```
-This solution is prone to typing errors. Did you notice that
-`symptomA` accidentally slipped into the code fixing `symptomC`?
-A function would work better:
-```{r}
-na2false <- function(x) {
-    if (any(is.na(x))) x[is.na(x)] <- F
-    x
+## data simulation
+x1 <- rnorm(100)
+y1 <- x1 + rnorm(length(x1))
+x2 <- rnorm(100)
+y2 <- x1 + x2 + rnorm(length(x1))
+
+## scatterplots 
+myscatter <- function(x,y) {
+  plot(x1, y1, pch=19)
+  fit <- lm(y~x)
+  abline(fit, col="red", lty="dashed")
+  return(fit)
 }
-potential.case <- na2false(has.symptomA) | na2false(has.symptomB) | na2false(has.symptomC)
+myscatter(x1,y1)
+myscatter(x2,y2)
 ```
-With this solution, the script writer can think only about removing NAs
-when creating the function and then only about symptoms and cases when
-identifying potential cases.
 
-Many scripts are unecessarily complex because they mix
-input and output (e.g. plotting) processing with analysis.
-As a result, the script is difficult to debug because
-the purpose of each line is less clear than if the three
-parts had been seperated into different scripts or functions.
-
-## Code reuse
-
-
-
-
-## Testing
-(predefined and unit) 
-https://towardsdatascience.com/unit-testing-in-r-68ab9cc8d211 
+---
 
 ## Exceptions
+
+The following script will stop when attempting to calculate `r`
+just before printing the message at the end.
 ```{r}
-divide <- function(x,y) {
-  try(y/x)
-}
+x <- c(1,2,3)
+y <- NA 
+## ... 
+## lots of code 
+## ...
+r <- cor(x,y)
+cat("The correlation is", r, "\n")
 ```
 
-```{r}
-divide <- function(x,y) {
-  stopifnot(is.numeric(x) && is.numeric(y) && abs(y) > 1e-6)
-  x/y
-}
-cat("3/2 is", divide(3,2), "\n")
-cat("3/0 is", divide(3,0), "\n")
-try(cat("3/0 is", divide(3,0), "\n"))
-```
 
 ```{r}
-tryCatch(cat("3/0 is", divide(3,0), "\n"), 
-         error=function(e) {
-           cat("Something went wrong.\n")
-           print(e)
-         })
+x <- c(1,2,3)
+y <- NA 
+## ... 
+## lots of code 
+## ...
+r <- tryCatch(cor(x,y), 
+              error=function(e) NaN) 
+cat("The correlation is", r, "\n")
 ```
 
 
