@@ -1,0 +1,27 @@
+## How to make an R script robust: pratical
+
+In this practical, we will improve the robustness
+of the script shown below. 
+
+The script ...
+
+```{r}
+## script ...
+```
+
+### Problem 1
+Add comments to the script to explain:
+1. What the script does
+2. What inputs are expected
+3. What outputs are expected
+4. What errors could be generated
+5. What different sections of the script are doing
+
+### Problem 2
+Add assertions to the script so that any error 
+will cause an assertion to fail.
+
+### Problem 3
+Use `tryCatch()` to the script so that any errors
+will be "caught".
+
