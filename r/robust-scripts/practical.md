@@ -1,10 +1,3 @@
-```{r,eval=F,echo=F}
-library(knitr)
-library(markdown)
-knit("practical.rmd", "practical.md")
-markdownToHTML("practical.md", "practical.html")
-```
-
 ## How to make an R script robust: practical
 
 In this practical, we will improve the robustness
@@ -17,7 +10,8 @@ number of top gene names.
 You can use the provided files "pheno-dat.csv" and "gene-dat.csv"
 for actually running and testing the script.
 
-```{r,eval=F}
+
+```r
 pheno.filename <- readline(prompt="Enter phenotype file: ") ## pheno-dat.csv
 gene.filename <- readline(prompt="Enter gene data file: ")  ## gene-dat.csv
 top.n <- readline(prompt="Enter # top genes to show: ")     ## 5
