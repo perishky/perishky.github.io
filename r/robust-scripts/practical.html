@@ -233,33 +233,29 @@ cat(&quot;effect=&quot;, round(stats[idx,&quot;estimate&quot;],2), &quot;\n&quot
 cat(&quot;p=&quot;, stats[idx,&quot;p.value&quot;], &quot;\n&quot;)
 plot(pheno.dat$bmi, gene.dat[idx,], pch=19, main=rownames(stats)[idx])
 abline(lm(gene.dat[idx,]~pheno.dat$bmi), col=&quot;red&quot;)
-top.idx &lt;- order(stats[idx,&quot;p.value&quot;])[1:top.n]
+top.idx &lt;- order(stats[,&quot;p.value&quot;])[1:top.n]
 cat(&quot;The top 5 genes:&quot;, paste(rownames(stats)[top.idx], collapse=&quot;,&quot;), &quot;\n&quot;)
 </code></pre>
 
-<h3>Problem 1</h3>
+<p>Before running the script use <code>setwd()</code> to 
+the directory containing the files 
+&ldquo;pheno-dat.csv&rdquo; and &ldquo;gene-dat.csv&rdquo;.</p>
 
-<p>Add comments to the script to explain:</p>
+<h3>Question 1</h3>
 
-<ol>
-<li><p>What the script does</p></li>
-<li><p>What inputs are expected</p></li>
-<li><p>What outputs are expected</p></li>
-<li><p>What errors could be generated</p></li>
-<li><p>What different sections of the script are doing</p></li>
-</ol>
+<p>The script will actually fail when 
+data files &ldquo;pheno-dat.csv&rdquo; and &ldquo;gene-dat.csv&rdquo;
+are used as input. Can you discover why?</p>
 
-<h3>Problem 2</h3>
+<h3>Question 2</h3>
 
-<p>Add assertions to the script so that any error 
-will cause an assertion to fail.</p>
+<p>Make the script robust so that any error
+is either identified by assertion or 
+caught by <code>tryCatch()</code>.</p>
 
-<p>You might find the function <code>file.exists()</code> useful.</p>
-
-<h3>Problem 3</h3>
-
-<p>Use <code>tryCatch()</code> to the script so that any errors
-will be &ldquo;caught&rdquo;.</p>
+<p>You might find the function <code>file.exists()</code> useful
+for verifying that a file name entered by the user 
+actually exists. </p>
 
 </body>
 

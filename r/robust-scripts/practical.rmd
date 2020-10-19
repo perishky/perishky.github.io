@@ -38,30 +38,27 @@ cat("effect=", round(stats[idx,"estimate"],2), "\n")
 cat("p=", stats[idx,"p.value"], "\n")
 plot(pheno.dat$bmi, gene.dat[idx,], pch=19, main=rownames(stats)[idx])
 abline(lm(gene.dat[idx,]~pheno.dat$bmi), col="red")
-top.idx <- order(stats[idx,"p.value"])[1:top.n]
+top.idx <- order(stats[,"p.value"])[1:top.n]
 cat("The top 5 genes:", paste(rownames(stats)[top.idx], collapse=","), "\n")
 ```
 
-### Problem 1
-Add comments to the script to explain:
+Before running the script use `setwd()` to 
+the directory containing the files 
+"pheno-dat.csv" and "gene-dat.csv".
 
-1. What the script does
+### Question 1
 
-2. What inputs are expected
+The script will actually fail when 
+data files "pheno-dat.csv" and "gene-dat.csv"
+are used as input. Can you discover why?
 
-3. What outputs are expected
+### Question 2
 
-4. What errors could be generated
+Make the script robust so that any error
+is either identified by assertion or 
+caught by `tryCatch()`.
 
-5. What different sections of the script are doing
-
-### Problem 2
-Add assertions to the script so that any error 
-will cause an assertion to fail.
-
-You might find the function `file.exists()` useful.
-
-### Problem 3
-Use `tryCatch()` to the script so that any errors
-will be "caught".
+You might find the function `file.exists()` useful
+for verifying that a file name entered by the user 
+actually exists. 
 
