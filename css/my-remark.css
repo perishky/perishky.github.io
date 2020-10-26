@@ -44,6 +44,14 @@ th { text-align: left; }
 	top: 0%;
 	float: right;
 }
+.rightmid {
+	display: block;
+	position: absolute;
+	top: 50%;
+	right: 2%;
+	transform: translate(0%, -50%);
+	float: right;
+}
 .logo {
 	position: absolute;
 	right: 0%;
