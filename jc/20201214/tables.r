@@ -5,7 +5,7 @@ ewas <- sapply(unique(ewas$group), function(group) {
 }, simplify=F)
 
 library(knitr)
-
+options(knitr.kable.NA = '')
 for (group in names(ewas)) {
-	print(kable(ewas[[group]][,c("variable","tissue","n","notes","pmid","journal")]))
+	print(kable(ewas[[group]][,c("variable","tissue","n","assocs","notes","pmid","journal")]))
 }
