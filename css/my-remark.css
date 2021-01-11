@@ -52,6 +52,13 @@ th { text-align: left; }
 	transform: translate(0%, -50%);
 	float: right;
 }
+.popup {
+	display: block;
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	transform: translate(50%, 50%);
+}
 .logo {
 	position: absolute;
 	right: 0%;
