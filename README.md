@@ -1,4 +1,6 @@
-## R
+## Github pages of Matthew Suderman
+
+## R statistical programming language
 
 * [Introduction](https://perishky.github.io/r/introduction/slides.html)
 * [Making scripts robust](https://perishky.github.io/r/robust-scripts/slides.html)
