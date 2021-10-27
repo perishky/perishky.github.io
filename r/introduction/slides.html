@@ -47,9 +47,9 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 | Save and load data | Files | 
 | Statistical analyses | Statistics functions |
 | Visualise data | Plots |
+| Make decisions | If/else statements |
 | Create and apply recipes | Functions |
 | Repeatedly apply recipes | Loops and apply functions |
-| Make decisions | If/else statements |
 | Share | Packages |
 ]
 
@@ -638,7 +638,7 @@ A **matrix** is a set of elements laid out in rows and columns.
 ```
 --
 ```{r}
-[,1] [,2]
+    [,1][,2]
 [1,] "1" "A"
 [2,] "1" "B"
 [3,] "1" "A"
@@ -670,7 +670,7 @@ A **matrix** is a set of elements laid out in rows and columns.
 ```
 --
 ```{r}
-> cbind(0:4, z)
+> cbind(0:4, z) 
 ```
 --
 ```{r}
@@ -729,6 +729,44 @@ A **matrix** is a set of elements laid out in rows and columns.
 --
 ```{r}
 [1] "A" "A"
+```
+
+---
+
+## Store and maniplute matrices (continued)
+
+```{r}
+> colnames(z) <- c("x", "y")
+> rownames(z) <- c("r1", "r2", "r3", "r4", "r5")
+> z
+```
+--
+```{r}
+   x   y 
+r1 "1" "A"
+r2 "1" "B"
+r3 "1" "A"
+r4 "1" "B"
+r5 "1" "C"
+```
+--
+```{r}
+> z[1,2]
+"A"
+```
+--
+```{r}
+> z['x','c2']
+"A"
+```
+--
+```{r}
+> z[,'y']
+```
+--
+```{r}
+ r1  r2  r3  r4  r5 
+"A" "B" "A" "B" "C" 
 ```
 
 ---
@@ -1237,107 +1275,6 @@ boxplot(bmi ~ diet, data=dat)
 > dev.off()
 ```
 
-
----
-
-## Recipes: create and apply
-
-**Functions** consist of a sequence of commands applied to a set of variables 
-that return some output.
-
-R provides many functions such as `help`, `cor`, `median`.
-
---
-
-Users can create their own functions for repetitive tasks, 
-e.g. a function for the distance of a point from 0.
-
-```{r}
-euclidean.norm <- function(x) {
-  res <- sqrt(sum(x^2))
-  return(res)
-}
-```
---
-```{r}
-> euclidean.norm(c(3,4))
-[1] 5
-
-> euclidean.norm(c(2,3,6))
-[1] 7
-
-> euclidean.norm(c(1,4,8))
-[1] 9
-```
-
-
----
-
-## Recipes: repeat
-
-.iii[
-Given a vector `people`:
-```{r}
-> people <- c("bill", 
-              "jane", 
-              "bob", 
-              "felicia", 
-              "carl", 
-              "apple")
-> scores <- c(90, 80, 
-              60, 95, 
-              75, 99)
-```
-
-Suppose we want to make a list of people who obtained high scores.
-]
-
---
-
-.iii[
-**Step 1.** Create a function for determining a high score.
-    
-```{r}
-is.high <- function(s) {
-  return(s > 90) 
-  ## or something 
-  ## really complicated
-  ## takes into account 
-  ## grade barriers 
-  ## and homework 
-  ## completed and 
-  ## the name of 
-  ## first pet.
-}
-```
-]
-
---
-
-.iii[
-**Step 2.** Construct the list of people by applying `is.high()`. 
-
-Two equivalent ways:
-
-Option 1. For-loop
-
-```{r}
-n <- length(people)
-high <- character()
-for (i in 1:n) {
-  if (is.high(scores[i]))
-    high <- c(high, people[i])
-}
-```
-
-Option 2. `sapply()`
-
-```{r}
-yes <- sapply(scores, is.high)
-high <- people[yes]
-```
-]
-
 ---
 
 ## Decisions: ask questions
@@ -1408,7 +1345,162 @@ grade <- ifelse(score > 85, "A", ifelse(score > 75, "B", "F"))
 ```
 
 
+---
 
+## Recipes: create and apply
+
+**Functions** consist of a sequence of commands applied to a set of variables 
+that return some output.
+
+R provides many functions such as `help`, `cor`, `median`.
+
+--
+
+Users can create their own functions for repetitive tasks, 
+e.g. a function for the distance of a point from 0.
+
+```{r}
+euclidean.norm <- function(x) {
+  res <- sqrt(sum(x^2))
+  return(res)
+}
+```
+--
+```{r}
+> euclidean.norm(c(3,4))
+[1] 5
+
+> sqrt(3*3 + 4*4)
+[1] 5
+
+> euclidean.norm(c(2,3,6))
+[1] 7
+
+> euclidean.norm(c(1,4,8))
+[1] 9
+```
+
+
+---
+
+## Recipes: repeat
+
+.ii[
+Given a dataset giving a scores for a group of people:
+```{r}
+> people <- c("bill", 
+              "jane", 
+              "bob", 
+              "felicia", 
+              "carl", 
+              "apple")
+> scores <- c(90, 80, 
+              60, 95, 
+              75, 99)
+> stats <- data.frame(person=people, score=scores)
+> stats
+   person score
+1    bill    90
+2    jane    80
+3     bob    60
+4 felicia    95
+5    carl    75
+6   apple    99
+```
+
+Suppose we want to make a list of people who obtained high scores.
+]
+
+--
+
+.ii[
+**Step 1.** Create a function for determining a high score.
+    
+```{r}
+is.high <- function(s) {
+  s > 90
+  ## or something really complicated
+  ## that takes into account grade  
+  ## barriers and homework completed
+  ## and the name of their first pet.
+}
+
+> is.high(65)
+[1] FALSE
+
+> is.high(94)
+[1] TRUE
+
+> is.high(stats$score[2])
+[1] FALSE
+```
+]
+
+---
+
+## Recipes: repeat (cont) 
+
+**Step 2.** Construct the list of people by applying `is.high()` to each score. Here are 3 equivalent ways:
+
+.ii[
+Option 1. While-loop
+
+```{r}
+n <- nrow(stats)
+has.high.score <- rep(F,n) 
+i <- 1
+while (i <= n) {
+    has.high.score[i] <- is.high(stats$score[i])
+    i <- i + 1
+}
+high.scorers <- stats$person[has.high.score]
+```
+]
+
+--
+
+.ii[
+Option 2. For-loop
+
+```{r}
+n <- nrow(stats)
+has.high.score <- rep(F,n) 
+
+for (i in 1:n) {
+  has.high.score[i] <- is.high(stats$score[i])
+}
+
+high.scorers <- stats$person[has.high.score]
+```
+]
+
+--
+
+.ii[
+Option 3. `sapply()`
+
+```{r}
+has.high.score <- sapply(stats$score, is.high)
+high.scorers <- stats$person[has.high.score]
+```
+]
+
+--
+
+.ii[
+```{r}
+> has.high.score
+[1] FALSE FALSE FALSE  TRUE FALSE  TRUE
+
+> high.scorers
+[1] "felicia" "apple" 
+
+> stats[has.high.score,]
+   person score
+4 felicia    95
+6   apple    99
+```
+]
 
 ---
 ## Share: loading packages
