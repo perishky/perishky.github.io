@@ -20,6 +20,8 @@ class: left, middle
 &lt;img src="img/IEU-logo-colour.png" width="50%"&gt;
 ]
 
+.gap[&nbsp;]
+
 .ii[&lt;img src="img/Rlogo.png" width="100%"&gt;]
 ---
 layout: true
@@ -697,7 +699,7 @@ A **matrix** is a set of elements laid out in rows and columns.
 ---
 
 
-## Store and maniplute matrices (continued)
+## Store and manipulate matrices (continued)
 
 ```{r}
 > z[,1]
@@ -733,7 +735,7 @@ A **matrix** is a set of elements laid out in rows and columns.
 
 ---
 
-## Store and maniplute matrices (continued)
+## Store and manipulate matrices (continued)
 
 ```{r}
 > colnames(z) <- c("x", "y")
@@ -801,7 +803,7 @@ r5 "1" "C"
 
 ---
 
-## Store and maniplate datasets: lists
+## Store and manipulate datasets: lists
 
 A **list** is like a vector, but it can contain
 elements of different types.
@@ -831,7 +833,7 @@ names(r)
 
 ---
 
-## Store and maniplate datasets: data frames
+## Store and manipulate datasets: data frames
 
 A **data frame** is like a matrix but the columns can be different types.
 You could think of it as a list of vectors each of the same length.
@@ -947,6 +949,8 @@ Suppose I have a spreadsheet stored in CSV format.
 ]
 
 --
+
+.gap[&nbsp;]
 
 .ii[
 `read.csv` will read csv files and save them as data frames.
@@ -1413,16 +1417,20 @@ Suppose we want to make a list of people who obtained high scores.
 
 --
 
+.gap[&nbsp;]
+
 .ii[
 **Step 1.** Create a function for determining a high score.
     
 ```{r}
 is.high <- function(s) {
-  s > 90
-  ## or something really complicated
+  ## something really complicated
   ## that takes into account grade  
   ## barriers and homework completed
-  ## and the name of their first pet.
+  ## and the name of their first pet
+  ## ... well okay, we'll just say 
+  ## scores above 90 ...
+  s > 90
 }
 
 > is.high(65)
@@ -1459,6 +1467,8 @@ high.scorers <- stats$person[has.high.score]
 
 --
 
+.gap[&nbsp;]
+
 .ii[
 Option 2. For-loop
 
@@ -1486,6 +1496,8 @@ high.scorers <- stats$person[has.high.score]
 ]
 
 --
+
+.gap[&nbsp;]
 
 .ii[
 ```{r}
@@ -1582,6 +1594,7 @@ package, e.g. `help(package="Hmisc")`
 
 &lt;img src="img/package-help.png" width="90%"&gt;
 ]
+.gap[&nbsp;]
 .ii[
 Search the package list on CRAN 
 https://cran.r-project.org/web/packages/Hmisc/

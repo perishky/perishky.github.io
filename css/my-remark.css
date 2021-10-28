@@ -27,15 +27,15 @@ th { text-align: left; }
 }
 .ii {
   float: left;
-  width: 50%;
+  width: 48%;
 }
 .iii {
   float: left;
-  width: 33%;
+  width: 32%;
 }
 .gap {
  float: left;
- width: 10%;
+ width: 4%;
 }
 .right {
 	display: block;
