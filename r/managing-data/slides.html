@@ -355,34 +355,6 @@ Some of the more popular packages are:
 * **ggplot2** (https://ggplot2.tidyverse.org/) is for creating plots.
 ]
 
----
-
-## ALSPAC R package
-
-The `alspac` R package provides 
-&lt;br&gt; a convenient interface in R 
-to the ALSPAC dataset.
-
-* **Installation**
-    ```{r}
-    library(devtools)
-    install_github("explodecomputer/alspac")
-    ```
-
-* **Example use**
-
-    ```{r}
-    library(alspac)
-    setDataDir("/path/to/R drive/data/")
-    vars <- findVars(c("kz021","c645a","b032",
-                       "b670","c804"))
-    results <- extractVars(vars)
-    ```
-    The requested data is in data frame `results`.
-
-.right[&lt;img src="co90s-logo-rgb.jpg" width="75%"&gt;]
-
-
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
