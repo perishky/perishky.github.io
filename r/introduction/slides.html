@@ -277,12 +277,12 @@ Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) The New S Language. Wadsw
 ## Getting started: error messages
 
 Suppose you type the following but variable 'a' has not been created.
-```{r}
+```r
 > 10*a
 ```
 --
 
-```{r}
+```r
 Error: object 'a' not found
 ```
 
@@ -341,7 +341,7 @@ A **variable** is a storage location for data with a name.
 
 .ii[
 Store data ... 
-```{r}
+```r
 > x <- 3
 > y <- 4.2
 > name <- "abcdef"
@@ -349,7 +349,7 @@ Store data ...
 ```
 
 Recall data ...
-```{r}
+```r
 > x
 [1] 3
 > name 
@@ -365,7 +365,7 @@ Error: object 'z' not found
 
 .ii[
 Query data type ...
-```{r}
+```r
 > is.numeric(x)
 [1] TRUE
 
@@ -374,7 +374,7 @@ Query data type ...
 ```
 
 Change data type ...
-```{r}
+```r
 > as.character(x)
 [1] "3"
 
@@ -397,17 +397,17 @@ Change data type ...
 
 ## Calculate 
 
-```{r}
+```r
 > x + y + 0.8
 [1] 8
 ```
 --
-```{r}
+```r
 > 4*x/2
 [1] 6
 ```
 --
-```{r}
+```r
 > log10(100)
 [1] 100
 > 2^x 
@@ -428,28 +428,28 @@ Change data type ...
 
 A **vector** is a sequence of variables of the same type.
 
-```{r}
+```r
 > x <- c(11,12,13,14,15,16,17,18,19,20)
 > x
 ```
 --
-```{r}
+```r
 [1] 11 12 13 14 15 16 17 18 19 20
 ```
 --
-```{r}
+```r
 > x[3] ## show the third
 ```
 --
-```{r}
+```r
 [1] 13
 ```
 --
-```{r}
+```r
 > length(x)
 ```
 --
-```{r}
+```r
 [1] 10
 ```
 ---
@@ -458,37 +458,37 @@ A **vector** is a sequence of variables of the same type.
 
 Vectors can be subset and combined.
 
-```{r}
+```r
 > x[c(1, 5, 7)]
 ```
 --
-```{r}
+```r
 [1] 11 15 17
 ```
 --
-```{r}
+```r
 > x[-c(1, 5, 7)]
 ```
 --
-```{r}
+```r
 [1] 12 13 14 16 18 19 20
 ```
 --
-```{r}
+```r
 > x[x>13]
 ```
 --
-```{r}
+```r
 [1] 14 15 16 17 18 19 20
 ```
 --
-```{r}
+```r
 y <- c("Dog", "Cat")
 z <- c(x[1:3], y)
 z
 ```
 --
-```{r}
+```r
 [1] "11" "12" "13" "Dog" "Cat"
 ```
 
@@ -496,35 +496,35 @@ z
 
 ## Calculate with vectors
 
-```{r}
+```r
 > x+1
 ```
 --
-```{r}
+```r
 [1] 12 13 14 15 16 17 18 19 20 21
 ```
 --
-```{r}
+```r
 > 3*x
 ```
 --
-```{r}
+```r
 [1] 33 36 39 42 45 48 51 54 57 60
 ```
 --
-```{r}
+```r
 > x/2
 ```
 --
-```{r}
+```r
 [1] 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10
 ```
 --
-```{r}
+```r
 > log10(x)
 ```
 --
-```{r}
+```r
 [1] 1.041393 1.079181 1.113943 1.146128 1.176091 1.204120 1.230449 1.255273
 [9] 1.278754 1.301030
 ```
@@ -533,36 +533,36 @@ z
 
 ## Calculate with vectors (continued)
 
-```{r}
+```r
 > y <- x + 1
 > x + y
 ```
 --
-```{r}
+```r
 [1] 23 25 27 29 31 33 35 37 39 41
 ```
 --
-```{r}
+```r
 > x-y
 ```
 --
-```{r}
+```r
 [1] -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 ```
 --
-```{r}
+```r
 > x*y
 ```
 --
-```{r}
+```r
 [1] 132 156 182 210 240 272 306 342 380 420
 ```
 --
-```{r}
+```r
 > x/(y-1)
 ```
 --
-```{r}
+```r
 [1] 1 1 1 1 1 1 1 1 1 1
 ```
 
@@ -570,59 +570,59 @@ z
 
 ## Generate data: `seq()`
 
-```{r}
+```r
 > a <- seq(0, 100, by=5)
 > a
 ```
 --
-```{r}
+```r
 [1] 0 5 10 15 20 25 30 35 40 45 50
 [12] 55 60 65 70 75 80 85 90 95 100
 ```
 --
-```{r}
+```r
 > length(a)
 ```
 --
-```{r}
+```r
 [1] 21
 ```
 --
-```{r}
+```r
 > a <- seq(0, 100, length=5)
 > a
 ```
 --
-```{r}
+```r
 [1] 0 25 50 75 100
 ```
 ---
 
 ## Generate data: `rep()`
 
-```{r}
+```r
 > b <- c(1, 1, 1, 1, 1)
 > b
 ```
 --
-```{r}
+```r
 [1] 1 1 1 1 1
 ```
 --
-```{r}
+```r
 > b <- rep(1, 5)
 > b
 ```
 --
-```{r}
+```r
 [1] 1 1 1 1 1
 ```
 --
-```{r}
+```r
 > rep(c(1,2,3),4)
 ```
 --
-```{r}
+```r
 [1] 1 2 3 1 2 3 1 2 3 1 2 3
 ```
 
@@ -632,14 +632,14 @@ z
 
 A **matrix** is a set of elements laid out in rows and columns.
 
-```{r}
+```r
 > x <- rep(1, 5)
 > y <- c("A","B","A","B","C")
 > z <- matrix(c(x, y), nrow=5)
 > z
 ```
 --
-```{r}
+```r
     [,1][,2]
 [1,] "1" "A"
 [2,] "1" "B"
@@ -648,11 +648,11 @@ A **matrix** is a set of elements laid out in rows and columns.
 [5,] "1" "C"
 ```
 --
-```{r}
+```r
 > dim(z) ## dimensions
 ```
 --
-```{r}
+```r
 [1] 5 2
 ```
 
@@ -661,21 +661,21 @@ A **matrix** is a set of elements laid out in rows and columns.
 ## Store and manipulate matrices (continued)
 
 
-```{r}
+```r
 > t(z) ## transpose
 ```
 --
-```{r}
+```r
 [,1] [,2] [,3] [,4] [,5]
 [1,] "1" "1" "1" "1" "1"
 [2,] "A" "B" "A" "B" "C"
 ```
 --
-```{r}
+```r
 > cbind(0:4, z) 
 ```
 --
-```{r}
+```r
 [1,] "0" "1" "A"
 [2,] "1" "1" "B"
 [3,] "2" "1" "A"
@@ -683,11 +683,11 @@ A **matrix** is a set of elements laid out in rows and columns.
 [5,] "4" "1" "C"
 ```
 --
-```{r}
+```r
 > rbind(c("0","X"), z)
 ```
 --
-```{r}
+```r
 [1,] "0" "X"
 [2,] "1" "A"
 [3,] "1" "B"
@@ -701,35 +701,35 @@ A **matrix** is a set of elements laid out in rows and columns.
 
 ## Store and manipulate matrices (continued)
 
-```{r}
+```r
 > z[,1]
 ```
 --
-```{r}
+```r
 [1] "1" "1" "1" "1" "1"
 ```
 --
-```{r}
+```r
 > z[1,2]
 ```
 --
-```{r}
+```r
 [1] "A"
 ```
 --
-```{r}
+```r
 > z[2,]
 ```
 --
-```{r}
+```r
 [1] "1" "B"
 ```
 --
-```{r}
+```r
 > z[c(1,3),2]
 ```
 --
-```{r}
+```r
 [1] "A" "A"
 ```
 
@@ -737,13 +737,13 @@ A **matrix** is a set of elements laid out in rows and columns.
 
 ## Store and manipulate matrices (continued)
 
-```{r}
+```r
 > colnames(z) <- c("x", "y")
 > rownames(z) <- c("r1", "r2", "r3", "r4", "r5")
 > z
 ```
 --
-```{r}
+```r
    x   y 
 r1 "1" "A"
 r2 "1" "B"
@@ -752,21 +752,21 @@ r4 "1" "B"
 r5 "1" "C"
 ```
 --
-```{r}
+```r
 > z[1,2]
 "A"
 ```
 --
-```{r}
+```r
 > z['x','c2']
 "A"
 ```
 --
-```{r}
+```r
 > z[,'y']
 ```
 --
-```{r}
+```r
  r1  r2  r3  r4  r5 
 "A" "B" "A" "B" "C" 
 ```
@@ -775,7 +775,7 @@ r5 "1" "C"
 
 ## Calculate with matrices
 
-```{r}
+```r
 > m <- rbind(c(1,2,3),
              c(3,2,1),
              c(5,6,4))
@@ -785,14 +785,14 @@ r5 "1" "C"
 [3,]  5  6  4
 ```
 --
-```{r}
+```r
 > m + 1
 [1,]  2  3  4
 [2,]  4  3  2
 [3,]  6  7  5
 ```
 --
-```{r}
+```r
 > m %*% solve(m) ## multiple m by its inverse
 
      [,1]          [,2]         [,3]
@@ -808,26 +808,26 @@ r5 "1" "C"
 A **list** is like a vector, but it can contain
 elements of different types.
 
-```{r}
+```r
 > y <- diag(2)
 > w <- list(x=1, y=y, z="abc")
 ```
 --
-```{r}
+```r
 w$y
 ```
 --
-```{r}
+```r
      [,1] [,2]
 [1,]    1    0
 [2,]    0    1
 ```
 
-```{r}
+```r
 names(r)
 ```
 --
-```{r}
+```r
 [1] "x" "y" "z"
 ```
 
@@ -838,29 +838,29 @@ names(r)
 A **data frame** is like a matrix but the columns can be different types.
 You could think of it as a list of vectors each of the same length.
 
-```{r}
+```r
 > x <- rep(1, 5)
 > y <- c("A","B","A","B","C")
 > d <- data.frame(a=x, b=y)
 ```
 --
-```{r}
+```r
 > d[2,]
   a b
 2 1 B
 ```
 --
-```{r}
+```r
 > d$a
 [1] 1 1 1 1 1
 ```
 --
-```{r}
+```r
 > class(d$a)
 [1] "numeric" 
 ```
 --
-```{r}
+```r
 > class(d$b)
 [1] "character"
 ```
@@ -878,7 +878,7 @@ class: center, middle
 
 ## Handle missing data
 
-```{r}
+```r
 > y <- c("A","B","A","B","C")
 > y[2] <- 2
 > y[3] <- NA
@@ -886,17 +886,17 @@ class: center, middle
 [1] "A" "2" NA "A" "B" "C"
 ```
 --
-```{r}
+```r
 > is.na(y)
 [1] FALSE FALSE TRUE FALSE FALSE FALSE
 ```
 --
-```{r}
+```r
 > is.na(y[3])
 [1] TRUE
 ```
 --
-```{r}
+```r
 > na.omit(y)
 [1] "A" "2" "A" "B" "C"
 ```
@@ -909,7 +909,7 @@ To open files, you will need to tell R where the files are.
 To do this, it helps to know where R will start looking.
 This is called the 'working directory'.
 
-```{r}
+```r
 > getwd()
 [1] "C:/"
 ```
@@ -918,7 +918,7 @@ This is called the 'working directory'.
 
 You can change this using `setwd`.
 
-```{r}
+```r
 > setwd("O:/Documents")
 ```
 
@@ -932,7 +932,7 @@ chosen using the Session menu in RStudio.
 .ii[
 Suppose I have a spreadsheet stored in CSV format.
 
-```{r}
+```r
 "id","age","sex","diet","bmi"
 1,32,"M",0,25.7957231474661
 2,35,"M",0,28.8952139451377
@@ -955,11 +955,11 @@ Suppose I have a spreadsheet stored in CSV format.
 .ii[
 `read.csv` will read csv files and save them as data frames.
 
-```{r}
+```r
 > dat <- read.csv("bmi.csv")
 ```
 
-```{r}
+```r
 > dat[1:5,]
    id  age sex diet      bmi
 1   1 32.0   M    0 25.79572
@@ -969,7 +969,7 @@ Suppose I have a spreadsheet stored in CSV format.
 5   5 33.5   M    1 28.24692
 ```
 
-```{r}
+```r
 > dat$bmi[1:5]
 [1] 25.79572 28.89521 29.92584 27.33835 28.24692
 > dat[5,]
@@ -985,7 +985,7 @@ Suppose I have a spreadsheet stored in CSV format.
 
 `write.csv` saves a data frame as a csv file.
 
-```{r}
+```r
 > dat.corrected <- dat
 > dat.corrected$sex[5] <- "F" ## make correction
 > write.csv(dat.corrected, "bmi-corrected.csv", row.names=F, quote=F)
@@ -994,7 +994,7 @@ Suppose I have a spreadsheet stored in CSV format.
 `write.table` is similar but allows the user to change the column separator 
 character.  Here we separate columns by a semicolon rather than a comma.
 
-```{r}
+```r
 > write.table(dat, "bmi-corrected.csv", row.names=F, quote=F, sep=";")
 ```
 
@@ -1009,33 +1009,33 @@ but more flexible.
 ---
 ## Statistical analyses: basic summaries
 
-```{r}
+```r
 > mean(dat$bmi)                 ## mean
 [1] 27.60761
 ```
 --
-```{r}
+```r
 > median(dat$bmi)               ## median
 [1] 27.58069
 ```
 --
-```{r}
+```r
 > sd(dat$bmi)                   ## standard deviation
 [1] 1.47353
 ```
 --
-```{r}
+```r
 > min(dat$bmi)                  ## min
 [1] 25.34356
 ```
 --
-```{r}
+```r
 > quantile(dat$bmi, probs=0.25) ## first quartile
    25% 
 26.60918
 ```
 --
-```{r}
+```r
 > table(dat$sex)                ## frequencies
 F  M
 13 7
@@ -1046,14 +1046,14 @@ F  M
 
 The `summary` function can be used to summarize single variables
 
-```{r}
+```r
 > summary(dat$bmi)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   25.34   26.61   27.58   27.61   28.64   30.30 
 ```
 --
 or entire datasets.
-```{r}
+```r
 > summary(dat)
        id             age            sex                 diet           bmi       
  Min.   : 1.00   Min.   :29.00   Length:20          Min.   :0.00   Min.   :25.34  
@@ -1073,13 +1073,13 @@ or entire datasets.
 .ii[
 There is a fairly strong association between BMI and age.
 
-```{r}
+```r
 > cor(dat$bmi, dat$age)
 [1] 0.5705649
 ```
 
 Here is the association.
-```{r}
+```r
 > fit <- lm(bmi~age, data=dat)
 > fit
 Call:
@@ -1106,7 +1106,7 @@ to
 
 ## Statistical analyses: summarizing regression model fits
 
-```{r}
+```r
 > summary(fit)
 
 Call:
@@ -1132,12 +1132,12 @@ F-statistic: 8.688 on 1 and 18 DF,  p-value: 0.008612
 
 ## Statistical analyses: fitting multiple variable models
 
-```{r}
+```r
 > fit <- lm(bmi ~ age + sex + diet, data=dat)
 ```
 --
 
-```{r}
+```r
 > summary(fit)
 
 Call:
@@ -1165,13 +1165,13 @@ F-statistic: 4.413 on 3 and 16 DF,  p-value: 0.01921
 
 ## Statistical analyses: retrieving model fit elements
 
-```{r}
+```r
 > coef(fit)
 (Intercept)         age        sexM        diet 
  18.4783563   0.2643460   0.3512052   1.0671192 
 ```
 --
-```{r}
+```r
 > coef(summary(fit))
               Estimate Std. Error   t value     Pr(>|t|)
 (Intercept) 18.4783563  3.7463529 4.9323587 0.0001500352
@@ -1180,12 +1180,12 @@ sexM         0.3512052  0.6865686 0.5115369 0.6159621270
 diet         1.0671192  0.5532367 1.9288657 0.0716810178
 ```
 --
-```{r}
+```r
 > coef(summary(fit))["age","Estimate"]
 [1] 0.264346
 ```
 --
-```{r}
+```r
 > names(summary(fit))
  [1]  "call"          "terms"         "residuals"     
  [4]  "coefficients"  "aliased"       "sigma"
@@ -1193,7 +1193,7 @@ diet         1.0671192  0.5532367 1.9288657 0.0716810178
  [10] "fstatistic"    "cov.unscaled" 
 ```
 --
-```{r}
+```r
 > summary(fit)$adj.r.squared
 [1] 0.3502004
 ```
@@ -1202,7 +1202,7 @@ diet         1.0671192  0.5532367 1.9288657 0.0716810178
 
 ## Visualise: scatterplot 
 
-```{r}
+```r
 plot(dat$age, dat$bmi, 
      main="age vs BMI", 
      xlab="age", 
@@ -1220,7 +1220,7 @@ plot(dat$age, dat$bmi,
 
 ## Visualise: scatterplot with regression line
 
-```{r}
+```r
 plot(dat$age, dat$bmi, 
      main="age vs BMI", 
      xlab="age", 
@@ -1240,7 +1240,7 @@ abline(fit, col="red", lwd=3)
 
 ## Visualise: histogram
 
-```{r}
+```r
 hist(dat$bmi, main="BMI")
 ```
 
@@ -1253,7 +1253,7 @@ hist(dat$bmi, main="BMI")
 
 ## Visualise: boxplot
 
-```{r}
+```r
 boxplot(bmi ~ diet, data=dat)
 ```
 
@@ -1273,7 +1273,7 @@ boxplot(bmi ~ diet, data=dat)
 
 ## Visualise: saving *like a total maniac*
 
-```{r}
+```r
 > png(filename="boxplot.png", width=10, height=10, units="cm", res=500)
 > boxplot(bmi~diet, data=dat)
 > dev.off()
@@ -1283,37 +1283,37 @@ boxplot(bmi ~ diet, data=dat)
 
 ## Decisions: ask questions
 
-```{r}
+```r
 > x <- 11:15
 ```
 --
-```{r}
+```r
 > x[3] == 13                    ## 13 equals 13
 [1] TRUE
 ```
 --
-```{r}
+```r
 > x[3] != 12                    ## 13 not equal to 12
 ```
 --
-```{r}
+```r
 > x[3] < x[4]                   ## 13 less than 14
 ```
 --
-```{r}
+```r
 > x[1] <= x[2] & !x[2] > x[3]   ## 11 <= 12 and 12 not greater than 13
 ```
 --
-```{r}
+```r
 > x[1] < x[2] | x[2] > x[3]     ## 11 < 12 or 12 > 13
 ```
 --
-```{r}
+```r
 > x < 12                        
 [1] TRUE FALSE FALSE FALSE FALSE
 ```
 --
-```{r}
+```r
 > all(x >= 11)                   ## each value in x >= 11
 [1] TRUE
 ```
@@ -1322,7 +1322,7 @@ boxplot(bmi ~ diet, data=dat)
 
 ## Decisions: alternatives
 
-```{r}
+```r
 if (score > 85) {
   grade <- "A"
 } else {
@@ -1330,11 +1330,11 @@ if (score > 85) {
 }
 ```
 --
-```{r}
+```r
 grade <- ifelse(score > 85, "A", "F")
 ```
 --
-```{r}
+```r
 if (score > 85) {
   grade <- "A"
 } else if (score > 75)
@@ -1344,7 +1344,7 @@ if (score > 85) {
 }
 ```
 --
-```{r}
+```r
 grade <- ifelse(score > 85, "A", ifelse(score > 75, "B", "F"))
 ```
 
@@ -1363,14 +1363,14 @@ R provides many functions such as `help`, `cor`, `median`.
 Users can create their own functions for repetitive tasks, 
 e.g. a function for the distance of a point from 0.
 
-```{r}
+```r
 euclidean.norm <- function(x) {
   res <- sqrt(sum(x^2))
   return(res)
 }
 ```
 --
-```{r}
+```r
 > euclidean.norm(c(3,4))
 [1] 5
 
@@ -1391,7 +1391,7 @@ euclidean.norm <- function(x) {
 
 .ii[
 Given a dataset giving a scores for a group of people:
-```{r}
+```r
 > people <- c("bill", 
               "jane", 
               "bob", 
@@ -1422,7 +1422,7 @@ Suppose we want to make a list of people who obtained high scores.
 .ii[
 **Step 1.** Create a function for determining a high score.
     
-```{r}
+```r
 is.high <- function(s) {
   ## something really complicated
   ## that takes into account grade  
@@ -1453,7 +1453,7 @@ is.high <- function(s) {
 .ii[
 Option 1. While-loop
 
-```{r}
+```r
 n <- nrow(stats)
 has.high.score <- rep(F,n) 
 i <- 1
@@ -1472,7 +1472,7 @@ high.scorers <- stats$person[has.high.score]
 .ii[
 Option 2. For-loop
 
-```{r}
+```r
 n <- nrow(stats)
 has.high.score <- rep(F,n) 
 
@@ -1489,7 +1489,7 @@ high.scorers <- stats$person[has.high.score]
 .ii[
 Option 3. `sapply()`
 
-```{r}
+```r
 has.high.score <- sapply(stats$score, is.high)
 high.scorers <- stats$person[has.high.score]
 ```
@@ -1500,7 +1500,7 @@ high.scorers <- stats$person[has.high.score]
 .gap[&nbsp;]
 
 .ii[
-```{r}
+```r
 > has.high.score
 [1] FALSE FALSE FALSE  TRUE FALSE  TRUE
 
@@ -1520,7 +1520,7 @@ high.scorers <- stats$person[has.high.score]
 An **R package** is acollection of functions and/or data sets
 created for use by other R users. 
 A package can be loaded using `library`.
-```{r}
+```r
 > library(Hmisc)
 Attaching package: ‘Hmisc’
 ```
@@ -1529,7 +1529,7 @@ Attaching package: ‘Hmisc’
 
 After loading, functions and data provided by the package can be used.
 
-```{r}
+```r
 > describe(c(1,1,2,1,3,5,1,3,5,2,3,4))
        n  missing distinct     Info 
       12        0        5    0.944 
@@ -1554,7 +1554,7 @@ Proportion 0.167
 If the package has not been installed, you'll see an error message 
 like this.
 
-```{r}
+```r
 > library(Hmisc)
 Error in library(Hmisc) : there is no package called ‘Hmisc’
 ```
@@ -1563,7 +1563,7 @@ Error in library(Hmisc) : there is no package called ‘Hmisc’
 
 The package can be installed using `install.packages`.
 
-```{r}
+```r
 > install.packages("Hmisc")
 
 Installing package into ‘C:/Users/dude/Documents/R/win-library/4.0’
@@ -1610,7 +1610,7 @@ allows you to learn R within R itself.
 
 &lt;img src="img/swirl.png" width="75%"&gt;
 
-```{r}
+```r
 > install.packages("swirl")
 > library(swirl)
 | Hi! Type swirl() when you are ready to begin.
