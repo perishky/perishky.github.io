@@ -148,7 +148,7 @@ compute.pcs <- function(variables, num) {
 
 .ii[
 Simulate some data
-```{r}
+```r
 > n <- 50                 ## 50 observations/samples
 > n.vars <- 20            ## 20 variables
 > n.effs <- 5             ## 5 effects to remove
@@ -157,7 +157,7 @@ Simulate some data
 > effects <- matrix(rnorm(n.effs*n), nrow=n)
 ```
 
-```{r}
+```r
 > dim(variables)
 [1] 50 20
 > dim(effects)
@@ -167,7 +167,7 @@ Simulate some data
 ```
 
 Reduce dimensions
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables,effects,5)
 ```
 ]
@@ -178,7 +178,7 @@ Reduce dimensions
 
 .ii[
 Check outputs (i.e. show correlations between variables and effects)
-```{r}
+```r
 > quantile(cor(variables, effects))
      0%    25%    50%    75%   100%
  -0.257 -0.116 -0.005  0.096  0.356
@@ -201,13 +201,13 @@ Check outputs (i.e. show correlations between variables and effects)
 Suppose that one of our initial variables 
 had no variance.  We simulate this:
 
-```{r}
+```r
 > variables[,4] <- 0
 ```
 
 Reducing dimensions generates an error.
 
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables,effects,5)
 Error in lm.fit(x = effects, y = variables) : 
   NA/NaN/Inf in 'y'
@@ -229,7 +229,7 @@ Because our code is short, it is easy to figure out where the
 error is being generated. For longer more complex code, 
 the `traceback` function can help with this:
 
-```{r}
+```r
 > traceback()
 3: lm.fit(x = effects, y = variables) at example.r@47#2
 2: remove.effects(variables, effects) at example.r@46#3
@@ -249,7 +249,7 @@ We now tell R that we would like to 'step'
 through the code in `reduce.dimensions()` 
 to determine where missing values are being introduced.
 
-```{r}
+```r
 > debug(reduce.dimensions)
 > new.vars <- reduce.dimensions(variables,effects,5)
 ```
@@ -257,7 +257,7 @@ to determine where missing values are being introduced.
 R now stops at the beginning of the `reduce.dimensions` 
 function to allow us to say what to do next.
 
-```{r}
+```r
 debugging in: reduce.dimensions(variables, effects, 5)
 debug at /tmp/example.r@46#1: {
     variables <- scale(variables)
@@ -278,14 +278,14 @@ Browse[2]>
 We check if there are any missing values in `variables`.
 There are none.
 
-```{r}
+```r
 Browse[2]> any(is.na(variables))
 [1] FALSE
 ```
 
 We then type 'n' to run the next line in the function.
 
-```{r}
+```r
 Browse[2]> n
 debug at /tmp/example.r@46#2: 
   variables <- scale(variables)
@@ -294,7 +294,7 @@ debug at /tmp/example.r@46#2:
 Variables have now been scaled. 
 We check again for missing values.
 
-```{r}
+```r
 Browse[2]> any(is.na(variables))
 [1] TRUE
 ```
@@ -309,7 +309,7 @@ Browse[2]> any(is.na(variables))
 This time there are missing values. 
 We check where they are in `variables`.
 
-```{r}
+```r
 Browse[2]> which(is.na(variables),arr.ind=T)
       row col
  [1,]   1   4
@@ -335,7 +335,7 @@ removing constant variables from the dataset.
 We've discovered the problem, 
 so we quit debugging.
 
-```{r}
+```r
 Browse[2]> Q
 >
 ```
@@ -343,7 +343,7 @@ This returns us to the usual R prompt.
 
 We also tell R that we don't want to debug 
 `reduce.dimensions()` anymore.
-```{r}
+```r
 undebug(reduce.dimensions)
 ```
 ]
@@ -355,7 +355,7 @@ undebug(reduce.dimensions)
 Below is a function for identifying and removing 
 variables that do not vary.
 
-```{r}
+```r
 remove.constants <- function(variables) {
     ss <- rep(NA,ncol(variables))                           ## `ss` will hold the variances
                                                             ##         of each variable
@@ -380,7 +380,7 @@ remove.constants <- function(variables) {
 .ii[
 Apply the new function to `variables`. It should remove variable 4.
 
-```{r}
+```r
 > new.vars <- remove.constants(variables)
 Warning message:
 In remove.constants(variables) : 
@@ -389,14 +389,14 @@ In remove.constants(variables) :
 
 One variable is indeed missing.
 
-```{r}
+```r
 > dim(new.vars)
 [1] 50 19
 ```
 
 Variable 4 was removed.
 
-```{r}
+```r
 > identical(new.vars[,4], variables[,5])
 [1] TRUE
 ```
@@ -407,7 +407,7 @@ Variable 4 was removed.
 .ii[
 Adding the `remove.constants()` fixes the problem in `reduce.dimensions()`.
 
-```{r}
+```r
 reduce.dimensions<-function(variables, effects, num) {
     variables <- remove.constants(variables) #######
     variables <- scale(variables)
@@ -431,18 +431,18 @@ stepping through the code.
 To demonstrate `browser()`, 
 we will add a missing values to `variables`.
 
-```{r}
+```r
 > variables[3,4] <- NA
 ```
 
 Applying `reduce.dimensions()` to `variables` generates a new error. 
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables, effects, 5)
 ## Error in if (any(is.constant)) { : missing value where TRUE/FALSE needed
 ```
 
 `traceback()` indicates the error is in our new `remove.constants()` function.
-```{r}
+```r
 > traceback()
 2: remove.constants(variables) at example.r@55#2
 1: reduce.dimensions(variables, effects, 5)
@@ -454,7 +454,7 @@ Applying `reduce.dimensions()` to `variables` generates a new error.
 
 We insert `browser()` immediately before the if-statement where the 
 error is generated.
-```{r}
+```r
 remove.constants <- function(variables) {
     ss <- rep(NA,ncol(variables))
     for (i in 1:ncol(variables))
@@ -475,7 +475,7 @@ remove.constants <- function(variables) {
 
 Running `reduce.dimensions()` again presents us with a debug
 prompt immediately before the if-statement.
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables, effects, 5)
 
 Called from: remove.constants(variables)
@@ -489,7 +489,7 @@ debug at /tmp/example.r@52#7: if (any(is.constant)) {
 
 The error was about a missing value in `is.constant`. 
 We check which one.
-```{r}
+```r
 Browse[2]> which(is.na(is.constant))
 [1] 4
 
@@ -513,7 +513,7 @@ Browse[2]> Q
 
 We now remove `browser()` 
 and add `na.rm=T` to our function.
-```{r}
+```r
 remove.constants <- function(variables) {
     ss <- rep(NA,ncol(variables))
     for (i in 1:ncol(variables))
@@ -534,7 +534,7 @@ remove.constants <- function(variables) {
 Sometimes our code should just stop when 
 an error is encountered, e.g.
 
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables, effects, 55)
 Error in pcs[, 1:num, drop = F] : subscript out of bounds
 
@@ -545,7 +545,7 @@ Error in pcs[, 1:num, drop = F] : subscript out of bounds
 
 The function `stopifnot()` tells R to stop if 
 a certain condition is not met.
-```{r}
+```r
 reduce.dimensions <- function(variables, effects, num) {
     variables <- remove.constants(variables) 
     stopifnot(num <= ncol(variables)) 
@@ -554,7 +554,7 @@ reduce.dimensions <- function(variables, effects, num) {
 ```
 
 This generates a more meaningful error message.
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables, effects, 55)
 Error in reduce.dimensions(variables, effects, 55) :
    num <= ncol(variables) is not TRUE
@@ -565,7 +565,7 @@ Error in reduce.dimensions(variables, effects, 55) :
 ## Catching errors with `stop()`
 
 Alternatively, you could use the `stop()` function.
-```{r}
+```r
 reduce.dimensions <- function(variables, effects, num) {
     variables <- remove.constants(variables) 
     if (num > ncol(variables))
@@ -575,7 +575,7 @@ reduce.dimensions <- function(variables, effects, num) {
 ```
 
 
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables, effects, 55)
 Error in reduce.dimensions(variables, effects, 55) :
    num = 55 must be at most 20
@@ -589,7 +589,7 @@ Is this a better error message?
 
 We simulate a larger dataset that will require more computation.
 
-```{r}
+```r
 > n <- 1000               ## 1000 observations/samples
 > n.vars <- 5e4           ## 50K variables
 > n.effs <- 50            ## 50 effects to remove
@@ -601,7 +601,7 @@ We simulate a larger dataset that will require more computation.
 
 We run the command as previously but within `system.time(...)`.
 
-```{r}
+```r
 > system.time(new.vars <- reduce.dimensions(variables, effects, 5))
     user  system elapsed
   48.784   5.243  54.091
@@ -619,18 +619,18 @@ We run the command as previously but within `system.time(...)`.
 
 .ii[
 Start the profiler
-```{r}
+```r
 > Rprof()
 ```
 
 Run the command as previously and obtain the profile summary.
-```{r}
+```r
 > new.vars <- reduce.dimensions(variables, effects, 5)
 > profile <- summaryRprof()
 ```
 
 We can see how long each function was 'active'.
-```{r}
+```r
 > profile$by.total
              total.time total.pct self.time self.pct
 reduce.dimensions 52.26    100.00      0.00     0.00
@@ -653,7 +653,7 @@ We can also see which function was most active
 minus activity of functions called by the function.
 This is probably more useful for reducing running time.
 
-```{r}
+```r
 > profile$by.self
             self.time self.pct total.time total.pct
 La.svd          32.32    61.84      33.00     63.15
@@ -669,7 +669,7 @@ remove.constants 0.08     0.15       1.96      3.75
 ```
 
 Finally, turn profiling off.
-```{r}
+```r
 > Rprof(NULL)
 ```
 ]
