@@ -81,7 +81,7 @@ most of the variance in `variables` but none of `effects`.
 
 ## Main function definition
 
-```{r}
+```r
 ## Captures variance with fewer variables
 ## Parameters:
 ## - variables: matrix of variables (columns=variables, rows=observations)
@@ -101,7 +101,7 @@ reduce.dimensions <- function(variables, effects, num) {
 
 Assuming we have a set of variables and effects,
 we apply `reduced.dimensions` as follows:
-```{r}
+```r
 new.vars <- reduced.dimensions(variables,effects,5)
 ```
 
@@ -113,7 +113,7 @@ We will still need to create `remove.effects()` and `compute.pcs()`.
 
 ## Defining `remove.effects()` and `compute.pcs()`
 
-```{r}
+```r
 ## Removes effects from variables
 ## Parameters:
 ## - variables: matrix of variables (columns=variables, rows=observations)
