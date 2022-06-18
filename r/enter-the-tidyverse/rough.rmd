@@ -1,0 +1,456 @@
+https://r4ds.had.co.nz/
+![](r4ds.jpg)
+[Tidyverse](https://www.tidyverse.org/) is a collection of R packages
+that aim to make the analysis of large datasets more convenient.
+R was first invented in 1993 as a tool for performing statistical analyses.
+Since then, the amount of data available for analysis has exploded
+beyond what the original designers of R envisioned.
+This led to the development of a new discipline:
+
+> "Data science is an interdisciplinary field that uses 
+> scientific methods, processes, algorithms and systems 
+> to extract knowledge and insights from 
+> noisy, structured and unstructured data, 
+> and apply knowledge and actionable insights
+> from data across a broad range of application domains."
+> https://en.wikipedia.org/wiki/Data_science
+
+In the tidyverse, data analysis follows the following model.
+Data is **import**ed and prepared for analysis (made **tidy**).
+Analysis involves *transform**ing the data 
+to answer specific questions. 
+Transformed data is **visualised** to discover relationships
+and otherwise interpret the data. 
+**Models** are then applied to the data to evaluate 
+expected or hypothesized relationships.
+Finally, conclusions are **communicate**d
+not only to explain conclusions, but also illustrate 
+how conclusions are supported by the data.
+
+![](data-science.png)
+The tidyverse contributes R packages to support each step in the model.
+
+![](tidyverse.png)
+
+* `readr` (https://readr.tidyverse.org/) to **import** data into R
+* `tidyr` (https://tidyr.tidyverse.org/) to put data into a **tidy** format that can be conveniently manipulated
+* `tibble` (https://tibble.tidyverse.org/) to provide a data structure for storing data in **tidy** manner
+* `ggplot2` (https://ggplot2.tidyverse.org/) to **visualise** data
+* `dplyr` (https://dplyr.tidyverse.org/) to **transform** data
+* `purrr` (https://prrr.tidyverse.org/) to **transform** sequences of data items
+* `stringr` (https://stringr.tidyverse.org/) to manipulate text data
+* `forcats` (https://forcats.tidyverse.org/) to manipulate categorical variables
+
+In this short introduction, we will use functions from most of these packages. 
+However, we will spend most of our time using functions from `tidyr`
+and `dplyr`.
+
+The following R command will install all of them.
+```{r,eval=F}
+install.packages("tidyverse")
+```
+
+They can be loaded individually or with a single command:
+```{r}
+library(tidyverse)
+```
+
+In this session, we will explore the tidyverse by performing a basic
+data analysis that will use each of the tidyverse R packages
+(though definitely not all the many functions provided in each!).
+
+We will analyse a (simulated) dataset from a randomized trial 
+of a drug hypothesized to reduce blink rate. 
+Studies have shown that blink rate is positively associated with disengaged attention.
+Ultimately, they hope the drug will reduce attention deficits by 
+reducing blink rate.
+
+![](blinking-guy.jpg)
+We will use trial data to evaluate this hypothesis 
+and to identify potential harmful side-effects.
+
+The were 4 arms:
+
+A1. Controls with no treatment
+A2. Low dose
+A3. Medium dose
+A4. High dose
+
+Each arm had 100 randomly selected individuals.
+Data was collected at 3 time points:
+
+T0. Baseline
+T1. 6 months
+T2. 12 months
+
+```{r,echo=F}
+source("simulate-dataset.r",local = knitr::knit_global())
+```
+```{r,echo=F}
+#library(devtools)
+#install_github("bergant/datamodelr")
+#install.packages("DiagrammeR")
+library(datamodelr)
+model <- dm_from_data_frames(participants, arms, visits)
+model <- dm_add_references(
+  model,
+  visits$participant==participants$participant,
+  participants$arm==arms$arm)
+display <- list(
+  accent1="participant",
+  accent2="visits",
+  accent4="arms")
+model <- dm_set_display(model, display)
+graph <- dm_create_graph(
+  model, 
+  rankdir = "RL", 
+  col_attr = c("column", "type"))
+
+dm_render_graph(graph)
+```
+
+## Import
+
+CSV files can be imported into R using `readr::read_csv()`.
+```{r}
+arms <- read_csv("arms.csv")
+```
+
+> *Why use `read_csv` rather than `read.csv`?*
+>
+> **Speed** `read_csv` is typically about 10x faster.  If this isn't fast enough, `data.table::fread` is even faster! 
+>
+> **Better communication** `read_csv` provides more information about what it has imported into R and clearer error messages if the import failed via the `problems()` function.
+>
+> **Tidy format** `read_csv` creates tibbles rather than data frames.
+They are more reproducible. Base R functions inherit some behaviour from your operating system and environment variables, so import code that works on your computer might not work on someone else’s.
+
+```{r}
+arms
+```
+```{r}
+participants <- read_csv("participants.csv")
+participants
+```
+
+```{r}
+visits <- read_csv("visits.csv")
+visits
+```
+## Tidy
+
+Tidy data is stored in tables, or as they're called in the tidyverse 'tibbles'.
+
+1. "Each variable must have its own column."
+2. "Each observation must have its own row."
+3. "Each value must have its own cell."
+
+> *Why use a tibble rather than a data frame?* (after all, tibbles are  data frames)
+> 
+> **Predictability** `tibble` never changes the types of inputs, e.g. character strings are never converted to factors.  It never changes column names.  It never adds row names.
+> 
+> **Convenience** Whereas `tibble` can create data frames column-by-column, there is a `tribble` function to create data frames row-by-row.
+> 
+> **Pretty printing** Typing the name of a data frame in R and pressing enter will print the entire data frame to the screen, regardless of its length or width! Tibbles will only show the first few rows and columns along with the dimensions of the data frame and data type of each column. 
+
+An illustration of using `tibble()` and `tribble()` to create the same data frame.
+```{r,eval=F}
+tibble(
+  x=c("a","b"),
+  y=c(3,1),
+  z=c(pi,2*pi)
+)
+tribble(
+  ~x, ~y, ~z,
+  #--|--|----
+  "a", 3, pi,
+  "b", 1,2*pi
+)
+```
+
+## Transforming datasets with `dplyr`
+
+How many participants are in each study arm?
+```{r}
+count(participants, arm)
+```
+
+This is like the `table` function in base R.
+
+How many female participants are in each arm?
+```{r}
+count(participants, arm, sex)
+```
+
+That gives more the information I want and more. To focus on just females, 
+I'll need to filter out information about males.
+```{r}
+counts <- count(participants, arm, sex)
+filter(counts, sex == "F")
+```
+Notice that I could have obtained the same answer by filtering first and then counting.
+```{r}
+females <- filter(participants, sex=="F")
+count(females, arm, sex)
+```
+For longer queries, it can get a little tedious creating variable names for each step. 
+In the queries above, we had to create `counts` and `females` even though 
+we aren't interested in those variables beyond the query. 
+
+One solution is something called 'function composition'. 
+```{r,eval=F}
+filter(count(participants, arm, sex), sex=="F")
+## or
+count(filter(participants, sex=="F"), arm, sex)
+```
+Although we don't need to create new variables, this can make code difficult to read.
+A recent selection is something called "pipes".
+```{r,eval=F}
+count(participants, arm, sex) %>% filter(sex=="F")
+## or
+filter(participants, sex=="F") %>% count(arm, sex)
+```
+Notice how we don't need to specify the first argument of the function following 
+the "%>%" operator.  The 
+
+This is easier to read but can result in really long lines of code.
+Fortunately we can split the full expression over several lines.
+```{r,eval=F}
+count(participants, arm, sex) %>% 
+  filter(sex=="F")
+## or
+filter(participants, sex=="F") %>% 
+  count(arm, sex)
+```
+The `summarise` function can answer questions like `count` and more, 
+e.g. what is the average baseline participant age and how many are females?
+```{r}
+participants %>% summarise(age=median(age), nfemales=sum(sex=="F"))
+```
+The example above provided summaries across *all* rows. 
+It is also possible to summarize by subsets of rows using `group_by`, 
+e.g. what the average baseline age and number of males and females in each arm of the study?
+```{r}
+participants %>% 
+  group_by(arm,sex) %>%
+  summarise(n=n(), age=mean(age))
+```
+The "visits" data frame tells us additional information about the participants 
+from each visit, including the base line visit "wave0".
+```{r}
+visits
+```
+We'd like to augment the summary we gave above with the other baseline measurements 
+for each study participant. 
+
+To do this, we'll first need to:
+1. filter "visits" to obtain baseline measurements
+2. merge the result with "participants"
+3. group the merged result by arm and sex
+4. summarise the variables in group
+
+```{r}
+visits %>%
+  filter(wave=="wave0") %>%
+  left_join(participants,by="participant") %>%
+  group_by(arm,sex) %>%
+  summarise(n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
+```
+This isn't all that interesting because we're only looking at baseline numbers
+for each study arm. Each arm should be roughly identical at baseline.
+To see differences, we'd have to switch to the final wave.
+```{r}
+visits %>%
+  filter(wave=="wave2") %>%
+  left_join(participants,by="participant") %>%
+  group_by(arm,sex) %>%
+  summarise(n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
+```
+From this viewpoint, we can see that the arms do appear to 
+differ with respect to blink rate. To remind ourselves the treatment
+within each arm, we'll add 'dose' to the output.
+This requires that we merge in the 'arms' data frame as well.
+```{r}
+query <- visits %>%
+  filter(wave=="wave2") %>%
+  left_join(participants,by="participant") %>%
+  left_join(arms,by="arm") %>%
+  group_by(arm,sex) %>%
+  summarise(dose=dose[1],n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
+query
+```
+The 'arm' and 'dose' columns are a bit redundant, we just want to show 'dose'. 
+For this, we can use the `select` function.
+```{r}
+query %>% 
+  ungroup() %>%
+  select(dose,sex,n,age,bmi,blink)
+```
+The `ungroup` command is necessary to turn 'off' grouping 
+so that `select` can treat its input as a data frame without any grouping assumptions.
+
+It's a bit tedious to type all the column names when we just want to remove one.
+```{r}
+query <- query %>%
+  ungroup() %>%
+  select(-arm)
+query
+```
+With male rows next to female rows, it is difficult to see if there were any 
+treatment effects on BMI. We'll reorder ("arrange") the rows 
+by sex and then by dose ascending.
+```{r}
+query %>%
+  arrange(sex,dose)
+```
+Now we can more easily see that BMI appears to be increasing with dose.
+
+To run a statistical test to determine if treatment increases BMI, 
+we'll need variables for BMI before *and* after treatment. 
+We will use the following model:
+
+BMI measured at wave 2 ~ BMI at baseline + dose + sex + age
+
+We could this as follows:
+1. Create a baseline subset of 'visits'
+2. Create a wave 2 subset of 'visits'
+3. Merge these two so we have a data frame with bmi before and after treatment
+4. Merge this with 'participants' and 'arms' to get participant age, sex and dose
+5. Fit the linear model and extract the coefficients and p-values
+
+```{r}
+baseline <- visits %>% filter(wave=="wave0") %>% select(participant, bmi)
+wave2 <- visits %>% filter(wave=="wave2") %>% select(participant, bmi)
+baseline %>%
+  left_join(wave2, by="participant", suffix=c("", ".after")) %>%
+  left_join(participants, by="participant") %>%
+  left_join(arms, by="arm") %>%
+  lm(bmi.after ~ bmi + dose + sex + age, data=.) %>%
+  summary() %>%
+  coef()
+```
+As expected, BMI as baseline is strongly correlated with BMI after treatment. 
+Beyond that, age and sex have almost no effect. 
+Treatment dose, however, does appear to have a role in increasing BMI.
+
+The data transformation we just applied is called a 'pivot from long to wide'.
+Initially, the data is 'long' with one row per BMI measurement per participant. 
+After the pivot, the data is 'shorter' with one row per participant
+but 'wider' due to having two columns providing BMI measurements.
+
+Because pivots are so common, tidyr has defined two functions 
+for performing pivots, `pivot_wider` and its inverse `pivot_longer`.
+```{r}
+visits %>% 
+  filter(wave %in% c("wave0","wave2")) %>%
+  pivot_wider(
+    id_cols=participant,
+    names_from=wave,
+    values_from=bmi) %>%
+  rename(bmi=wave0,bmi.after=wave2) %>%
+  left_join(participants, by="participant") %>%
+  left_join(arms, by="arm") %>%
+  lm(bmi.after ~ bmi + dose + sex + age, data=.) %>%
+  summary() %>%
+  coef()
+```
+
+### Transforming sequences of data with `purrr`
+Earlier we asked if treatment dose is associated with changes in BMI.
+Now we ask if treatment dose is associated with changes in 
+blink rate, BMI, HDL cholesterol, triglycerides and LDL cholesterol.
+
+To do this, we first create a function for testing any single phenotype.
+We use the code we developed above, but with three small changes.
+```{r}
+calculate.statistics <- function(phenotype) {
+  visits %>% 
+  filter(wave %in% c("wave0","wave2")) %>%
+  pivot_wider(
+    id_cols=participant,
+    names_from=wave,
+    values_from=phenotype) %>%                            ## 1st change
+  rename(var.base=wave0,var.after=wave2) %>%              ## 2nd change
+  left_join(participants, by="participant") %>%
+  left_join(arms, by="arm") %>%
+  lm(var.after ~ var.base + dose + sex + age, data=.) %>% ## 3rd change
+  summary() %>%
+  coef()
+}
+```
+We can recalculate the statistics for BMI.
+```{r}
+calculate.statistics("bmi")
+```
+We could also calculate statistics for HDL cholesterol.
+```{r}
+calculate.statistics("hdl")
+```
+
+We're really only interested in the statistics related to 'dose'. 
+These tell us how treatment dose relates to the phenotype.
+We create another function that only returns those statistics.
+```{r}
+calculate.phenotype.statistics <- function(phenotype) {
+  calculate.statistics(phenotype) %>%  # use the other function to calculate
+    as.tibble(rownames="variable") %>% # convert the output from matrix to tibble
+    filter(variable=="dose") %>%       # retain only the row for 'dose' statistics
+    select(-variable) %>%              # remove the variable column
+    mutate(Phenotype=phenotype) %>%    # add a column with the phenotype name
+    relocate(Phenotype)                # make this the first column
+}
+```
+
+```{r}
+calculate.phenotype.statistics("bmi")
+```
+Now we use the `map` function to apply the function 
+`calculate.phenotype.statistics' to each phenotype.
+```{r}
+list("blink","bmi","hdl","trig","ldl") %>%
+  map(calculate.phenotype.statistics) %>%
+  bind_rows()
+```
+
+## Visualizing data using `ggplot`
+
+We've looked at a lot of tables of statistics.
+For humans, it is often easier to identify relationships
+through visualization than by looking at a lot of numbers.
+
+Here we show how to plot the relationship between blink rate, 
+treatment dose and time:
+1. pipe the data to the plotting function `ggplot`
+2. tell `ggplot` to separate blink rates by dose, and within dose by wave
+3. tell `ggplot` that blink rate distributions will be displayed as box plots
+4. label the x and y axes
+```{r}
+visits %>%
+  left_join(participants,by="participant") %>%
+  left_join(arms,by="arm") %>%
+  ggplot(aes(x=factor(dose), y=blink, fill=wave)) + 
+    geom_boxplot() + 
+    xlab("treatment dose") + 
+    ylab("blink rate") 
+```
+```{r}
+visits %>%
+  left_join(participants,by="participant") %>%
+  left_join(arms,by="arm") %>%
+ggplot(aes(x=factor(dose), y=hdl, fill=wave)) + 
+  geom_boxplot() + 
+  xlab("treatment dose") + 
+  ylab("HDL cholesterol") 
+```
+
+## Model 
+
+We'll leave this for another day.
+
+See the book for more details: https://r4ds.had.co.nz/model-intro.html
+
+## Communicate
+
+We'll leave this for another day.
+
+See the book for more details: https://r4ds.had.co.nz/communicate-intro.html
