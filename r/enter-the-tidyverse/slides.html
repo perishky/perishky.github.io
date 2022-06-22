@@ -4,6 +4,37 @@
     <title>How to enter the tidyverse of madness</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../../css/my-remark.css">
+    <style>
+      .box{
+        margin-left: 5%;
+        margin-right: 5%;
+        background-color: #f3dea6;
+        padding: 10px;
+      }
+      .quote{
+        margin-left: 5%;
+        margin-right: 5%;
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-left: 2px solid gray;
+        border-collapse: collapse; 
+      }
+      .rightmid {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 2%;
+        transform: translate(50%, -50%);
+        float: right;
+      }
+      .popup {
+        display: block;
+        position: absolute;
+        top: 40%;
+        right: 40%;
+        transform: translate(50%, 50%);
+      }
+    </style>
   </head>
   <body>
     <textarea id="source">
@@ -30,29 +61,41 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 
 R is old (circa 1993). 
 
-It was originally designed for doing **statistics**.
+It was originally designed for doing **statistics** with relatively small, simple datasets.
 
 Since then, it has become one of the most popular tools for 
-a relatively new discipline called **[data science](https://en.wikipedia.org/wiki/Data_science)**.
+the new discipline called **[data science](https://en.wikipedia.org/wiki/Data_science)**.
 
-> "Data science is an interdisciplinary field that uses 
-> scientific methods, processes, algorithms and systems 
-> to extract knowledge and insights from 
-> noisy, structured and unstructured data, 
-> and apply knowledge and actionable insights
-> from data across a broad range of application domains."
-> https://en.wikipedia.org/wiki/Data_science
+.quote["Data science is an interdisciplinary field that uses 
+scientific methods, processes, algorithms and systems 
+to extract knowledge and insights from 
+noisy, structured and unstructured data, 
+and apply knowledge and actionable insights
+from data across a broad range of application domains."
+https://en.wikipedia.org/wiki/Data_science]
+
+---
+
+## Shortcomings of R for data science
+
+1. Lacks **consistency**
 
 --
 
-For data science, R has some critical short-comings:
-
-1. Lacks **consistency**
 2. Often **suprising**
+
+--
+
 3. Tends to be **slow** and **memory-intensive**
+
+--
+
 4. Built around **vectors and matrices** 
-5. Functional language that can be **awkward** to use 
-6. Error messages often **unhelpful**
+
+--
+
+5. Functional language can be **awkward** to use 
+
 
 ---
 
@@ -82,12 +125,16 @@ e.g. two different object-oriented systems: S3 and S4 systems
 .ii[
 **missing values**
 
-```{r}
+```r
 > x <- c(1,2,3,4,NA)
 > y <- c(1.1,2.2,3.3,4.4,5.5)
+
+## missing values not okay
 > quantile(x)
 Error in quantile.default(x) :
-  missing values and NaN's not allowed if 'na.rm' is FALSE
+  missing values not allowed if 'na.rm' is FALSE
+
+## missing values okay
 > fit <- lm(y ~ x)
 > length(x)
 [1] 5
@@ -103,7 +150,7 @@ Error in quantile.default(x) :
 R often converts between data types behind the scenes, 
 e.g. characters to factors, matrices to vectors, numeric to characters
 
-```{r}
+```r
 > x <- matrix(1:12,ncol=3)
 > x
      [,1] [,2] [,3]
@@ -113,22 +160,22 @@ e.g. characters to factors, matrices to vectors, numeric to characters
 [4,]    4    8   12
 ```
 --
-```{r}
-> class(x[,1:3])
+```r
+> class(x[,1:2])
 [1] "matrix" "array"
 ```
 --
-```{r}
+```r
 > class(x[,3]) ## what is this?
 ```
 --
-```{r}
+```r
 [1] "integer"
 ```
 
 ---
 
-```{r}
+```r
 > x <- matrix(1:12,ncol=3)
 > x
      [,1] [,2] [,3]
@@ -138,72 +185,93 @@ e.g. characters to factors, matrices to vectors, numeric to characters
 [4,]    4    8   12
 ```
 --
-```{r}
+```r
 > x[1,1]
 1
 ```
 --
-```{r}
+```r
 > x[1,3] <- "a"
 ```
 --
-```{r}
-> x[1,1] ## what is this?
+```r
+> x[1,1] + 1 ## what is this equal to?
 ```
 --
-```{r}
+```r
+Error in x[1, 1] + 1 : non-numeric argument to binary operator
+```
+--
+```r
+> class(x[1,1])
+[1] "character"
+```
+--
+```r
+> x[1,1]
 [1] "1"
-```
----
-```{r}
-> y <- c(a=1,b=2,c=3)
-> x <- data.frame(m=c("a","c"),n=1:2)
-> x
-  m n
-1 a 1
-2 c 2
-> y
-a b c
-1 2 3
-```
---
-```{r}
-> y[c("a","c")]
-a c
-1 3
-```
---
-```{r}
-> y[x$m] ## what is this?
-```
---
-```{r}
-a b
-1 2
-## at least it was until R v4.0
 ```
 
 ---
 
 ## 3. Tends to be **slow** and **memory-intensive**
 
+R was designed for small datasets, so it tends to do things 
 
+- the *simple* way 
+
+rather than 
+
+- the *efficient* way.
+
+--
+
+.box[
+e.g. it is designed to **slurp** data
+
+Slurping means loading entire datasets into memory
+before analysing them.
+
+This is not efficient when the analysis really only needs to see 
+a table row-by-row.
+
+*But*, this it simpler to just load (slurp) the entire dataset in one simple step.
+]
 
 ---
 
 ## 4. Built around **vectors and matrices** 
 
-whereas data science analyses **data frames**
+... whereas data science analyses **data frames** like this:
+
+| participant|      age|sex |arm  |
+|-----------:|--------:|:---|:----|
+|           1| 23.58224|F   |arm3 |
+|           2| 24.69102|M   |arm4 |
+|           3| 25.42567|F   |arm2 |
+|           4| 24.96019|F   |arm2 |
+|           5| 23.35406|M   |arm4 |
+
+Each column has its own data type.
+
+--
+
+.box[
+Although R implements data frames, 
+most functions are designed for vectors and matrices.
+]
 
 ---
 
 ## 5. Functional language that can be **awkward** to use 
 
+e.g. even if you know what all the functions do, this expression is 
+difficult to understand!
 
----
-
-## 6. Error messages often **unhelpful**
-
+```r
+summarize(group_by(left_join(filter(visits, wave=="wave2"), participants, by="participant"),arm,sex),n=n(), 
+age=mean(age), bmi=mean(bmi), blink=mean(blink))
+```
 
 ---
 
@@ -217,19 +285,17 @@ that aim to make the analysis of large datasets more convenient.
 &lt;img src="tidyverse.png" width="75%"&gt;
 ]
 .gap[&nbsp;]
+--
 .ii[
+Here is intended workflow in the tidyverse:
+
 &lt;img src="data-science.png" width="100%"&gt;
 
-- Data is **import**ed and prepared for analysis (made **tidy**).
-- Analysis involves *transform**ing the data 
-to answer specific questions. 
-- Transformed data is **visualised** to discover relationships
-and otherwise interpret the data. 
-- **Models** are then applied to the data to evaluate 
-expected or hypothesized relationships.
+- Data is **import**ed and made **tidy** so it can be analysed
+- Analysis involves **transform**ing the data 
+- Relationships in the data are **visualised** 
+- **Models** are applied to test relationships
 - Finally, conclusions are **communicate**d
-not only to explain conclusions, but also illustrate 
-how conclusions are supported by the data.
 ]
 ---
 
@@ -243,12 +309,12 @@ https://r4ds.had.co.nz/<br>
 ## Using tidyverse packages
 
 Installing all tidyverse packages.
-```{r}
+```r
 install.packages("tidyverse")
 ```
 
 Loading all tidyverse packages.
-```{r}
+```r
 library(tidyverse)
 ```
 
@@ -263,8 +329,9 @@ of a simulated dataset from a randomized control trial.
 &lt;img src="blinking-guy.jpg" width="90%"&gt;
 ]
 .gap[&nbsp;]
+--
 .ii[
-**Background** Studies have shown that blink rate is positively associated with disengaged attention.
+**Background** (Pretend) studies have shown that blink rate is positively associated with disengaged attention.
 A drug has been developed that is known to reduce blink rate. 
 
 **Aim** Determine if the drug will reduce attention deficits by reducing blink rate.
@@ -273,13 +340,13 @@ A drug has been developed that is known to reduce blink rate.
 
 The were 4 arms: 
 
-&nbsp; controls (A1), low dose (A2), medium (A3), high (A4)
+&nbsp; controls (arm 1), low dose (arm 2), medium (arm 3), high (arm 4)
 
 Each arm had 100 randomly selected individuals.
 
 Data was collected in 3 waves:
 
-&nbsp; baseline (T0), 6 months (T1), 12 months (T2)
+&nbsp; baseline (wave 0), 6 months (wave 1), 12 months (wave 2)
 ]
 ---
 
@@ -291,30 +358,27 @@ Data was collected in 3 waves:
 
 ## Import the dataset
 
-CSV files can be imported into R using `readr::read_csv()`.
+The dataset is available as CSV files.
 
-```{r}
-> data.dir <- "https://raw.githubusercontent.com/perishky/perishky.github.io/master/r/enter-the-tidyverse"
-> arms <- read_csv(file.path(data.dir, "arms.csv"))
-> participants <- read_csv(file.path(data.dir, "participants.csv"))
-> visits <- read_csv(file.path(data.dir, "visits.csv"))
+These can be imported into R using tidyverse function `readr::read_csv()`.
+
+```r
+data.dir <- "https://raw.githubusercontent.com/perishky/perishky.github.io/master/r/enter-the-tidyverse"
+
+arms <- read_csv(file.path(data.dir, "arms.csv"))
+participants <- read_csv(file.path(data.dir, "participants.csv"))
+visits <- read_csv(file.path(data.dir, "visits.csv"))
 ```
-
-Files can be read locally from your computer or from a website online. 
-Here we read the file from my github repository.
 
 --
 
-```{r}
+```r
 > arms <- read_csv("arms.csv")
 Rows: 4 Columns: 2
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
 chr (1): arm
 dbl (1): dose
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 > arms
 # A tibble: 4 × 2
@@ -328,7 +392,9 @@ dbl (1): dose
 
 ---
 
-## Why use `read_csv` rather than `read.csv`
+## Why use `read_csv` rather than `read.csv`?
+
+--
 
 **Speed** `read_csv` is typically about 10x faster.  If this isn't fast enough, `data.table::fread` is even faster! 
 
@@ -336,7 +402,7 @@ dbl (1): dose
 
 **Better communication** `read_csv` provides more information about what it has imported into R and clearer error messages if the import failed via the `problems()` function.
 
-```{r}
+```r
 > arms <- read_csv("arms.csv")
 Rows: 4 Columns: 2
 ── Column specification ────────────────────────────────────────────────────────
@@ -348,10 +414,9 @@ dbl (1): dose
 --
 
 **Tidy format** `read_csv` creates tibbles rather than data frames.
-These are more reproducible because they *do not* inherit behaviour from your specific system
-so they will always produce the same results.
+(we'll discuss tibbles vs data frames on the next slide)
 
-```{r}
+```r
 > arms
 # A tibble: 4 × 2
   arm    dose
@@ -375,12 +440,20 @@ Tidy data is stored in tables called 'tibbles'.
 --
 
 > *Why use a tibble rather than a data frame?* (after all, tibbles are  data frames)
-> 
-> **Predictability** `tibble` never changes the types of inputs, e.g. character strings are never converted to factors.  It never changes column names.  It never adds row names.
-> 
+ 
+--
+
+> **Predictability** `tibble` never changes the types of inputs
+> <br>e.g. character strings are never converted to factors.  It never changes column names.  It never adds row names.
+
+--
+
 > **Convenience** Whereas `tibble` can create data frames column-by-column, there is a `tribble` function to create data frames row-by-row.
-> 
-> **Pretty printing** Typing the name of a data frame in R and pressing enter will print the entire data frame to the screen, regardless of its length or width! Tibbles will only show the first few rows and columns along with the dimensions of the data frame and data type of each column. 
+
+--
+
+> **Pretty printing** Tibbles are nicer to look at!
+> <br>Typing the name of a data frame in R and pressing enter will print the entire data frame to the screen, regardless of its length or width! Tibbles will only show the first few rows and columns along with the dimensions of the data frame and data type of each column. 
 
 ---
 
@@ -388,7 +461,7 @@ Tidy data is stored in tables called 'tibbles'.
 
 Tibbles can be created by column (just like a data frame)
 ```{r,eval=F}
-> tibble(
+tibble(
   x=c("a","b"),
   y=c(3,1),
   z=c(pi,2*pi)
@@ -396,8 +469,8 @@ Tibbles can be created by column (just like a data frame)
 ```
 --
 or by row like they'd be written in a data file
-```{r}
-> tribble(
+```r
+tribble(
   ~x, ~y, ~z,
   #--|--|----
   "a", 3, pi,
@@ -416,7 +489,7 @@ How many participants are in each study arm?
 .ii[
 We'll use the `participants` tibble.
 
-```{r}
+```r
 > participants
 # A tibble: 400 × 4
    participant   age sex   arm
@@ -441,10 +514,9 @@ We'll use the `participants` tibble.
 
 
 .ii[
-We can use the `count(<tibble>,<column1>,<column2>,...)` function for this.
-It is very similar to the `table` function in base R.
+We'll use the `count()` function to count participants in each arm.
 
-```{r}
+```r
 > count(participants, arm)
 # A tibble: 4 × 2
    arm      n
@@ -454,6 +526,9 @@ It is very similar to the `table` function in base R.
 3 arm3    100
 4 arm4    100
 ```
+
+`count()` is very similar to the `table()` function in base R.
+
 ]
 
 ---
@@ -464,7 +539,7 @@ See if you can count the number of female participants in each arm.
 
 --
 
-```{r}
+```r
 > count(participants, arm, sex)
 # A tibble: 8 × 3
   arm   sex       n
@@ -487,9 +562,9 @@ That last output gives more information than we wanted.
 To focus on just females, 
 we'll need to filter out information about males.
 
-To do this, we use the `filter(<tibble>,<criteria>)` function.
+To do this, we use the `filter()` function.
 
-```{r}
+```r
 > counts <- count(participants, arm, sex)
 > filter(counts, sex == "F")
 # A tibble: 4 × 3
@@ -513,7 +588,7 @@ See if you can obtain the same result by
 
 --
 
-```{r}
+```r
 > females <- filter(participants, sex=="F")
 > count(females, arm, sex)
 # A tibble: 4 × 3
@@ -534,16 +609,16 @@ For longer queries, it can get a little tedious creating variable names for each
 In the queries above, we had to create `counts` and `females` even though 
 we aren't directly interested in those variables, e.g.
 
-```{r}
-> counts <- count(participants, arm, sex)
-> filter(counts, sex == "F")
+```r
+counts <- count(participants, arm, sex)
+filter(counts, sex == "F")
 ```
 
 --
 
 One solution is called **function composition**. 
-```{r}
-> filter(count(participants, arm, sex), sex=="F")
+```r
+filter(count(participants, arm, sex), sex=="F")
 ```
 
 --
@@ -555,8 +630,8 @@ i.e. `count(filter(...), ...)`
 
 --
 
-```{r}
-> count(filter(participants, sex=="F"), arm, sex)
+```r
+count(filter(participants, sex=="F"), arm, sex)
 ```
 
 ---
@@ -569,25 +644,26 @@ they can make the code difficult to read.
 For example, the following command summarizes information about each study arm
 (we'll discuss the functions used here later).
 
-```{r}
-> summarize(group_by(left_join(filter(visits, wave=="wave2"), participants, by="participant"),arm,sex),n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
+```r
+summarize(group_by(left_join(filter(visits, wave=="wave2"), 
+  participants, by="participant"),arm,sex),n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
 ```
 
 --
 To be fair, we can split it across lines to make it a little easier to read.
-```{r}
-> summarize(
-    group_by(
-     left_join(
-       filter(visits, wave=="wave2"), 
-       participants, 
-       by="participant"), 
-      arm, 
-      sex), 
-    n=n(), 
-    age=mean(age), 
-    bmi=mean(bmi), 
-    blink=mean(blink))
+```r
+summarize(
+  group_by(
+   left_join(
+     filter(visits, wave=="wave2"), 
+     participants, 
+     by="participant"), 
+    arm, 
+    sex), 
+  n=n(), 
+  age=mean(age), 
+  bmi=mean(bmi), 
+  blink=mean(blink))
 ```
 
 ---
@@ -598,30 +674,31 @@ The "pipe" operator (`%>%`) was invented to solve this problem.
 
 This command ...
 
-```{r}
-> filter(count(participants, arm, sex), sex=="F")
+```r
+filter(count(participants, arm, sex), sex=="F")
 ```
 
 --
 
 ... can be written like this
 
-```{r}
-> participants %>% filter(sex=="F") %>% count(arm, sex)
+```r
+participants %>% filter(sex=="F") %>% count(arm, sex)
 ```
 
 --
 
 ... or even better, split across multiple lines
 
-```{r}
-> participants %>%
+```r
+participants %>%
   filter(sex=="F") %>% 
   count(arm, sex)
 ```
 
-Notice how the first argument of each function is just output of the previous function
-in the sequence.
+i.e. 
+- we 'pipe' `participants` to `filter`, 
+- and then the output of `filter` to `count`
 
 ---
 
@@ -629,14 +706,14 @@ in the sequence.
 
 See if you can rewrite the following using pipes:
 
-```{r}
-> filter(count(participants,arm,sex), sex=="F")
+```r
+filter(count(participants,arm,sex), sex=="F")
 ```
 
 --
 
-```{r}
-> participants %>% 
+```r
+participants %>% 
   count(arm,sex) %>% 
   filter(sex=="F")
 ```
@@ -645,26 +722,26 @@ See if you can rewrite the following using pipes:
 
 ## Challenge!
 
-Now see if you can rewrite this command:
-```{r}
-> summarize(
-    group_by(
-     left_join(
-       filter(visits, wave=="wave2"), 
-       participants, 
-       by="participant"), 
-      arm, 
-      sex), 
-    n=n(), 
-    age=mean(age), 
-    bmi=mean(bmi), 
-    blink=mean(blink))
+Now see if you can rewrite this command using pipes:
+```r
+summarize(
+  group_by(
+   left_join(
+     filter(visits, wave=="wave2"), 
+     participants, 
+     by="participant"), 
+    arm, 
+    sex), 
+  n=n(), 
+  age=mean(age), 
+  bmi=mean(bmi), 
+  blink=mean(blink))
 ```
 
 --
 
-```{r}
-> visits %>%
+```r
+visits %>%
   filter(wave=="wave2") %>%
   left_join(participants, by="participant") %>%
   group_by(arm,sex) %>%
@@ -683,7 +760,7 @@ For example, we can use it to calculate
 
 --
 
-```{r}
+```r
 > summarise(participants, age=median(age), nfemales=sum(sex=="F"))
 # A tibble: 1 × 2
     age nfemales
@@ -691,9 +768,11 @@ For example, we can use it to calculate
 1  25.0      187
 ```
 
+--
+
 Here is what it looks like using pipes.
-```{r}
-> participants %>% 
+```r
+participants %>% 
   summarise(age=median(age), nfemales=sum(sex=="F"))
 ```
 
@@ -709,28 +788,46 @@ For example, we can calculate, *for each arm of the study*
 1. the average participant age, and 
 2. the number of males and females.
 
-```{r}
+--
+
+```r
 > participants %>% 
   group_by(arm,sex) %>%
   summarise(n=n(), age=mean(age))
+
+# A tibble: 8 × 4
+# Groups:   arm [4]
+  arm   sex       n   age
+  <chr> <chr> <int> <dbl>
+1 arm1  F        48  25.1
+2 arm1  M        52  25.1
+3 arm2  F        43  25.1
+4 arm2  M        57  24.8
+5 arm3  F        50  25.1
+6 arm3  M        50  24.8
+7 arm4  F        46  24.9
+8 arm4  M        54  25.1
 ```
 
 --
 
-You may have noticed that there is some magic going on here. 
+.popup[.box[
+Did you notice some **magic**?
 
-1. `summarise` magically knows when a tibble has come from `group_by` and that it should summarize by the resulting groups.
+1. `summarise()` magically knows when a tibble has come from `group_by()` 
+  and that it should summarize by the resulting groups.
 
-2. The `n` function magically knows about the tibble subsets being processed by `summarise`.
+2. `n()` function magically knows about the tibble subsets being processed by `summarise`.
+]]
 
 ---
 
 ## Challenge!
 
-Can you think of an alternative to the mysterious `n` function?  (*this is a tricky question*)
+Can you think of an alternative to the mysterious `n()` function?  (*this is a tricky question*)
 
-```{r}
-> participants %>% 
+```r
+participants %>% 
   group_by(arm,sex) %>%
   summarise(n=n(), age=mean(age))
 ```
@@ -741,207 +838,691 @@ Can you think of an alternative to the mysterious `n` function?  (*this is a tri
 
 --
 
-```{r}
-> participants %>% 
+```r
+participants %>% 
   group_by(arm,sex) %>%
   summarise(n=length(age), age=mean(age))
 ```
 
 ---
 
-## .........................................................................................
+## Merging datasets
 
+We'd like to augment the summary with measurements from the first visit.
 
-The "visits" data frame tells us additional information about the participants 
-from each visit, including the base line visit "wave0".
-```{r}
-visits
-```
-We'd like to augment the summary we gave above with the other baseline measurements 
-for each study participant. 
+This information is in the `visits` dataset.
 
 To do this, we'll first need to:
-1. filter "visits" to obtain baseline measurements
-2. merge the result with "participants"
-3. group the merged result by arm and sex
-4. summarise the variables in group
+1. filter `visits` to get just the first visit (there were 3 visits)
+2. merge the result with `participants`
+3. group the result by arm and by sex
+4. calculate the mean of age, BMI and blink rate
 
-```{r}
+--
+
+We've seen how to do each of these steps except step 2, merging.
+
+```r
 visits %>%
   filter(wave=="wave0") %>%
-  left_join(participants,by="participant") %>%
+  ????????? merge with participants ????????? %>%
   group_by(arm,sex) %>%
   summarise(n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
 ```
-This isn't all that interesting because we're only looking at baseline numbers
-for each study arm. Each arm should be roughly identical at baseline.
-To see differences, we'd have to switch to the final wave.
-```{r}
+
+--
+
+In base R, we'd use the function `merge()`. 
+
+For tibbles, we have four different functions:
+`left_join()`, `right_join()`, `inner_join()` and `full_join()`.
+
+---
+
+## `left_join()`
+
+.ii[
+To illustrate, we'll use a small version of `visits`.
+```r
+> visits.s <- visits %>% filter(participant %in% 1:3)
+> visits.s
+# A tibble: 9 × 8
+participant wave  month blink   bmi   hdl  trig   ldl
+      <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+1         1 wave0  0     17.6  15.4  1.38  1.52  2.11
+2         1 wave1  6.18  16.0  16.5  1.35  1.33  1.88
+3         1 wave2 10.4   15.6  14.9  1.39  1.39  2.01
+4         2 wave0  0     16.3  19.4  1.64  1.70  4.06
+5         2 wave1  5.50  14.5  20.6  1.61  1.31  3.90
+6         2 wave2 13.0   11.2  21.8  1.57  1.62  4.04
+7         3 wave0  0     18.6  22.0  1.61  1.12  2.11
+8         3 wave1  6.58  17.8  20.8  1.75  1.14  1.82
+9         3 wave2 13.5   17.3  23.1  1.53  1.11  2.21
+```
+]
+
+.gap[&nbsp;]
+
+--
+
+.ii[
+Recall `participants`.
+```r
+> participants
+# A tibble: 400 × 4
+   participant   age sex   arm
+         <dbl> <dbl> <chr> <chr>
+ 1           1  23.6 F     arm3
+ 2           2  24.7 M     arm4
+ 3           3  25.4 F     arm2
+ 4           4  25.0 F     arm2
+ 5           5  23.4 M     arm4
+ 6           6  25.9 M     arm2
+ 7           7  26.5 M     arm4
+ 8           8  26.6 F     arm1
+ 9           9  25.3 F     arm2
+10          10  25.3 F     arm3
+# … with 390 more rows
+```
+]
+
+---
+
+## `left_join()`
+
+`left_join()` adds data from `participants`
+that match the three participants in `visits.s`.
+
+```r
+> left_join(visits.s, participants, by="participant")
+Joining, by = "participant"
+# A tibble: 9 × 11
+  participant wave  month blink   bmi   hdl  trig   ldl   age sex   arm
+        <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr> <chr>
+1           1 wave0  0     17.6  15.4  1.38  1.52  2.11  23.6 F     arm3
+2           1 wave1  6.18  16.0  16.5  1.35  1.33  1.88  23.6 F     arm3
+3           1 wave2 10.4   15.6  14.9  1.39  1.39  2.01  23.6 F     arm3
+4           2 wave0  0     16.3  19.4  1.64  1.70  4.06  24.7 M     arm4
+5           2 wave1  5.50  14.5  20.6  1.61  1.31  3.90  24.7 M     arm4
+6           2 wave2 13.0   11.2  21.8  1.57  1.62  4.04  24.7 M     arm4
+7           3 wave0  0     18.6  22.0  1.61  1.12  2.11  25.4 F     arm2
+8           3 wave1  6.58  17.8  20.8  1.75  1.14  1.82  25.4 F     arm2
+9           3 wave2 13.5   17.3  23.1  1.53  1.11  2.21  25.4 F     arm2
+```
+
+--
+
+Notice how the result is just `visits.s` but with some additional columns
+from `participants`.
+
+Rows in `participants` that do not match are omitted.
+
+---
+
+## Challenge!
+
+What do you think happens if some participants in `visits` do not match a participant in `participants`?
+
+```r
+> parts.s <- participants %>% filter(participant %in% 1:2)
+> parts.s
+# A tibble: 2 × 4
+  participant   age sex   arm
+        <dbl> <dbl> <chr> <chr>
+1           1  23.6 F     arm3
+2           2  24.7 M     arm4
+```
+--
+
+```r
+> left_join(visits.s, parts.s, by="participant")
+# A tibble: 9 × 11
+  participant wave  month blink   bmi   hdl  trig   ldl   age sex   arm
+        <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr> <chr>
+1           1 wave0  0     17.6  15.4  1.38  1.52  2.11  23.6 F     arm3
+2           1 wave1  6.18  16.0  16.5  1.35  1.33  1.88  23.6 F     arm3
+3           1 wave2 10.4   15.6  14.9  1.39  1.39  2.01  23.6 F     arm3
+4           2 wave0  0     16.3  19.4  1.64  1.70  4.06  24.7 M     arm4
+5           2 wave1  5.50  14.5  20.6  1.61  1.31  3.90  24.7 M     arm4
+6           2 wave2 13.0   11.2  21.8  1.57  1.62  4.04  24.7 M     arm4
+7           3 wave0  0     18.6  22.0  1.61  1.12  2.11  NA   NA    NA
+8           3 wave1  6.58  17.8  20.8  1.75  1.14  1.82  NA   NA    NA
+9           3 wave2 13.5   17.3  23.1  1.53  1.11  2.21  NA   NA    NA
+```
+
+---
+
+## Putting it altogether
+
+Recall that we want to summarize information from all participants, 
+grouped by age and sex.
+
+```r
+visits %>%
+  filter(wave=="wave0") %>%
+  left_join(participants,by="participant") %>% ## merging step
+  group_by(arm,sex) %>%
+  summarise(n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
+```
+--
+```r
+# A tibble: 8 × 6
+# Groups:   arm [4]
+  arm   sex       n   age   bmi blink
+  <chr> <chr> <int> <dbl> <dbl> <dbl>
+1 arm1  F        48  25.1  21.4  17.7
+2 arm1  M        52  25.1  23.9  17.5
+3 arm2  F        43  25.1  21.3  17.6
+4 arm2  M        57  24.8  23.4  17.5
+5 arm3  F        50  25.1  21.0  17.7
+6 arm3  M        50  24.8  23.8  17.6
+7 arm4  F        46  24.9  21.4  17.2
+8 arm4  M        54  25.1  22.9  17.6
+```
+
+---
+
+## Challenge!
+
+The previous output wasn't interesting because we're looking at the data
+before any treatment.
+
+Modify the command to see the same data from the final visit.
+
+--
+
+```r
 visits %>%
   filter(wave=="wave2") %>%
   left_join(participants,by="participant") %>%
   group_by(arm,sex) %>%
   summarise(n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
 ```
-From this viewpoint, we can see that the arms do appear to 
-differ with respect to blink rate. To remind ourselves the treatment
-within each arm, we'll add 'dose' to the output.
-This requires that we merge in the 'arms' data frame as well.
-```{r}
+--
+```r
+# A tibble: 8 × 6
+# Groups:   arm [4]
+  arm   sex       n   age   bmi blink
+  <chr> <chr> <int> <dbl> <dbl> <dbl>
+1 arm1  F        48  25.1  21.6  17.7
+2 arm1  M        52  25.1  24.0  17.5
+3 arm2  F        43  25.1  21.6  16.5
+4 arm2  M        57  24.8  24.0  16.3
+5 arm3  F        50  25.1  22.1  15.3
+6 arm3  M        50  24.8  25.1  15.2
+7 arm4  F        46  24.9  23.7  12.6
+8 arm4  M        54  25.1  25.2  13.0
+```
+
+Can you see differences between the study arms now?
+
+---
+
+## Merging multiple tables
+
+To remember the treatment within each study arm, 
+we'll add 'dose' to the output found  in the `arms` tibble.
+
+--
+
+```r
 query <- visits %>%
   filter(wave=="wave2") %>%
   left_join(participants,by="participant") %>%
-  left_join(arms,by="arm") %>%
+  left_join(arms,by="arm") %>%  
   group_by(arm,sex) %>%
   summarise(dose=dose[1],n=n(), age=mean(age), bmi=mean(bmi), blink=mean(blink))
-query
 ```
-The 'arm' and 'dose' columns are a bit redundant, we just want to show 'dose'. 
-For this, we can use the `select` function.
-```{r}
-query %>% 
+
+--
+
+```r
+> query
+
+# A tibble: 8 × 7
+# Groups:   arm [4]
+  arm   sex    dose     n   age   bmi blink
+  <chr> <chr> <dbl> <int> <dbl> <dbl> <dbl>
+1 arm1  F         0    48  25.1  21.6  17.7
+2 arm1  M         0    52  25.1  24.0  17.5
+3 arm2  F         1    43  25.1  21.6  16.5
+4 arm2  M         1    57  24.8  24.0  16.3
+5 arm3  F         2    50  25.1  22.1  15.3
+6 arm3  M         2    50  24.8  25.1  15.2
+7 arm4  F         4    46  24.9  23.7  12.6
+8 arm4  M         4    54  25.1  25.2  13.0
+```
+
+---
+
+## Selecting columns
+
+Having both 'arm' and 'dose' columns is a bit redundant, we just want to show 'dose'. 
+
+For this, we can use the `select()` function.
+
+--
+
+```r
+> query %>% 
   ungroup() %>%
   select(dose,sex,n,age,bmi,blink)
+
+# A tibble: 8 × 6
+   dose sex       n   age   bmi blink
+  <dbl> <chr> <int> <dbl> <dbl> <dbl>
+1     0 F        48  25.1  21.6  17.7
+2     0 M        52  25.1  24.0  17.5
+3     1 F        43  25.1  21.6  16.5
+4     1 M        57  24.8  24.0  16.3
+5     2 F        50  25.1  22.1  15.3
+6     2 M        50  24.8  25.1  15.2
+7     4 F        46  24.9  23.7  12.6
+8     4 M        54  25.1  25.2  13.0
 ```
-The `ungroup` command is necessary to turn 'off' grouping 
-so that `select` can treat its input as a data frame without any grouping assumptions.
+
+The `ungroup` command is necessary to turn 'off' grouping.
+
+---
+
+## Omitting columns
 
 It's a bit tedious to type all the column names when we just want to remove one.
-```{r}
+There is a way to do this.
+
+--
+
+```r
 query <- query %>%
   ungroup() %>%
   select(-arm)
-query
 ```
+
+--
+
+```r
+> query
+# A tibble: 8 × 6
+  sex    dose     n   age   bmi blink
+  <chr> <dbl> <int> <dbl> <dbl> <dbl>
+1 F         0    48  25.1  21.6  17.7
+2 M         0    52  25.1  24.0  17.5
+3 F         1    43  25.1  21.6  16.5
+4 M         1    57  24.8  24.0  16.3
+5 F         2    50  25.1  22.1  15.3
+6 M         2    50  24.8  25.1  15.2
+7 F         4    46  24.9  23.7  12.6
+8 M         4    54  25.1  25.2  13.0
+```
+
+---
+
+## Reordering rows
+
 With male rows next to female rows, it is difficult to see if there were any 
-treatment effects on BMI. We'll reorder ("arrange") the rows 
-by sex and then by dose ascending.
-```{r}
-query %>%
-  arrange(sex,dose)
+treatment effects on BMI. 
+
+--
+
+We'll reorder/arrange the rows by sex and then by dose.
+
+.ii[
+Before reordering ...
+
+```r
+> query
+
+
+# A tibble: 8 × 6
+  sex    dose     n   age   bmi blink
+  <chr> <dbl> <int> <dbl> <dbl> <dbl>
+1 F         0    48  25.1  21.6  17.7
+2 M         0    52  25.1  24.0  17.5
+3 F         1    43  25.1  21.6  16.5
+4 M         1    57  24.8  24.0  16.3
+5 F         2    50  25.1  22.1  15.3
+6 M         2    50  24.8  25.1  15.2
+7 F         4    46  24.9  23.7  12.6
+8 M         4    54  25.1  25.2  13.0
 ```
+]
+
+.gap[&nbsp;]
+
+--
+
+.ii[
+After reordering ...
+
+```r
+> query %>%
+  arrange(sex,dose)
+
+# A tibble: 8 × 6
+  sex    dose     n   age   bmi blink
+  <chr> <dbl> <int> <dbl> <dbl> <dbl>
+1 F         0    48  25.1  21.6  17.7
+2 F         1    43  25.1  21.6  16.5
+3 F         2    50  25.1  22.1  15.3
+4 F         4    46  24.9  23.7  12.6
+5 M         0    52  25.1  24.0  17.5
+6 M         1    57  24.8  24.0  16.3
+7 M         2    50  24.8  25.1  15.2
+8 M         4    54  25.1  25.2  13.0
+```
+
 Now we can more easily see that BMI appears to be increasing with dose.
+]
+---
 
-To run a statistical test to determine if treatment increases BMI, 
-we'll need variables for BMI before *and* after treatment. 
-We will use the following model:
+## Running statistical tests
 
-BMI measured at wave 2 ~ BMI at baseline + dose + sex + age
+We'd like to determine statistically if treatment actually increases BMI.
 
-We could this as follows:
-1. Create a baseline subset of 'visits'
+We can do this by fitting the following linear model:
+
+.box[BMI<sub>wave 2</sub> ~ BMI<sub>wave 0</sub> + age + sex + dose]
+
+--
+
+For this, we'll need to prepare a tibble like this:
+
+|bmi.wave0|bmi.wave2|age|sex|dose|
+|---:|-----:|:----|---:|----:|
+| 5.4|  14.9| 23.5|F   |    2|
+|19.3|  21.8| 24.7|M   |    4|
+|22.0|  23.1| 25.4|F   |    1|
+|20.6|  19.7| 24.9|F   |    1|
+|26.1|  28.6| 23.4|M   |    4|
+| ...|      |     |    |     |
+
+
+---
+
+## Running statistical tests
+
+Here are the steps:
+
+--
+
+1. Create a wave 0 subset of 'visits'
+
+--
+
 2. Create a wave 2 subset of 'visits'
-3. Merge these two so we have a data frame with bmi before and after treatment
-4. Merge this with 'participants' and 'arms' to get participant age, sex and dose
+
+--
+
+3. Merge these two so we have a data frame with bmi at wave 0 and wave 2
+
+--
+
+4. Merge this with 'participants' and 'arms' to add participant age, sex and dose
+
+--
+
 5. Fit the linear model and extract the coefficients and p-values
 
-```{r}
-baseline <- visits %>% filter(wave=="wave0") %>% select(participant, bmi)
-wave2 <- visits %>% filter(wave=="wave2") %>% select(participant, bmi)
-baseline %>%
-  left_join(wave2, by="participant", suffix=c("", ".after")) %>%
+
+---
+
+```r
+## 1. Create a wave 0 subset of 'visits'
+```
+--
+```r
+dat.wave0 <- visits %>% filter(wave=="wave0") %>% select(participant, bmi)
+```
+--
+```r
+## 2. Create a wave 2 subset of 'visits'
+```
+--
+```r
+dat.wave2 <- visits %>% filter(wave=="wave2") %>% select(participant, bmi)
+```
+--
+```r
+## 3. Merge these two so we have a data frame with bmi at wave 0 and wave 2
+```
+--
+```r
+dat.wave0 %>% 
+  left_join(dat.wave2, by="participant", suffix=c(".wave0", ".wave2")) %>%
+```
+--
+```r
+  ## 4. Merge this with 'participants' and 'arms' to add participant age, sex and dose
+```
+--
+```r
   left_join(participants, by="participant") %>%
   left_join(arms, by="arm") %>%
-  lm(bmi.after ~ bmi + dose + sex + age, data=.) %>%
-  summary() %>%
-  coef()
 ```
-As expected, BMI as baseline is strongly correlated with BMI after treatment. 
-Beyond that, age and sex have almost no effect. 
-Treatment dose, however, does appear to have a role in increasing BMI.
+--
+```r
+  ## 5. Fit the linear model and extract the coefficients and p-values
+```
+--
+```r
+  lm(bmi.wave2 ~ bmi.wave0 + age + sex + dose, data=.) %>%
+  summary() %>% coef()
+```
+
+---
+
+## Wait, what does that mysterious '.' mean?
+
+```r
+  ... %>%
+  lm(bmi.wave2 ~ bmi.wave0 + age + sex + dose, data=.) %>%
+  ...
+```
+--
+.box[
+The '.' refers to the input coming from the the pipe ('%>%') 
+to the `lm` function.  We want the incoming data frame/tibble
+to be passed to `lm` via the `data` argument.
+
+By default, pipe input is passed as the first argument to the function.
+Most tidyverse functions are written with this default in mind.
+]
+---
+
+## Running statistical tests
+
+```r
+dat.wave0 <- visits %>% filter(wave=="wave0") %>% select(participant, bmi)
+dat.wave2 <- visits %>% filter(wave=="wave2") %>% select(participant, bmi)
+dat.wave0 %>% 
+  left_join(dat.wave2, by="participant", suffix=c(".wave0", ".wave2")) %>%
+  left_join(participants, by="participant") %>%
+  left_join(arms, by="arm") %>%
+  lm(bmi.wave2 ~ bmi.wave0 + age + sex + dose, data=.) %>%
+  summary() %>% coef()
+```
+--
+```r
+               Estimate Std. Error    t value      Pr(>|t|)
+(Intercept) -2.47273674 1.77929008 -1.3897322  1.653930e-01
+bmi.wave0    1.01448861 0.01752561 57.8860586 4.790746e-195
+age          0.08544156 0.06725427  1.2704259  2.046808e-01
+sexM         0.08955528 0.14346982  0.6242099  5.328501e-01
+dose         0.57515357 0.04672540 12.3092276  1.072305e-29
+```
+--
+
+Treatment dose is strongly associated with increasing BMI (p=1.1e-29).
+
+As expected, BMI is strongly associated across waves (p = 4.8e-195).
+
+Beyond that, age and sex have almost no effect (p > 0.2). 
+
+---
+
+## Data pivots
 
 The data transformation we just applied is called a 'pivot from long to wide'.
-Initially, the data is 'long' with one row per BMI measurement per participant. 
-After the pivot, the data is 'shorter' with one row per participant
-but 'wider' due to having two columns providing BMI measurements.
 
-Because pivots are so common, tidyr has defined two functions 
-for performing pivots, `pivot_wider` and its inverse `pivot_longer`.
-```{r}
-visits %>% 
-  filter(wave %in% c("wave0","wave2")) %>%
-  pivot_wider(
-    id_cols=participant,
-    names_from=wave,
-    values_from=bmi) %>%
-  rename(bmi=wave0,bmi.after=wave2) %>%
+--
+
+1.&nbsp;Initially, the data is **'long'** with one row per BMI measurement per participant. 
+
+```r
+> visits %>% subset(c("participant","wave","bmi"))
+
+   participant wave    bmi
+ 1           1 wave0  15.4
+ 2           1 wave1  16.5
+ 3           1 wave2  14.9
+ ...
+```
+
+--
+
+2.&nbsp;After the pivot, the data is **'shorter'** with one row per participant, but **'wider'** due to having two columns providing BMI measurements.
+
+```r
+> dat.wave0 %>% 
+  left_join(dat.wave2, by="participant", suffix=c(".wave0", ".wave2"))
+
+   participant bmi.wave0 bmi.wave2
+ 1           1      15.4      14.9
+ 2           2      19.4      21.8
+ 3           3      22.0      23.1
+```
+
+---
+
+Because pivots are so common, tidyr has created `pivot_wider()` and its inverse `pivot_longer()`.
+
+--
+
+.ii[
+As before ...
+```r
+## 1. Create a wave 0 subset of 'visits'
+> dat.wave0 <- visits %>% 
+  filter(wave=="wave0") %>% 
+  select(participant, bmi)
+
+## 2. Create a wave 2 subset of 'visits'
+> dat.wave2 <- visits %>% 
+  filter(wave=="wave2") %>% 
+  select(participant, bmi)
+
+## 3. Merge these two 
+> dat.wave0 %>% 
+  left_join(dat.wave2, 
+          by="participant", 
+          suffix=c(".wave0", ".wave2")) %>%
+
+
+## 4. Merge this with 'participants' and 'arms' 
   left_join(participants, by="participant") %>%
   left_join(arms, by="arm") %>%
-  lm(bmi.after ~ bmi + dose + sex + age, data=.) %>%
+
+## 5. Fit the linear model 
+  lm(bmi.wave2 ~ bmi.wave0+age+sex+dose, data=.) %>%
+  summary() %>% 
+  coef()
+```
+
+]
+
+.gap[&nbsp;]
+
+
+.ii[
+With `pivot_wider` ...
+```r
+## 1-2. Create a wave 0 and 2 subset of 'visits'
+> visits %>% 
+  filter(wave %in% c("wave0","wave2")) %>%
+
+
+
+
+
+
+
+## 3. pivot dataset (and rename columns)
+  pivot_wider(
+    id_cols=participant,          ## individuals
+    names_from=wave,              ## new column names
+    values_from=bmi) %>%          ## new column values
+  rename(bmi.wave0=wave0,bmi.wave2=wave2) %>%
+
+## 4. Merge this with 'participants' and 'arms'
+  left_join(participants, by="participant") %>%
+  left_join(arms, by="arm") %>%
+
+## 5. Fit the linear model 
+  lm(bmi.wave2 ~ bmi.wave0+age+sex+dose, data=.) %>%
   summary() %>%
   coef()
 ```
 
-### Transforming sequences of data with `purrr`
-Earlier we asked if treatment dose is associated with changes in BMI.
-Now we ask if treatment dose is associated with changes in 
-blink rate, BMI, HDL cholesterol, triglycerides and LDL cholesterol.
+]
 
-To do this, we first create a function for testing any single phenotype.
-We use the code we developed above, but with three small changes.
-```{r}
-calculate.statistics <- function(phenotype) {
-  visits %>% 
-  filter(wave %in% c("wave0","wave2")) %>%
-  pivot_wider(
-    id_cols=participant,
-    names_from=wave,
-    values_from=phenotype) %>%                            ## 1st change
-  rename(var.base=wave0,var.after=wave2) %>%              ## 2nd change
-  left_join(participants, by="participant") %>%
-  left_join(arms, by="arm") %>%
-  lm(var.after ~ var.base + dose + sex + age, data=.) %>% ## 3rd change
-  summary() %>%
-  coef()
-}
-```
-We can recalculate the statistics for BMI.
-```{r}
-calculate.statistics("bmi")
-```
-We could also calculate statistics for HDL cholesterol.
-```{r}
-calculate.statistics("hdl")
-```
+---
 
-We're really only interested in the statistics related to 'dose'. 
-These tell us how treatment dose relates to the phenotype.
-We create another function that only returns those statistics.
-```{r}
-calculate.phenotype.statistics <- function(phenotype) {
-  calculate.statistics(phenotype) %>%  # use the other function to calculate
-    as.tibble(rownames="variable") %>% # convert the output from matrix to tibble
-    filter(variable=="dose") %>%       # retain only the row for 'dose' statistics
-    select(-variable) %>%              # remove the variable column
-    mutate(Phenotype=phenotype) %>%    # add a column with the phenotype name
-    relocate(Phenotype)                # make this the first column
-}
-```
-
-```{r}
-calculate.phenotype.statistics("bmi")
-```
-Now we use the `map` function to apply the function 
-`calculate.phenotype.statistics' to each phenotype.
-```{r}
-list("blink","bmi","hdl","trig","ldl") %>%
-  map(calculate.phenotype.statistics) %>%
-  bind_rows()
-```
-
-## Visualizing data using `ggplot`
+## Visualizing data with `ggplot2`
 
 We've looked at a lot of tables of statistics.
-For humans, it is often easier to identify relationships
-through visualization than by looking at a lot of numbers.
 
-Here we show how to plot the relationship between blink rate, 
-treatment dose and time:
-1. pipe the data to the plotting function `ggplot`
-2. tell `ggplot` to separate blink rates by dose, and within dose by wave
-3. tell `ggplot` that blink rate distributions will be displayed as box plots
-4. label the x and y axes
-```{r}
+We can visualise these using using `ggplot()`.  
+
+--
+
+We can visualise blink rate, treatment dose <br>and time as follows:
+
+.rightmid[
+&lt;img src="boxplot.png" width="50%"&gt;
+]
+
+--
+
+1. pipe the data to `ggplot()`
+
+--
+
+2. tell `ggplot()` to show blink rates (y-axis) <br>by dose (x-axis) and by wave
+
+--
+
+3. tell `ggplot` that blink rate distributions will be <br>displayed as box plots
+
+--
+
+4. label the x and y axes appropriately
+
+
+---
+
+.ii[
+
+```r
+## 1. pipe the data to `ggplot()`
+visits %>%
+  left_join(participants,by="participant") %>%
+  left_join(arms,by="arm") %>%
+
+## 2. tell `ggplot()` to show blink rates (y-axis) 
+##    by dose (x-axis) and by wave
+  ggplot(aes(x=factor(dose), y=blink, fill=wave)) + 
+
+## 3. tell `ggplot` that blink rate distributions 
+##    will be displayed as box plots  
+    geom_boxplot() + 
+
+## 4. label the x and y axes appropriately
+    xlab("treatment dose") + 
+    ylab("blink rate") 
+```
+
+(without the comments)
+```r
 visits %>%
   left_join(participants,by="participant") %>%
   left_join(arms,by="arm") %>%
@@ -950,56 +1531,185 @@ visits %>%
     xlab("treatment dose") + 
     ylab("blink rate") 
 ```
+]
+
+.gap[&nbsp;]
+
+--
+
+.ii[
+&lt;img src="boxplot.png" width="100%"&gt;
+]
+
+---
+
+## Talking to `ggplot`
+
+.ii[
+1. `ggplot` likes "long" data format. 
+   If your data is in "wide" format, use `pivot_longer()`.
+
+2. Notice how the '+' is like '%>%'.
+
+  - We pipe *data* to functions with '%>%'. 
+
+  - We pipe *instructions* to ggplot with '+'.
+
+  And just like pipes, we can refer to the plot with a variable.
+
+```r
+p <- visits %>%
+  left_join(participants,by="participant") %>%
+  left_join(arms,by="arm") %>%
+  ggplot(aes(x=factor(dose), y=blink, fill=wave)) + 
+    geom_boxplot() + 
+    xlab("treatment dose") + 
+    ylab("blink rate") 
+```
+]
+.gap[&nbsp;]
+--
+.ii[
+Later, we can add additional instructions
+about the plot, 
+e.g. to change the boxplot colors
 ```{r}
+fill.cols <- c("#999999", "#E69F00", "#56B4E9")
+p <- p + scale_fill_manual(values=fill.cols)
+p
+```
+
+&lt;img src="boxplot-colors.png" width="100%"&gt;
+]
+
+---
+
+## Challenge!
+
+Change the plot to show HDL cholesterol instead of <br>blink rate.
+
+--
+
+```r
 visits %>%
   left_join(participants,by="participant") %>%
   left_join(arms,by="arm") %>%
-ggplot(aes(x=factor(dose), y=hdl, fill=wave)) + 
-  geom_boxplot() + 
-  xlab("treatment dose") + 
-  ylab("HDL cholesterol") 
+  ggplot(aes(x=factor(dose), y=hdl, fill=wave)) + 
+   geom_boxplot() + 
+   xlab("treatment dose") + 
+   ylab("HDL cholesterol") 
 ```
 
-## Model 
+Sorry! Not very exciting.
 
-We'll leave this for another day.
-
-See the book for more details: https://r4ds.had.co.nz/model-intro.html
-
-## Communicate
-
-We'll leave this for another day.
-
-See the book for more details: https://r4ds.had.co.nz/communicate-intro.html
+.right[
+&lt;img src="hdl.png" width="100%"&gt;
+]
 
 ---
 
-## Not everyone agrees
+## Challenge!
 
-https://dplyr.tidyverse.org/articles/base.html
+Generate a plot showing HDL cholesterol vs BMI (baseline).
 
-BUT, GitHub - matloff/TidyverseSkeptic: An opinionated view of the Tidyverse "dialect" of the R language.
+*Hint:* use `geom_point()`
 
+--
 
-1. tidyr needs more memorization (eg. dplyr has > 200 functions!)
-often base R actually reduces how much you have to remember but provide more primitive commands that can be combined in different ways to do a wide variety of operations.  tidyr tends to provide specific commands for higher level operations so can require more memorization.
-e.g. count the number of different command names in "one table verbs" and "two table verbs" for tidyr versus base R
-    compare purrr vs. base-R example in tidyverseskeptic
-2. tidyr is new and changing (https://dplyr.tidyverse.org/articles/compatibility.html) whereas base R is fairly static, what do you do when your code uses an old version of dplyr?
-3. when tidyr functions fail (ggplot,dplyr functions) it's often really difficult to figure out why because they are so much more high-level
-4. ggplot2 is actually not tidyverse!  it kind of looks like pipes but actually isn't
-5. dplyr can be much slower than alternatives, e.g. data.table
+```r
+p <- visits %>% 
+  filter(wave=="wave0") %>% 
+  ggplot(aes(x=bmi, y=hdl)) +
+   geom_point()
+p
+```
+(saving the plot so we make a modification)
 
+.right[
+&lt;img src="scatterplot.png" width="100%"&gt;
+]
 
-see tables that match base R to tidyr functions
+--
 
-good challenges: 
-this is how you do this in base R, how to do it with tidyr
+Now add a regression line to the scatterplot.
 
+*Hint:* add `geom_smooth`
 
+--
 
+```r
+p <- p + geom_smooth(method=lm)
+p
+```
+
+.right[
+&lt;img src="scatterplot-line.png" width="100%"&gt;
+]
 
 ---
+
+## For more information about the tidyverse
+
+https://r4ds.had.co.nz/<br>
+
+&lt;img src="tidyverse-book.png" width="100%"&gt;
+
+---
+
+## Converting between base R and dplyr
+
+If you are familiar with base R, you might find 
+it useful to see how dplyr commands
+map to base R commands.
+
+  https://dplyr.tidyverse.org/articles/base.html
+
+e.g.
+
+|dplyr|base|
+|:----|:---|
+|arrange(df, x) | df[order(x), , drop = FALSE]|
+|distinct(df, x) |df[!duplicated(x), , drop = FALSE], unique()|
+|filter(df, x)| df[which(x), , drop = FALSE], subset()|
+|mutate(df, z = x + y)| df$z <- df$x + df$y, transform()|
+|pull(df, 1)| df[[1]]|
+|pull(df, x) |df$x|
+|rename(df, y = x)| names(df)[names(df) == "x"] <- "y"|
+|...||
+
+---
+
+## If you choose to enter the tidyverse ...
+
+We've seen how tidyverse 
+attempts to fix some problems in R.
+
+--
+
+The tidyverse solution isn't without challenges, e.g.
+
+--
+
+  1. tidyverse needs more memorization (eg. dplyr has > 200 functions!)
+
+--
+
+  2. tidyverse is new and changing (https://dplyr.tidyverse.org/articles/compatibility.html) 
+
+--
+
+  3. tidyverse functions can be difficult to debug
+
+--
+
+  4. dplyr functions can be much slower than alternatives, e.g. data.table
+
+--
+
+  5. the 'tidyverse way' can be confusing to new R users
+     <br>(e.g. tidyverse does a lot 'behind the scenes magic' that can seem mysterious)
+
+https://github.com/matloff/TidyverseSkeptic
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
