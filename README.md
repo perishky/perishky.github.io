@@ -6,6 +6,7 @@
 * [Making scripts robust](https://perishky.github.io/r/robust-scripts/slides.html)
 * [Managing data](https://perishky.github.io/r/managing-data/slides.html)
 * [Making scripts work](https://perishky.github.io/r/making-scripts-work/slides.html)
+* [Introduction to the tidyverse](https://perishky.github.io/r/enter-the-tidyverse/slides.html)
 
 ## IEU epigenetics journal club
 
