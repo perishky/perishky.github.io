@@ -269,8 +269,9 @@ e.g. even if you know what all the functions do, this expression is
 difficult to understand!
 
 ```r
-summarize(group_by(left_join(filter(visits, wave=="wave2"), participants, by="participant"),arm,sex),n=n(), 
-age=mean(age), bmi=mean(bmi), blink=mean(blink))
+summarize(group_by(left_join(filter(visits, wave=="wave2"),
+ participants, by="participant"),arm,sex),n=n(), 
+ age=mean(age), bmi=mean(bmi), blink=mean(blink))
 ```
 
 ---
@@ -887,17 +888,17 @@ To illustrate, we'll use a small version of `visits`.
 > visits.s <- visits %>% filter(participant %in% 1:3)
 > visits.s
 # A tibble: 9 × 8
-participant wave  month blink   bmi   hdl  trig   ldl
-      <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-1         1 wave0  0     17.6  15.4  1.38  1.52  2.11
-2         1 wave1  6.18  16.0  16.5  1.35  1.33  1.88
-3         1 wave2 10.4   15.6  14.9  1.39  1.39  2.01
-4         2 wave0  0     16.3  19.4  1.64  1.70  4.06
-5         2 wave1  5.50  14.5  20.6  1.61  1.31  3.90
-6         2 wave2 13.0   11.2  21.8  1.57  1.62  4.04
-7         3 wave0  0     18.6  22.0  1.61  1.12  2.11
-8         3 wave1  6.58  17.8  20.8  1.75  1.14  1.82
-9         3 wave2 13.5   17.3  23.1  1.53  1.11  2.21
+participant wave month blink bmi   hdl  trig   ldl
+    dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+1      1 wave0  0     17.6  15.4  1.38  1.52  2.11
+2      1 wave1  6.18  16.0  16.5  1.35  1.33  1.88
+3      1 wave2 10.4   15.6  14.9  1.39  1.39  2.01
+4      2 wave0  0     16.3  19.4  1.64  1.70  4.06
+5      2 wave1  5.50  14.5  20.6  1.61  1.31  3.90
+6      2 wave2 13.0   11.2  21.8  1.57  1.62  4.04
+7      3 wave0  0     18.6  22.0  1.61  1.12  2.11
+8      3 wave1  6.58  17.8  20.8  1.75  1.14  1.82
+9      3 wave2 13.5   17.3  23.1  1.53  1.11  2.21
 ```
 ]
 
@@ -1423,7 +1424,7 @@ As before ...
   left_join(arms, by="arm") %>%
 
 ## 5. Fit the linear model 
-  lm(bmi.wave2 ~ bmi.wave0+age+sex+dose, data=.) %>%
+  lm(bmi.wave2~bmi.wave0+age+sex+dose,data=.) %>%
   summary() %>% 
   coef()
 ```
@@ -1448,9 +1449,9 @@ With `pivot_wider` ...
 
 ## 3. pivot dataset (and rename columns)
   pivot_wider(
-    id_cols=participant,          ## individuals
-    names_from=wave,              ## new column names
-    values_from=bmi) %>%          ## new column values
+    id_cols=participant,     ## individuals
+    names_from=wave,         ## new column names
+    values_from=bmi) %>%     ## new column values
   rename(bmi.wave0=wave0,bmi.wave2=wave2) %>%
 
 ## 4. Merge this with 'participants' and 'arms'
@@ -1458,7 +1459,7 @@ With `pivot_wider` ...
   left_join(arms, by="arm") %>%
 
 ## 5. Fit the linear model 
-  lm(bmi.wave2 ~ bmi.wave0+age+sex+dose, data=.) %>%
+  lm(bmi.wave2~bmi.wave0+age+sex+dose,data=.) %>%
   summary() %>%
   coef()
 ```
@@ -1510,7 +1511,7 @@ visits %>%
 
 ## 2. tell `ggplot()` to show blink rates (y-axis) 
 ##    by dose (x-axis) and by wave
-  ggplot(aes(x=factor(dose), y=blink, fill=wave)) + 
+  ggplot(aes(x=factor(dose),y=blink,fill=wave)) + 
 
 ## 3. tell `ggplot` that blink rate distributions 
 ##    will be displayed as box plots  
@@ -1526,7 +1527,7 @@ visits %>%
 visits %>%
   left_join(participants,by="participant") %>%
   left_join(arms,by="arm") %>%
-  ggplot(aes(x=factor(dose), y=blink, fill=wave)) + 
+  ggplot(aes(x=factor(dose),y=blink,fill=wave)) + 
     geom_boxplot() + 
     xlab("treatment dose") + 
     ylab("blink rate") 
@@ -1561,7 +1562,7 @@ visits %>%
 p <- visits %>%
   left_join(participants,by="participant") %>%
   left_join(arms,by="arm") %>%
-  ggplot(aes(x=factor(dose), y=blink, fill=wave)) + 
+  ggplot(aes(x=factor(dose),y=blink,fill=wave)) + 
     geom_boxplot() + 
     xlab("treatment dose") + 
     ylab("blink rate") 
