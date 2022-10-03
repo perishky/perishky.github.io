@@ -10,7 +10,10 @@
 
 ## IEU epigenetics journal club
 
-* [2020-10-26](https://perishky.github.io/jc/20201026/slides.html)
-* [2020-11-23](https://perishky.github.io/jc/20201123/slides.html)
-* [2020-12-14](https://perishky.github.io/jc/20201214/slides.html)
-* [2021-01-11](https://perishky.github.io/jc/20210111/slides.html)
+The IEU epigenetics journal club meets 1-2 Mondays per month.
+Each meeting relevant papers published since the last meeting are
+briefly presented and discussed. 
+- [presentations](https://mrcieu.github.io/epigenetics-journal-club/)
+- [scripts](https://github.com/MRCIEU/epigenetics-journal-club) for selecting candidate papers
+- [list](https://github.com/MRCIEU/epigenetics-journal-club/blob/main/data/papers.csv) of presented papers
+
