@@ -1,12 +1,32 @@
 ---
-title: "Introduction to R Practical"
+title: "Introduction to R Practical Solutions"
 author: "Bristol MRC-IEU"
-date: "Nov 2, 2021"
+date: "Nov 11, 2022"
 output: html_document
 ---
 
+```{r render, eval=F, echo=F}
+## install.packages("rmarkdown")
+library(rmarkdown)
+
+show.solutions <- F
+render("practical.rmd",output_file="practical.html")
+
+show.solutions <- T
+render("practical.rmd",output_file="solutions.html")
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+if (!exists("show.solutions"))
+    show.solutions <- F
+## show output for solutions copy only, use as results=hide.results()
+hide.results <- function() ifelse(show.solutions, "markup", "hide")
+## show code and output for solutions copy only, use as include=hide.all()
+hide.all <- function() show.solutions
+## show figure for solutions copy only, use as show.fig=hide.figure()
+hide.figure <- function() ifelse(show.solutions, "asis", "hide")
 ```
 
 ## Objectives
@@ -33,12 +53,13 @@ It is good practice to comment your code and split it up into sections.
 
 ## Loading and navigating a data frame
 
-This practical is based around the Hosmer and Lemeshow data on birthweight (lbw.csv). The file is located in the archive folder **Intro_to_R_Data.zip**. Please unzip the folder and move this file into your working directory.
+This practical is based around the Hosmer and Lemeshow data on birthweight ([lbw.csv](https://github.com/MRCIEU/introduction-to-r/blob/main/introduction/lbw.csv?raw=1)).
 
 The **lbw** data frame contains the following information:
 
-```{r tab1, echo=FALSE, results = "asis"}
+```{r tab1, echo=FALSE, results="asis"}
 #load knitr library
+#  if it is not installed, run this: install.packages("knitr")
 library(knitr)
 
 #Define a vector of variable names
@@ -63,7 +84,7 @@ Description<-c(
 tabdat<-data.frame(Variable,Description)
 
 #Generate table in RMarkdown document
-kable(tabdat,caption= "Variables in the lbw dataset")
+kable(tabdat)
 
 ```
 
@@ -73,7 +94,7 @@ kable(tabdat,caption= "Variables in the lbw dataset")
 
 2. Load the dataset into your R environment
 
-```{r,results="hide"}
+```{r}
 lbw <- read.csv("lbw.csv")
 ```
 
@@ -81,21 +102,23 @@ The **lbw** object is stored as a particular type of R object called a *data fra
 
 3. The **names** function gives the list of variables stored in a *data frame*. So using the names function will show a list of column names:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 names(lbw)
 ```
 
 The column names can be used to extract the relevant variables by using the **$** symbol. For instance, the R command:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 lbw$bwt
 ```
 
 extracts the **bwt** variable. 
 
-Square brackets can also be used to obtain specific information from a data frame. Think of the data frame as a matrix with a specific number of columns and rows. We can use a pair of square brackets after the name of a data frame to select information. This takes the form **dataframe[row,column]**. So for example, the commands:
+Square brackets can also be used to obtain specific information from a data frame. We can either use a variable name or index number for the information we want.
 
-```{r,results="hide"}
+Think of the data frame as a matrix with a specific number of columns and rows. We can use a pair of square brackets after the name of a data frame to select information. This takes the form **dataframe[row,column]**. So for example, the commands:
+
+```{r,results=hide.results()}
 lbw[1,]
 lbw[,1]
 lbw[2,1]
@@ -108,9 +131,22 @@ and the value in row 2 and column 1 of the data frame respectively.
 
 a.	Write an R command that will display the **bwt** variable using square brackets.
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**As bwt is the variable corresponding to column 11 in the lbw data frame, we can use either of the following commands:**\n")
+```
+
+```{r,include=hide.all()}
+lbw[,"bwt"]
+
+#or
+
+lbw[,11]
+
+```
+
 We can also add a new variable to a data frame using the $ and <- symbols. For example, to make a variable to indicate very low birthweight, we might use the R command:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 lbw$vlow <- lbw$bwt < 1500 
 ```
 
@@ -120,11 +156,20 @@ R uses a standard logic syntax, and good guide to logical operators available ca
 
 a.	Try this command, and examine its effect on the **lbw** data frame using the **names** and **head** functions.
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**Using names and head we can see that vlow has been added to the lbw data frame:**\n")
+```
+
+```{r,include=hide.all()}
+names(lbw)
+head(lbw)
+```
+
 ## Summarising continuous variables
 
 The following R code contains examples of functions that could be used to summarise a continuous variable, in this case the maternal age:
 
-```{r, results="hide"}
+```{r,results=hide.results()}
 mean(lbw$age)
 sd(lbw$age)
 median(lbw$age) 
@@ -140,11 +185,29 @@ summary(lbw$age)
 
 a.	Write down the names of the statistics that each of these functions calculates, by looking at the help file of the function (using **help** or **?()**)
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**These functions compute the following statistics: mean, standard deviation, median, interquartile range, mean absolute deviation, minimum, maximum, range, and list of minimum, lower quartile, median, mean, upper quartile and maximum.**\n")
+```
+
 b.	Use one or two of these functions to summarise the maternal age for cases with low birthweight (less than 2500g).
+
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**The mean and standard deviation of age for mothers who have offspring with low birthweight (bwt<2500) can be computed using:**\n")
+```
+
+```{r,include=hide.all()}
+mean(lbw$age[lbw$bwt<2500])
+sd(lbw$age[lbw$bwt<2500])
+
+## or
+
+mean(lbw$age[lbw$low==1])
+sd(lbw$age[lbw$low==1])
+```
 
 The R function **cor** calculates the correlation between two continuous variables. For instance, the R command:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 cor(lbw$lwt, lbw$bwt)
 ```
 
@@ -154,17 +217,26 @@ calculates the correlation between **lwt** and **bwt**.
 
 a.	Calculate the correlation of **age** with **lwt** and **bwt**.
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**Likewise, the correlation of age with lwt and bwt can be computed using:**\n")
+```
+
+```{r,include=hide.all()}
+cor(lbw$age, lbw$lwt)
+cor(lbw$age, lbw$bw)
+```
+
 ## Summarising categorical variables
 
 Categorical variables are usually summarised in frequency tables. The table function is used to create frequency tables. For example:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 table(lbw$ptl)
 ```
 
 creates a simple frequency table for the premature labour variable. Additional variables can be added as additional arguments to create cross-tabulations. For instance, the R command:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 table(lbw$ptl, lbw$smoke)
 ```
 
@@ -174,11 +246,27 @@ creates a cross-tabulation of premature labour with smoking during pregnancy.
 
 a.	It is useful to be able to recall the table output later, so write an R command that will store the output of the above cross-tabulation in an R object called **ptl_smoke**.
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**The cross-tabulation of ptl and smoke can be assigned to ptl_smoke using:**\n")
+```
+
+```{r,include=hide.all()}
+ptl_smoke <- table(lbw$ptl, lbw$smoke) 
+```
+
 b.	Write an R command that will produce a three-way cross-tabulation between **ptl**, **smoke** and **ht**.
+
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**The three-way cross-tabulation of ptl, smoke and ht can be generated using:**\n")
+```
+
+```{r,include=hide.all()}
+table(lbw[,c("ptl", "smoke", "ht")])
+```
 
 We can add marginal totals to the table with the **addmargins** function. The R command:
 
-```{r, eval=F}
+```{r,eval=F}
 addmargins(ptl_smoke)
 ```
 
@@ -195,11 +283,15 @@ prop.table(ptl_smoke)
 
 a.	How do these three different ways of using the **prop.table** function differ in their output?
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**Each command gives row proportions, column proportions and overall proportions respectively.**\n")
+```
+
 ## Plotting the data
 
 We can use the **plot** function generate a scatter plot showing bwt versus lwt:
 
-```{r, fig.show='hide'}
+```{r,fig.show=hide.figure()}
 plot(lbw$lwt, lbw$bwt, xlab = "Maternal weight at last menstrual period", 
     ylab = "Birthweight", main = "Birthweight vs maternal weight")
 
@@ -209,16 +301,26 @@ plot(lbw$lwt, lbw$bwt, xlab = "Maternal weight at last menstrual period",
 
 a.	Use the **hist** and **boxplot** to investigate the distribution of age.
 
+```{r,include=hide.all()}
+# The histogram of age can be plotted using:
+hist(lbw$age, xlab="Maternal age", main="Histogram of maternal age") 
+```
+
+```{r,include=hide.all()}
+# The box plot of age can be plotted using:
+boxplot(lbw$age, ylab="Maternal age", main="Box plot of maternal age") 
+```
+
 ## Linear regression
 The following R command performs a basic linear regression of **bwt** against **lwt**:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 lm(bwt ~ lwt, data=lbw) 
 ```
 
 The first argument **bwt ~ lwt**, the formula, describes the dependent and independent variables in the linear regression. The second argument **data=lbw** specifies that **bwt** and **lwt** can be found in the **lbw** data frame. The output of lm only provides the beta coefficients. We can store all this information by storing the output as an R object, for instance with the command:
 
-```{r,results="hide"}
+```{r,results=hide.results()}
 model <- lm(bwt ~ lwt, data=lbw)
 ```
 
@@ -226,5 +328,20 @@ model <- lm(bwt ~ lwt, data=lbw)
 
 a.	What happens when you apply the summary function to the R object **model**?
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**The summary function gives you more information on the regression model (e.g. standard errors of the regression coefficients):**\n")
+```
+
+```{r,include=hide.all()}
+summary(model)
+```
+
 b.	Use the **names** function to see what named objects are available in **model** (an explanation is available in the **lm** help file).
 
+```{r,include=hide.all(),echo=F,results="asis"}
+cat("**The names function can be used to show the components within model:**\n")
+```
+
+```{r,include=hide.all()}
+names(model)
+```
