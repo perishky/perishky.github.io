@@ -1,10 +1,13 @@
-source("functions-3.r")
+source("functions-2.r")
 
-reduce.dimensions <- function(variables, effects, num) {
-    variables <- remove.constants(variables) 
-    stopifnot(num <= ncol(variables)) ###### added to catch cases where 'num' is too large
-    variables <- scale(variables)
-    variables <- remove.effects(variables, effects)
-    reduced.variables <- compute.pcs(variables, num)
-    reduced.variables
+remove.constants <- function(variables) {
+    ss <- rep(NA,ncol(variables))
+    for (i in 1:ncol(variables))
+        ss[i] <- var(variables[,i], na.rm=T) ###### added na.rm=T
+    is.constant <- ss < 2e-16
+    if (any(is.constant)) {
+        warning("Omitting variables with zero variance: ", sum(is.constant))
+        variables <- variables[,!is.constant,drop=F]
+    }
+    variables
 }
