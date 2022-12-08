@@ -1,3 +1,5 @@
+source("functions-3.r")
+
 reduce.dimensions <- function(variables, effects, num) {
     variables <- remove.constants(variables) 
     stopifnot(num <= ncol(variables)) ###### added to catch cases where 'num' is too large
