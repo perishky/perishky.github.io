@@ -39,3 +39,23 @@ compute.pcs <- function(variables, num) {
     pcs <- pcs[,1:num,drop=F]                             ## select top `num` PCs
     pcs
 }
+
+## Remove variables (columns) that do not vary.
+## - variables: matrix of variables (columns=variables, rows=observations)
+## Output:
+## The input matrix without columns that did not vary.
+## 
+remove.constants <- function(variables) {
+    ss <- rep(NA,ncol(variables))                           ## `ss` will hold the variances
+                                                            ##         of each variable
+    for (i in 1:ncol(variables))                            ## for each variable i
+        ss[i] <- var(variables[,i])                         ##   ss[i] = variance of variable i
+    is.constant <- ss < 2e-16                               ## is.constant == TRUE for all variables
+                                                            ##         with variance < 2x10^-16
+    if (any(is.constant)) {                                 ## if any variable has low variance
+        warning("Omitting variables with zero variance: ",  ##   issue a warning that they will be removed
+                sum(is.constant))                           ## 
+        variables <- variables[,!is.constant,drop=F]        ##   remove those variables
+    }
+    variables
+}
