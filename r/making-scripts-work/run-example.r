@@ -1,11 +1,14 @@
 ########################
 ## Example: dimension reduction
 
+## load the functions we will use:
+##   reduce.dimensions() and remove.constants()
 source("functions.r")
 
 ########################
 ## Reducing dimensions
 
+## create dataset
 n <- 50                 ## 50 observations/samples
 n.vars <- 20            ## 20 variables
 n.effs <- 5             ## 5 effects to remove
@@ -22,7 +25,6 @@ quantile(cor(new.vars, variables))
 ## Encountering an error
 
 variables[,4] <- 0
-
 new.vars <- reduce.dimensions(variables,effects,5)
 
 ########################
@@ -34,8 +36,9 @@ new.vars <- reduce.dimensions(variables,effects,5)
 ########################
 ## Removing constant variables
 
+## modify reduce.dimensions() 
 reduce.dimensions<-function(variables, effects, num) {
-    variables <- remove.constants(variables)     ######### remove constant variables
+    variables <- remove.constants(variables)     ######### remove variables that don't vary
     variables <- scale(variables)
     variables <- remove.effects(variables, effects)
     reduced.variables <- compute.pcs(variables, num)
@@ -54,6 +57,7 @@ variables[3,4] <- NA
 
 new.vars <- reduce.dimensions(variables, effects, 5)
 
+## modify remove.constants() to start the browser
 remove.constants <- function(variables) {
     ss <- rep(NA,ncol(variables))
     for (i in 1:ncol(variables))
@@ -69,6 +73,7 @@ remove.constants <- function(variables) {
 
 new.vars <- reduce.dimensions(variables, effects, 5)
 
+## modify remove.constants() to handle missing values
 remove.constants <- function(variables) {
     ss <- rep(NA,ncol(variables))
     for (i in 1:ncol(variables))
@@ -86,6 +91,7 @@ remove.constants <- function(variables) {
 
 new.vars <- reduce.dimensions(variables, effects, 55)
 
+## modify reduce.dimensions() to check for invalid inputs
 reduce.dimensions <- function(variables, effects, num) {
     variables <- remove.constants(variables) 
     stopifnot(num <= ncol(variables)) ###### added to catch cases where 'num' is too large
