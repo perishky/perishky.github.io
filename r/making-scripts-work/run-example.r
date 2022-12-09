@@ -1,7 +1,7 @@
 ########################
 ## Example: dimension reduction
 
-source("functions-1.r")
+source("functions.r")
 
 ########################
 ## Reducing dimensions
@@ -34,7 +34,13 @@ new.vars <- reduce.dimensions(variables,effects,5)
 ########################
 ## Removing constant variables
 
-source("functions-2.r") ## adds remove.constants()
+reduce.dimensions<-function(variables, effects, num) {
+    variables <- remove.constants(variables)     ######### remove constant variables
+    variables <- scale(variables)
+    variables <- remove.effects(variables, effects)
+    reduced.variables <- compute.pcs(variables, num)
+    reduced.variables
+}
 
 new.vars <- remove.constants(variables)
 identical(new.vars[,4], variables[,5])
@@ -48,18 +54,46 @@ variables[3,4] <- NA
 
 new.vars <- reduce.dimensions(variables, effects, 5)
 
-source("functions-3.r") ## call browser()
+remove.constants <- function(variables) {
+    ss <- rep(NA,ncol(variables))
+    for (i in 1:ncol(variables))
+        ss[i] <- var(variables[,i])
+    browser()                               ######## start the browser
+    is.constant <- ss < 2e-16
+    if (any(is.constant)) {                 ## where the error was generated
+        warning("Omitting variables with zero variance: ", sum(is.constant))
+        variables <- variables[,!is.constant,drop=F]
+    }
+    variables
+}
 
 new.vars <- reduce.dimensions(variables, effects, 5)
 
-source("functions-4.r") ## handle missing values
+remove.constants <- function(variables) {
+    ss <- rep(NA,ncol(variables))
+    for (i in 1:ncol(variables))
+        ss[i] <- var(variables[,i], na.rm=T) ###### added na.rm=T
+    is.constant <- ss < 2e-16
+    if (any(is.constant)) {
+        warning("Omitting variables with zero variance: ", sum(is.constant))
+        variables <- variables[,!is.constant,drop=F]
+    }
+    variables
+}
 
 ########################
 ## Catching errors with stopifnot()
 
 new.vars <- reduce.dimensions(variables, effects, 55)
 
-source("functions-5.r") ## checks for invalid input
+reduce.dimensions <- function(variables, effects, num) {
+    variables <- remove.constants(variables) 
+    stopifnot(num <= ncol(variables)) ###### added to catch cases where 'num' is too large
+    variables <- scale(variables)
+    variables <- remove.effects(variables, effects)
+    reduced.variables <- compute.pcs(variables, num)
+    reduced.variables
+}
 
 new.vars <- reduce.dimensions(variables, effects, 55)
 
