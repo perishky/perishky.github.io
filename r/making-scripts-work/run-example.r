@@ -27,11 +27,15 @@ quantile(cor(new.vars, variables))
 variables[,4] <- 0
 new.vars <- reduce.dimensions(variables,effects,5)
 
+traceback()
+
 ########################
 ## Identifying the problem using debug()
 
 debug(reduce.dimensions)
 new.vars <- reduce.dimensions(variables,effects,5)
+
+undebug(reduce.dimensions)
 
 ########################
 ## Removing constant variables
@@ -86,6 +90,8 @@ remove.constants <- function(variables) {
     variables
 }
 
+new.vars <- reduce.dimensions(variables, effects, 5)
+
 ########################
 ## Catching errors with stopifnot()
 
@@ -107,7 +113,7 @@ new.vars <- reduce.dimensions(variables, effects, 55)
 ## system.time() -- How long did that take anyway?
 
 n <- 1000               ## 1000 observations/samples
-n.vars <- 5e4           ## 50K variables
+n.vars <- 1000           ## 1000 variables
 n.effs <- 50            ## 50 effects to remove
 variables <- matrix(rnorm(n.vars*n),nrow=n)
 effects <- matrix(rnorm(n.effs*n), nrow=n)
@@ -116,7 +122,8 @@ system.time(new.vars <- reduce.dimensions(variables, effects, 5))
 ########################
 ## Rprof() -- Oh, that's what took so long!
 
-Rprof()
+Rprof("Rprof.txt")
 new.vars <- reduce.dimensions(variables, effects, 5)
 profile <- summaryRprof()
 profile$by.total
+profile$by.self

@@ -34,6 +34,14 @@ MRC Integrative Epidemiology Unit&nbsp;&nbsp;&nbsp;&nbsp;
 
 2. script seems to run forever
 
+
+.box[
+To follow along with this session in R, 
+you can find all code from this session at these links:
+* [run-example.r](run-example.r)
+* [functions.r](functions.r)
+]
+
 ---
 
 ## Example: dimension reduction
@@ -618,7 +626,7 @@ We run the command as previously but within `system.time(...)`.
 .ii[
 Start the profiler
 ```r
-> Rprof()
+> Rprof("Rprof.txt")
 ```
 
 Run the command as previously and obtain the profile summary.
@@ -698,7 +706,6 @@ Finally, turn profiling off.
 
 * `Rprof()` -- what was it doing all that time?
 
-
 ---
 
 ## More information
@@ -707,6 +714,8 @@ Finally, turn profiling off.
 * https://bookdown.org/rdpeng/rprogdatascience/debugging.html
 * https://rstudio-education.github.io/hopr/debug.html
 * https://bookdown.org/rdpeng/rprogdatascience/profiling-r-code.html
+
+
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
