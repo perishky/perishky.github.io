@@ -1,0 +1,243 @@
+
+---
+
+count: false
+
+.pull-left[.content[
+
+```r
+*ggplot(data = df)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_1-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+*aes(x = age)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_2-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+*aes(y = bmi)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_3-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+*geom_point()
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_4-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+*aes(colour = sex)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_5-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+aes(colour = sex) +
+*geom_smooth(
+* method = "lm", 
+* se = F)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_6-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+aes(colour = sex) +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+*scale_color_manual(
+* values = c("blue","purple"))
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_8-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+aes(colour = sex) +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+scale_color_manual(
+  values = c("blue","purple")) +
+*ylim(c(15, 35))
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_9-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+aes(colour = sex) +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+scale_color_manual(
+  values = c("blue","purple")) +
+ylim(c(15, 35)) +
+*labs(
+* x = "Age",
+* y = "Body Mass Index (BMI)",
+* colour = "")
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_12-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+aes(colour = sex) +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+scale_color_manual(
+  values = c("blue","purple")) +
+ylim(c(15, 35)) +
+labs(
+  x = "Age",
+  y = "Body Mass Index (BMI)",
+  colour = "") +
+*labs(title = "BMI by Age")
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_13-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+aes(colour = sex) +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+scale_color_manual(
+  values = c("blue","purple")) +
+ylim(c(15, 35)) +
+labs(
+  x = "Age",
+  y = "Body Mass Index (BMI)",
+  colour = "") +
+labs(title = "BMI by Age") +
+*labs(subtitle = "Colour indicates sex")
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas_14-1.png" width="100%" />
+]]

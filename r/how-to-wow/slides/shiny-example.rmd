@@ -1,0 +1,8 @@
+---
+
+# Example
+
+http://epidelta.mrcieu.ac.uk/
+
+Source code: https://github.com/perishky/epidelta/blob/master/app/app.R
+

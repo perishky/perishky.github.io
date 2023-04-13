@@ -1,0 +1,13 @@
+---
+
+# Recap
+
+Key concept is that you are __adding elements together__:
+
+- first the data 
+
+- then the elements of the data you want to display (`aesthetics`)
+
+- then the way you want to display them (`geoms`)
+
+- then extra options (colour/themes/titles)

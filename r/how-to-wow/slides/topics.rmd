@@ -1,0 +1,20 @@
+---
+
+## Topics
+
+--
+
+- Create __beautiful plots__ with `ggplot2`
+
+--
+
+- __Literate programming__ with `Rmarkdown`
+
+--
+
+- Build __interactive apps__ with `shiny`
+
+--
+
+- __Share your work__ as a package
+

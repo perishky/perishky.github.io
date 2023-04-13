@@ -1,0 +1,17 @@
+
+
+---
+
+# Wrapping up
+
+Final points:
+
+* Can do a __lot with R__, once you have a good grasp of the basics
+
+--
+
+* There is an __R package__ for pretty much everything you may want to do.
+
+--
+
+* Best way to learn is to __find a problem__ and try to __use R to solve it__.

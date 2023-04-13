@@ -1,0 +1,7 @@
+class: title-slide, center, middle, inverse
+
+# `r rmarkdown::metadata$title`
+## *`r rmarkdown::metadata$subtitle`*
+
+### by `r rmarkdown::metadata$author`
+

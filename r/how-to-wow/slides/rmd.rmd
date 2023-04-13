@@ -1,0 +1,15 @@
+---
+
+# `RMarkdown`
+
+
+A single file (with `.Rmd` extension) that incorporates text, code and output (results and figures)
+
+Can be converted to multiple formats:
+
+* HTML (web-page)
+
+* Word
+
+* PDF
+

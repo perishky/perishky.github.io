@@ -1,0 +1,19 @@
+
+---
+
+.center[
+<img src="figs/space.png" width = 900 height = 600 >   
+]
+
+---
+
+.center[
+
+<img src="figs/beer.jpg" width = 900 height = 600>   
+]
+
+---
+
+.center[
+<img src="figs/everest.jpg" width = 900 height = 600>   
+]

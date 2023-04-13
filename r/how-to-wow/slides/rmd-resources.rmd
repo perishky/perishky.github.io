@@ -1,0 +1,9 @@
+---
+
+# Resources
+
+[RMarkdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html) from RStudio
+
+[RMarkdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/) by 
+Yihui Xie 
+

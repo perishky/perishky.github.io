@@ -1,0 +1,9 @@
+---
+
+# Not ggplot2
+
+```{r}
+x <- rnorm(1000)
+y <- 3*x + rnorm(length(x))
+plot(x,y)
+```

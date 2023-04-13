@@ -1,0 +1,210 @@
+
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+*ggplot(data = df)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_1-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+*aes(x = age)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_2-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+*aes(y = bmi)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_3-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+*geom_point()
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_4-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+*geom_smooth(
+* method = "lm", 
+* se = F)
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_5-1.png" width="100%" />
+]]
+
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+*theme_bw()
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_6-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+theme_bw() +
+*theme_void()
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_7-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+theme_bw() +
+theme_void() +
+*theme_classic()
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_8-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+theme_bw() +
+theme_void() +
+theme_classic() +
+*ggthemes::theme_economist()
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_9-1.png" width="100%" />
+]]
+
+---
+
+
+count: false
+
+.pull-left[.content[
+
+```r
+ggplot(data = df) +
+aes(x = age) +
+aes(y = bmi) +
+geom_point() +
+geom_smooth(
+  method = "lm", 
+  se = F) +
+theme_bw() +
+theme_void() +
+theme_classic() +
+ggthemes::theme_economist() +
+*ggthemes::theme_stata()
+```
+]]
+.pull-right[.content.center[
+<img src="figs/index_files/output_christmas8_10-1.png" width="100%" />
+]]
+

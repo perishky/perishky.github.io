@@ -1,0 +1,9 @@
+---
+
+# How it works
+
+Essentially using a __webpage__ rather than __console__ to instruct R.
+
+.center[
+<img src="figs/uiserver.png" width = 600 height=420>
+]

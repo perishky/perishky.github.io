@@ -1,0 +1,15 @@
+
+---
+
+## Slide credits
+
+Luke McGuinness
+
+* Email: [luke.mcguinness@bristol.ac.uk](mailto:luke.mcguinness@bristol.ac.uk)  
+* Twitter: [@mcguinlu](https://twitter.com/mcguinlu)  
+* GitHub: [@mcguinlu](https://github.com/mcguinlu)  
+
+Original slides location:
+
+[https://mcguinlu.github.io/slides/intro-to-r-phd/index.html](https://mcguinlu.github.io/slides/intro-to-r-phd/index.html#1)
+

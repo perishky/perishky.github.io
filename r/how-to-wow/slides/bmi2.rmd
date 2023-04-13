@@ -1,0 +1,19 @@
+---
+
+## The `bmi2` dataset
+The dataset used for the following graphics contains 200 observations across the following six variables:
+
+|id|age|bmi|sex|diet|status|
+|----|
+|1|78.2|29.3|Male  |Good|Unhealthy|
+|2|48.5|33.0|Female|Good|Unhealthy|
+|3|79.5|31.5|Female|Good|Unhealthy|
+|4|78.5|28.1|Male  |Poor|Healthy|
+
+Load a copy of the dataset to follow along:
+
+```r
+df <- read.csv("https://tinyurl.com/bmi2dat")
+## https://perishky.github.io/r/how-to-wow/bmi2.csv
+```
+

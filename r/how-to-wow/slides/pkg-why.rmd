@@ -1,0 +1,15 @@
+---
+
+# Why package?
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">"I wish I'd left this code across scattered .R files instead of combining it into a package" said no one ever #rstats</p>-- David Robinson (@drob) June 19, 2015</blockquote> 
+
+<br>
+
+__Benefits:__
+
+* __Reliable__ and __universal__ way to share code/data
+
+* Makes it possible for others to __cite your work__
+
+* Well-developed __testing framework__

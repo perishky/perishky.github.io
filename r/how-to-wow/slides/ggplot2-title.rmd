@@ -1,0 +1,7 @@
+---
+
+class: inverse, middle, center
+
+# Pretty plots: <br> Intro to `ggplot2`
+
+

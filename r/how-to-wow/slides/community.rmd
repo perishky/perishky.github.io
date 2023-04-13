@@ -1,0 +1,17 @@
+---
+
+## R Community 
+
+* MRC IEU code-sharing channel on Slack
+
+* `#rstats` hashtag on Twitter and "R" tagged posts on [stackoverflow](https://stackoverflow.com/questions/tagged/r)
+
+.center[
+<img src="figs/rstats-comm.jpg" width = 550 height =400>   
+]
+
+.right[
+
+Artwork by @allison_horst
+
+]

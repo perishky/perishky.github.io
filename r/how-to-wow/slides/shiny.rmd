@@ -1,0 +1,21 @@
+---
+
+# What is .cb[`shiny`]?
+.cb[`shiny`] is an R package that allows users to __build interactive web applications__ ("apps") straight from R.
+
+.pull-left[
+`Shiny` apps are web-pages that users can interact with to: 
+
+* Explore data
+
+* Perform analyses
+
+* Create plots
+]
+
+.pull-right[
+<br>
+.center[
+<img src="figs/shiny.png" width = 225 height=250>
+]
+]

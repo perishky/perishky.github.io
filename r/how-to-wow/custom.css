@@ -74,7 +74,7 @@ del {
   width: 30%;
 }
 
-.Large div {
+.Large {
   font-size: 30px;
 }
 
@@ -87,3 +87,16 @@ del {
 .bold {
   font-weight: bold;
 }
+
+
+.pull-left-60 {
+  float: left;
+  width: 57%;
+}
+
+.pull-right-40 {
+  float: right;
+  width: 37%;
+}
+
+

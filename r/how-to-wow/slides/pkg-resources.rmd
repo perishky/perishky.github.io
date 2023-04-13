@@ -1,0 +1,10 @@
+
+---
+
+# Resources
+
+
+[*R Packages* book](http://r-pkgs.had.co.nz/) by Hadley Wickham
+
+[*Writing an R package from scratch*](hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/) by Hilary Parker
+

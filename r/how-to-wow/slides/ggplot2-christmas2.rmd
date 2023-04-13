@@ -1,0 +1,241 @@
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+*ggplot(data = df)
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_1-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+*aes(x = status)
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_2-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+*geom_histogram(stat = "count")
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_3-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+*aes(fill = diet)
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_4-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+aes(fill = diet) +
+*labs(fill = "Diet status")
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_5-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+aes(fill = diet) +
+labs(fill = "Diet status") +
+*labs(
+* title = "Number of people by status",
+* subtitle = "Colour indicates diet",
+* x = "Status",
+* y = "Number of people")
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_9-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+aes(fill = diet) +
+labs(fill = "Diet status") +
+labs(
+  title = "Number of people by status",
+  subtitle = "Colour indicates diet", 
+  x = "Status", 
+  y = "Number of people") +
+*theme(
+* axis.title=element_text(colour="red"))
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_10-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+aes(fill = diet) +
+labs(fill = "Diet status") +
+labs(
+  title = "Number of people by status",
+  subtitle = "Colour indicates diet", 
+  x = "Status", 
+  y = "Number of people") +
+theme(
+  axis.title=element_text(colour="red"))+
+*theme(legend.position = "bottom")
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_11-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+aes(fill = diet) +
+labs(fill = "Diet status") +
+labs(
+  title = "Number of people by status",
+  subtitle = "Colour indicates diet", 
+  x = "Status", 
+  y = "Number of people") +
+theme(
+  axis.title=element_text(colour="red"))+
+theme(legend.position = "bottom") +
+*theme(panel.grid = element_blank())
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_12-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+aes(fill = diet) +
+labs(fill = "Diet status") +
+labs(
+  title = "Number of people by status",
+  subtitle = "Colour indicates diet", 
+  x = "Status", 
+  y = "Number of people") +
+theme(
+  axis.title=element_text(colour="red"))+
+theme(legend.position = "bottom") +
+theme(panel.grid = element_blank()) +
+*theme(
+* panel.background=element_rect(fill="black"))
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_13-1.png" width="100%" />
+]]
+
+---
+
+count: false
+
+.pull-left-60[.content[
+
+```r
+ggplot(data = df) +
+aes(x = status) +
+geom_histogram(stat = "count") +
+aes(fill = diet) +
+labs(fill = "Diet status") +
+labs(
+  title = "Number of people by status",
+  subtitle = "Colour indicates diet", 
+  x = "Status", 
+  y = "Number of people") +
+theme(
+  axis.title=element_text(colour="red"))+
+theme(legend.position = "bottom") +
+theme(panel.grid = element_blank()) +
+theme(
+  panel.background=element_rect(fill="black")) +
+*theme(title = element_text(size = 20))
+```
+]]
+.pull-right-40[.content.center[
+<img src="figs/index_files/output_christmas2_14-1.png" width="100%" />
+]]
+

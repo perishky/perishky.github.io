@@ -1,0 +1,13 @@
+---
+
+# Installing and loading ggplot2
+
+To install ggplot2:
+```r
+install.packages("ggplot2")
+```
+
+Once installed, load as follows:
+```r
+library("ggplot2")
+```
