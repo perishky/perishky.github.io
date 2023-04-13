@@ -831,7 +831,6 @@ class: inverse, middle, center
 
 # `RMarkdown`
 
-.Large[
 
 A single file (with `.Rmd` extension) that incorporates text, code and output (results and figures)
 
@@ -843,32 +842,27 @@ Can be converted to multiple formats:
 
 * PDF
 
-]
+
 
 ---
 
 # Components of a `RMarkdown` file
 
-.Large[
-
-**A (optional) YAML header surrounded by three hyphens (---)**
+**A (optional) YAML header**
 
 * Defines metadata, such as the title, author and date
 * Defines the output format (Word, PDF, HTML, etc.)
 
-**Code chunks: R code chunks surrounded by backticks (`) **
+**Code chunks: R code chunks**
 
 * This is where the core computation happens
 * Can choose to show the underlying code or just the results
 
-** Text with inline code** 
+**Text with inline code** 
 
 * Great for presenting results as part of a sentence
-* E.g. The mean of the age variable was `` `r
-mean(age)` ``
 
-
-]
+**(Optional) References**
 
 ---
 
@@ -879,7 +873,6 @@ https://github.com/MRCIEU/introduction-to-r/tree/main/how-to-wow/rmd-example
 ---
 
 # Why bother?
-
 
 Improves __reproducibility__ and __transparency__, as the origin of every single result in the paper can be examined
 
@@ -1062,8 +1055,6 @@ https://github.com/MRCIEU/aries
 
 
 ---
-
-class: Large
 
 # Wrapping up
 
