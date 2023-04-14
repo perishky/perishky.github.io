@@ -7,10 +7,18 @@ Plots on previous slides are __only a taster__
 
 Can make __any plot you can think up__
 
+--
+
 __Key resources__, all open-source:
+
+--
 
 * [`ggplot2` documentionation and cheatsheet](https://ggplot2.tidyverse.org/) - great starting point.
 
+--
+
 * ["Data visualisation"](https://socviz.co/) by Kieran Healy - great introductory text on the science of data visualization, with examples in R.
+
+--
 
 * [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday) - weekly community-run visualization exercise

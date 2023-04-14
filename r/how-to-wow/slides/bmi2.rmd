@@ -14,6 +14,5 @@ Load a copy of the dataset to follow along:
 
 ```r
 df <- read.csv("https://tinyurl.com/bmi2dat")
-## https://perishky.github.io/r/how-to-wow/bmi2.csv
 ```
 

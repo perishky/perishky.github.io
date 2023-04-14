@@ -4,14 +4,18 @@
 
 # Wrapping up
 
-Final points:
+--
 
-* Can do a __lot with R__, once you have a good grasp of the basics
+- Create __beautiful plots__ with `ggplot2`
 
 --
 
-* There is an __R package__ for pretty much everything you may want to do.
+- Perform __literate programming__ with `Rmarkdown`
 
 --
 
-* Best way to learn is to __find a problem__ and try to __use R to solve it__.
+- Build __interactive apps__ with `shiny`
+
+--
+
+- __Share your work__ as a package

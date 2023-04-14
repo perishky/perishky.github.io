@@ -9,7 +9,7 @@ Luke McGuinness
 * Twitter: [@mcguinlu](https://twitter.com/mcguinlu)  
 * GitHub: [@mcguinlu](https://github.com/mcguinlu)  
 
-Original slides location:
+Original slide deck:
 
 [https://mcguinlu.github.io/slides/intro-to-r-phd/index.html](https://mcguinlu.github.io/slides/intro-to-r-phd/index.html#1)
 

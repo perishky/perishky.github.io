@@ -1,6 +1,7 @@
 ---
 
 # What is .cb[`shiny`]?
+
 .cb[`shiny`] is an R package that allows users to __build interactive web applications__ ("apps") straight from R.
 
 .pull-left[

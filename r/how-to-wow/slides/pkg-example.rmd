@@ -4,3 +4,24 @@
 
 https://github.com/MRCIEU/aries
 
+```
+├── DESCRIPTION
+├── docs
+│   ├── aries.pdf
+│   └── tutorial
+│       ├── tutorial.html
+│       └── tutorial.rmd
+├── man
+│   ├── aries.copy.release.Rd
+│   ├── aries.info.Rd
+│   └── ...
+├── NAMESPACE
+├── R
+│   ├── detectionp.r
+│   ├── info.r
+│   └── ...
+├── README.md
+└── tests
+    ├── test-info.r	
+    └── ...
+```

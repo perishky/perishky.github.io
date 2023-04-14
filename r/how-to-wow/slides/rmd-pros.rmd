@@ -8,8 +8,14 @@ Improves __reproducibility__ and __transparency__, as the origin of every single
 
 Makes a lot of tasks more __straightforward__:
 
+--
+
 * Updating a manuscript with new __data/analyses__
 
+--
+
 * __Citing__ other work 
+
+--
 
 * Controlling __figure placement__

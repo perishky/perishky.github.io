@@ -3,17 +3,23 @@
 
 # Where to get/share packages?
 
+--
+
 **CRAN**
 
 * Official repository  
 * Strict submission process to guarantee quality
 * `install.packages("packagename")`
 
+--
+
 **Bioconductor**
 
 * Topic specific repository, with a focus on bioinformatics  
 * Strict submission requirements, similar to CRAN
 * `BiocManager::install("packagename")`
+
+--
 
 **GitHub**
 

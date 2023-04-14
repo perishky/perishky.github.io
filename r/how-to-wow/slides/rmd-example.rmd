@@ -2,4 +2,18 @@
 
 # RMarkdown example
 
+
 https://github.com/MRCIEU/introduction-to-r/tree/main/how-to-wow/rmd-example
+
+.pull-left[
+<img src="figs/paper-rmd.png" width="75%">
+]
+
+.pull-right[
+<img src="figs/paper1.png">
+<br>...
+<br><img src="figs/paper2.png">
+<br>...
+<br><img src="figs/paper3.png">
+
+]

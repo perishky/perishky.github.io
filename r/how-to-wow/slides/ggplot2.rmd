@@ -10,8 +10,14 @@ A package to create __highly customisable publication-ready plots__
 
 Key elements:
 
+--
+
 * .bold[aesthetic]: what you want to graph (e.g. x, y, colours, etc)
 
+--
+
 * .bold[geom]: how you want to graph it (e.g. scatterplot, histogram)
+
+--
 
 * .bold[options]: optional titles, themes, etc.

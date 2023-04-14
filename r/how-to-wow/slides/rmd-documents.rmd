@@ -2,10 +2,18 @@
 
 # Things you can produce using `RMarkdown`
 
+--
+
 * Academic papers ([example](https://github.com/mcguinlu/data-availability-impact))
+
+--
 
 * Theses ([bristolthesis](https://github.com/mattlee821/bristolthesis))
 
+--
+
 * Supervisory reports (great if format is similar each time)
+
+--
 
 * Slides (this slide deck was made using `RMarkdown`!)

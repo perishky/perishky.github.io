@@ -6,8 +6,14 @@
 
 A .cb[`shiny`] app is a special type of `R` file that has three components:
 
+--
+
 * User interface
 
+--
+
 * Server
+
+--
 
 * Call to the .cb[`shinyApp`]

@@ -2,8 +2,14 @@
 
 # Why bother?
 
+--
+
 * R has a __high barrier to entry__ for new users
 
+--
+
 * Apps allow those without any experience of R to __explore__ and __benefit__ from your work
+
+--
 
 * The more people who can use it, the __better known/cited__ it will be!
